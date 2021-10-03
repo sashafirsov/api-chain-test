@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit';
 
-export class ApiChain extends LitElement {
+export class ApiChainElement extends LitElement {
   static get styles() {
     return css`
       :host {

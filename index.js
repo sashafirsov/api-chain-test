@@ -1,1 +1,1 @@
-export { ApiChain } from './src/ApiChain.js';
+export { ApiChainElement } from './src/ApiChainElement.js';

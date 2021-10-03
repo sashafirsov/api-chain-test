@@ -1,4 +1,4 @@
-# \<api-chain>
+# ApiChainElement test and \<api-chain>
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
@@ -12,7 +12,7 @@ npm i api-chain
 
 ```html
 <script type="module">
-  import 'api-chain/api-chain.js';
+  import 'api-chain/api-chain-element.js';
 </script>
 
 <api-chain></api-chain>
