@@ -1,0 +1,28 @@
+{
+  "name": "api-chain",
+  "description": "Webcomponent api-chain following open-wc recommendations",
+  "license": "MIT",
+  "author": "api-chain",
+  "version": "0.0.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "analyze": "cem analyze --litelement",
+    "start": "web-dev-server",
+    "test": "web-test-runner --coverage",
+    "test:watch": "web-test-runner --watch",
+    "storybook": "npm run analyze -- --exclude dist && web-dev-server -c .storybook/server.mjs",
+    "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
+  },
+  "dependencies": {
+    "lit": "^2.0.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.4.17",
+    "@open-wc/testing": "next",
+    "@web/dev-server": "^0.1.24",
+    "@web/dev-server-storybook": "next",
+    "@web/test-runner": "^0.13.18"
+  },
+  "customElements": "custom-elements.json"
+}
