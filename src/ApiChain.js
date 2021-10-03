@@ -7,5 +7,4 @@ export function ApiChain( css, elementProto = HTMLElement )
             : [ css ];
 
     return arr;
-
 }
