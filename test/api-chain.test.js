@@ -1,32 +1,29 @@
-import { html } from 'lit';
-import { fixture, expect } from '@open-wc/testing';
+import { expect } from '@open-wc/testing';
 
-import '../api-chain-element.js';
+import { ApiChain as $$ } from '../src/ApiChain.js';
+const sampleObj = {propNum:1,propString:"abc", func(a,b){ return `from func(${a},${b})` }};
 
-describe('ApiChain', () => {
-  it('has a default title "Hey there" and counter 5', async () => {
-    const el = await fixture(html`<api-chain></api-chain>`);
+describe( 'ApiChain', () =>
+{
+    it( '$$(sampleObj) is Array', async () =>
+    {
+        expect( Array.isArray( $$(sampleObj) ) ).to.equal(true);
+        expect( $$(sampleObj) ).to.be.an('array');
+        expect( $$(sampleObj).length ).to.equal(1);
+        expect( $$(sampleObj).find( o=>o.propNum === 1) ).to.equal(sampleObj);
 
-    expect(el.title).to.equal('Hey there');
-    expect(el.counter).to.equal(5);
-  });
+    } );
 
-  it('increases the counter on button click', async () => {
-    const el = await fixture(html`<api-chain></api-chain>`);
-    el.shadowRoot.querySelector('button').click();
 
-    expect(el.counter).to.equal(6);
-  });
+    it( '$$(sampleObj) has all properties of sampleObj', async () =>
+    {
+        const s$ = $$(sampleObj);
+        Object.keys(sampleObj)
+            .forEach( key=>
+                      {
+                          debugger;
+                expect( $$(sampleObj)[key] ).to.equal( sampleObj[key] );
+                      });
+    } );
 
-  it('can override the title via attribute', async () => {
-    const el = await fixture(html`<api-chain title="attribute title"></api-chain>`);
-
-    expect(el.title).to.equal('attribute title');
-  });
-
-  it('passes the a11y audit', async () => {
-    const el = await fixture(html`<api-chain></api-chain>`);
-
-    await expect(el).shadowDom.to.be.accessible();
-  });
-});
+} );
