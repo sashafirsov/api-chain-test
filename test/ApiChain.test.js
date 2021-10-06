@@ -11,12 +11,11 @@ describe( 'ApiChain', () =>
         expect( $$(sampleObj) ).to.be.an('array');
         expect( $$(sampleObj).length ).to.equal(1);
         expect( $$(sampleObj).find( o=>o.propNum === 1) ).to.equal(sampleObj);
-
     } );
 
     it( '$$(sampleObj) has all properties of sampleObj',  () =>
     {   Object.keys(sampleObj)
-            .forEach( key=>
+            .forEach( key=> key!=='func' &&
                 expect( $$(sampleObj)[key] ).to.equal( sampleObj[key] ) );
     } );
 
