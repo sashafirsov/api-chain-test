@@ -1,5 +1,16 @@
-# ApiChainElement test and \<api-chain>
+# ApiChain test and \<api-chain> demo
 
+# Use cases
+
+
+## Array of raw objects
+    $$([ {a:1},{a:2} ]).a=1;    // all arr elements property `a` set to 1
+    v = $$([ {a:1},{a:2} ]).a;  // 1st element property `a` is returned, i.e. 1
+    $$( [ { a:1,f(v){ this.a=v} }}, { b:2,f(v){ this.b=v}} ])
+            .f(3); // method called on each element, result [{a:3},{b:3}]
+## Array of class objects
+
+    C = new class
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
