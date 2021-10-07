@@ -2,6 +2,20 @@ import { expect } from '@open-wc/testing';
 
 import { ApiChain as $$ } from '../src/ApiChain.js';
 const sampleObj = {propNum:1,propString:"abc", func(a,b){ return `from func(${a},${b})` }};
+class A
+{   constructor(v){ this.aProp=v;}
+    aProp;
+    aFuncVal;
+    aFunc(x,y){ return this.aFuncVal = this.aProp+x+y;}
+}
+class B extends A
+{   constructor(v){ super('B_'+v); this.bProp=v;}
+    bProp;
+    bFuncVal;
+    bFunc(x,y){ return this.bFuncVal = this.bProp+x+y;}
+}
+const   createA_arr = ()=>[new A('aProp1'),new A('aProp2')]
+,       createB_arr = ()=>[new B('bProp1'),new B('bProp2')];
 
 describe( 'ApiChain', () =>
 {
@@ -41,6 +55,57 @@ describe( 'ApiChain', () =>
         $A.f(100);
         expect( arr[0].a ).to.equal( 110 );
         expect( arr[1].b ).to.equal( 120 );
+    } );
+
+    it( 'arr of A class object',  () =>
+    {   const arr = createA_arr();
+        const $A = $$(arr);
+        expect( $A.aProp ).to.equal( 'aProp1' );
+        expect( $A[0].aProp ).to.equal( 'aProp1' );
+        expect( $A[1].aProp ).to.equal( 'aProp2' );
+    } );
+    it( 'arr of B class object',  () =>
+    {   const arr = createB_arr();
+        const $X = $$(arr);
+
+        expect( $X.bProp    ).to.equal( 'bProp1' );
+        expect( $X[0].bProp ).to.equal( 'bProp1' );
+        expect( $X[1].bProp ).to.equal( 'bProp2' );
+
+        // inherited initial state
+        expect( $X.aProp    ).to.equal( 'B_bProp1' );
+        expect( $X[0].aProp ).to.equal( 'B_bProp1' );
+        expect( $X[1].aProp ).to.equal( 'B_bProp2' );
+    } );
+    it( 'A[2].aFunc(1,2)',  () =>
+    {   const arr = createA_arr();
+        const $A = $$(arr);
+
+        expect( $A.aFunc('X','Y')).to.be.an( 'array' );
+        expect( $A.aFunc('X','Y').length).to.equal( 2 );
+        expect( $A.aFuncVal    ).to.equal( 'aProp1XY' );
+        expect( $A[0].aFuncVal ).to.equal( 'aProp1XY' );
+        expect( $A[1].aFuncVal ).to.equal( 'aProp2XY' );
+    } );
+    it( 'B[2].bFunc(1,2)',  () =>
+    {   const arr = createB_arr();
+        const $X = $$(arr);
+
+        expect( $X.bFunc('X','Y')).to.be.an( 'array' );
+        expect( $X.bFunc('X','Y').length).to.equal( 2 );
+        expect( $X.bFuncVal    ).to.equal( 'bProp1XY' );
+        expect( $X[0].bFuncVal ).to.equal( 'bProp1XY' );
+        expect( $X[1].bFuncVal ).to.equal( 'bProp2XY' );
+    } );
+    it( 'B[2].aFunc(1,2)',  () =>
+    {   const arr = createB_arr();
+        const $X = $$(arr);
+
+        expect( $X.aFunc('X','Y')).to.be.an( 'array' );
+        expect( $X.aFunc('X','Y').length).to.equal( 2 );
+        expect( $X.aFuncVal    ).to.equal( 'B_bProp1XY' );
+        expect( $X[0].aFuncVal ).to.equal( 'B_bProp1XY' );
+        expect( $X[1].aFuncVal ).to.equal( 'B_bProp2XY' );
     } );
 
 } );

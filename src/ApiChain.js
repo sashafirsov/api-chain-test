@@ -1,33 +1,67 @@
+const Prototype2ApiChain = new Map();
+const OBJ_prototype = Object.getPrototypeOf( {} );
 
-export function ApiChain( elOrArr, elementProto = undefined )
+    function
+setProp( refObj, k, ApiChainLocal )
+{
+    if( typeof refObj[ k ] === 'function' )
+    {   ApiChainLocal.prototype[ k ] = function( ...args )
+        {   this.forEach( el => el[ k ]( ...args ) );
+            return this;
+        }
+    }else
+    {   Object.defineProperty( ApiChainLocal.prototype, k,
+        {   get  : function(){ return this[ 0 ][ k ] }
+        ,   set: function( v )
+            {  this.forEach( el => el[ k ] = v );
+               return v
+            }
+        } );
+    }
+}
+    function
+applyPrototype( elementProto, refObj )
+{   let ChainClass = Prototype2ApiChain.get(elementProto);
+    if( ChainClass )
+        return ChainClass;
+
+    class ApiChainLocal extends Array{}
+
+    const applied = {"constructor":1};
+    for ( let obj=refObj; obj !== OBJ_prototype && obj != null ; obj = Object.getPrototypeOf(obj))
+    {
+        for( let k of Object.getOwnPropertyNames(obj) )
+            if( !applied[k])
+            {   setProp( refObj, k, ApiChainLocal );
+                applied[k]=1;
+            }
+    }
+    Prototype2ApiChain.set(elementProto, ApiChainLocal);
+    return ApiChainLocal;
+}
+    export function
+ApiChain( elOrArr, elementProto = undefined )
 {
     const isArr = Array.isArray( elOrArr );
     const arr =  isArr ? elOrArr : [ elOrArr ];
-    class ApiChainLocal extends Array{ prop(k){ return this[0][k]; }};
     if( ! elementProto )
         elementProto = Object.getPrototypeOf( isArr ? elOrArr[0] : elOrArr );
-    if( elementProto === Object.getPrototypeOf( {} ))
+    const refObj = arr[0];
+    if( elementProto === OBJ_prototype )
     {
-        const refObj = arr[0];
+        class ApiChainLocal extends Array{}
+
         for( let k in refObj )
-        {
-            if( typeof refObj[k] === 'function' )
-            {
-                ApiChainLocal.prototype[k] = function( ...args ){ this.forEach( el=>el[k](...args) ); return this; }
-            }else
-            {
-                Object.defineProperty(ApiChainLocal.prototype, k,
-                {   get: function() { return this[0][k] }
-                ,   set: function(v) { this.forEach(el=>el[k]=v); return v }
-                });
-            }
-        }
-    }else
-        for( let k in elementProto )
-            ApiChainLocal.prototype[k] = elementProto[k];
+            setProp( refObj, k, ApiChainLocal );
+        const ret = new ApiChainLocal();
+        ret.push(...arr);
+        return ret;
+    }
 
+    // class object
+    const ApiChain = applyPrototype( elementProto, refObj );
 
-    const ret = new ApiChainLocal();
+    const ret = new ApiChain();
     ret.push(...arr);
     return ret;
 }
