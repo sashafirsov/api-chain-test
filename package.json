@@ -23,6 +23,7 @@
     "@web/dev-server": "^0.1.25",
     "@web/dev-server-storybook": "next",
     "@web/test-runner": "^0.13.18",
+    "prismjs": "^1.25.0",
     "trim": "^1.0.1"
   },
   "customElements": "custom-elements.json"
