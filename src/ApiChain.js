@@ -11,7 +11,7 @@ setProp = ( clazz, k, ApiChainLocal )=>
         }
     }else
     {   Object.defineProperty( ApiChainLocal.prototype, k,
-        {   get  : function(){ return this[ 0 ][ k ] }
+        {   get  : function(){ return this.length ? this[ 0 ][ k ] : undefined }
         ,   set: function( v )
             {  this.forEach( el => el[ k ] = v );
                return v
