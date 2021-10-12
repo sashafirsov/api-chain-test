@@ -1,4 +1,4 @@
-# ApiChain test and \<api-chain> demo
+# CssChain & ApiChain test and \<api-chain> demo
 
 # Use cases
 
@@ -37,7 +37,7 @@ To execute a single test run:
 npm run test
 ```
 
-To run the tests in interactive watch mode run:
+To run the tests in interactive watch mode in browser:
 
 ```bash
 npm run test:watch

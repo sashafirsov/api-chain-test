@@ -2,9 +2,9 @@ const Prototype2ApiChain = new Map();
 const OBJ_prototype = Object.getPrototypeOf( {} );
 
     export const
-setProp = ( clazz, k, ApiChainLocal )=>
+setProp = ( refObj, k, ApiChainLocal )=>
 {
-    if( typeof clazz[ k ] === 'function' )
+    if( typeof refObj[ k ] == 'function' )
     {   ApiChainLocal.prototype[ k ] = function( ...args )
         {   this.forEach( el => el[ k ]( ...args ) );
             return this;
