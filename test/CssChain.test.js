@@ -2,8 +2,8 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import { CssChain as $$ } from '../src/CssChain.js';
 
-class DemoElement extends HTMLElement {
-    constructor() {
+class DemoElement extends HTMLElement
+{   constructor() {
         super();
         this.b="initial";
     }
@@ -124,6 +124,17 @@ describe( 'CssChain', () =>
         expect( $X.b    ).to.equal(2);
         expect( $X[0].b ).to.equal(2);
         expect( $X[1].b ).to.equal(2);
+    } );
+    it( 'init from set in run time',  async ()=>
+    {
+        customElements.define('demo-element-2',class extends DemoElement{ constructor(){super();this.m2=2;}} );
+
+        const el = await fixture(html`<div><demo-element-2/><demo-element-2/></div>`);
+        const $X = $$('demo-element-2',el);
+
+        expect( $X.m2    ).to.equal(2);
+        expect( $X[0].m2 ).to.equal(2);
+        expect( $X[1].m2 ).to.equal(2);
     } );
 
 } );
