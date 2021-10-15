@@ -1,7 +1,7 @@
 {
   "name": "api-chain",
-  "description": "Webcomponent api-chain following open-wc recommendations",
-  "license": "MIT",
+  "description": "Web component api-chain-element following open-wc recommendations",
+  "license": "Apache-2.0",
   "author": "api-chain",
   "version": "0.0.0",
   "main": "index.js",

@@ -9,21 +9,12 @@
   </style>
 </head>
 <body>
-  <div id="demo"></div>
-
-  <script type="module">
-    import { html, render } from 'lit';
-    import '../api-chain-element.js';
-
-    const title = 'Hello owc World!';
-    render(
-      html`
-        <api-chain .title=${title}>
-          some light-dom
-        </api-chain>
-      `,
-      document.querySelector('#demo')
-    );
-  </script>
+    <script type="module" src="../api-chain-element.js" ></script>
+    <api-chain title="Hello World!">
+        🍦
+    </api-chain>
+    <api-chain title="Hello World!">
+        🌼
+    </api-chain>
 </body>
 </html>

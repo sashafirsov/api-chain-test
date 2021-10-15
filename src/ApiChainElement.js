@@ -1,37 +1,34 @@
 import { html, css, LitElement } from 'lit';
+import $ from './CssChain';
+    export class
+ApiChainElement extends HTMLElement
+{
+    constructor()
+    {
+        super();
+        this.title = 'Hey there';
+        this.counter = 0;
 
-export class ApiChainElement extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        padding: 25px;
-        color: var(--api-chain-text-color, #000);
-      }
-    `;
-  }
+        const t = document.createElement('div');
+        t.innerHTML = this.template;
 
-  static get properties() {
-    return {
-      title: { type: String },
-      counter: { type: Number },
-    };
-  }
+        this.attachShadow({mode: 'open'}).appendChild(t);
+        this.$('button').addEventListener('click', ()=>this.__increment() );
+    }
 
-  constructor() {
-    super();
-    this.title = 'Hey there';
-    this.counter = 5;
-  }
+    get template()
+    {   return `
+<slot></slot> &bull;
+<b></b><br/>
+<input /><button>🛒</button>
+`
+    }
 
-  __increment() {
-    this.counter += 1;
-  }
+    $( css, protoArr ){ return $( css, this.shadowRoot, protoArr ); }
 
-  render() {
-    return html`
-      <h2>${this.title} Nr. ${this.counter}!</h2>
-      <button @click=${this.__increment}>increment</button>
-    `;
-  }
+    __increment()
+    {   const gift = this.$('slot')[0].assignedNodes()[0].textContent;
+        this.$('b').innerHTML += `<span>${ gift }</span>`;
+        this.$('input').value = this.$('span').length;
+    }
 }
