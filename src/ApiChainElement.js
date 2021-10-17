@@ -27,8 +27,8 @@ ApiChainElement extends HTMLElement
     $( css, protoArr ){ return $( css, this.shadowRoot, protoArr ); }
 
     __increment()
-    {   const gift = this.$('slot')[0].assignedNodes()[0].textContent;
-        this.$('b').innerHTML += `<span>${ gift }</span>`;
+    {   const slotContent = this.$('slot')[0].assignedNodes()[0].textContent;
+        this.$('b').innerHTML += `<span>${ slotContent }</span>`;
         this.$('input').value = this.$('span').length;
     }
 }
