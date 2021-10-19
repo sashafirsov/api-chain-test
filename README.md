@@ -1,4 +1,7 @@
 # CssChain & ApiChain test and \<api-chain> demo
+This project is a test for [css-chain](https://github.com/sashafirsov/css-chain.git).
+
+ApiChain and CssChain JS. Collection API inherits the element one.
 
 # Use cases
 
@@ -14,16 +17,23 @@
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
-
+for development of `css-chain` or `css-chain-test`:
 ```bash
-npm i api-chain
+git clone https://github.com/sashafirsov/css-chain.git
+git clone https://github.com/sashafirsov/css-chain-test.git
+cd css-chain
+npm i
+npm link
+cd ../css-chain-test
+npm i
+npm link acss-chain
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'api-chain/api-chain-element.js';
+    import 'api-chain/css-chain-element.js';
 </script>
 
 <api-chain></api-chain>

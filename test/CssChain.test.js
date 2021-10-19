@@ -1,6 +1,6 @@
 import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
-import { CssChain as $$ } from '../src/CssChain.js';
+import { CssChain as $$ } from 'css-chain/CssChain.js';
 
 class DemoElement extends HTMLElement
 {   constructor() {
@@ -135,6 +135,17 @@ describe( 'CssChain', () =>
         expect( $X.m2    ).to.equal(2);
         expect( $X[0].m2 ).to.equal(2);
         expect( $X[1].m2 ).to.equal(2);
+    } );
+    it( 'init from element tag in run time',  async ()=>
+    {
+        customElements.define('demo-element-3',class extends DemoElement{ constructor(){super();this.m3=3;}} );
+
+        const el = await fixture(html`<div><demo-element-3/><demo-element-3/></div>`);
+        const $X = $$('demo-element-3',el,'demo-element-3');
+
+        expect( $X.m3    ).to.equal(3);
+        expect( $X[0].m3 ).to.equal(3);
+        expect( $X[1].m3 ).to.equal(3);
     } );
 
 } );

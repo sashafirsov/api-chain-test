@@ -1,7 +1,7 @@
-import { html, css, LitElement } from 'lit';
-import $ from './CssChain';
+import $ from 'css-chain/CssChain.js';
+
     export class
-ApiChainElement extends HTMLElement
+CssChainElement extends HTMLElement
 {
     constructor()
     {
@@ -11,6 +11,7 @@ ApiChainElement extends HTMLElement
 
         const t = document.createElement('div');
         t.innerHTML = this.template;
+        // this.innerHTML = this.template;
 
         this.attachShadow({mode: 'open'}).appendChild(t);
         this.$('button').addEventListener('click', ()=>this.__increment() );
@@ -29,6 +30,6 @@ ApiChainElement extends HTMLElement
     __increment()
     {   const slotContent = this.$('slot')[0].assignedNodes()[0].textContent;
         this.$('b').innerHTML += `<span>${ slotContent }</span>`;
-        this.$('input').value = this.$('span').length;
+        this.counter = this.$('input').value = this.$('span').length;
     }
 }

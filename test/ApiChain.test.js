@@ -1,6 +1,6 @@
 import { expect } from '@open-wc/testing';
 
-import { ApiChain as $$ } from '../src/ApiChain.js';
+import { ApiChain as $$ } from 'css-chain/ApiChain.js';
 const sampleObj = {propNum:1,propString:"abc", func(a,b){ return `from func(${a},${b})` }};
 class A
 {   constructor(v){ this.aProp=v;}

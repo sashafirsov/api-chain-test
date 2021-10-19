@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '../api-chain-element.js';
+import '../css-chain-element.js';
 
 export default {
   title: 'ApiChain',
