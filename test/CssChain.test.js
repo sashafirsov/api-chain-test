@@ -1,6 +1,6 @@
 import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
-import { CssChain as $$ } from 'css-chain/CssChain.js';
+import { CssChain as $$ } from '../src/CssChain.js';
 
 class DemoElement extends HTMLElement
 {   constructor() {
