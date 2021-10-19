@@ -1,1 +1,1 @@
-C:/aWork/css-chain-test/node_modules/css-chain/ApiChain.js
+../node_modules/css-chain/ApiChain.js
