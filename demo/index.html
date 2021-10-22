@@ -1,20 +1,37 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8">
-  <style>
-    body {
-      background: #fafafa;
-    }
-  </style>
+    <meta charset="utf-8">
+    <style>
+        body {
+            background: #fafafa;
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/html-demo-element@1.0.7/html-demo-element.js"></script>
+
 </head>
 <body>
-    <script type="module" src="../css-chain-element.js" ></script>
-    <css-chain title="Hello World!">
-        🍦
-    </css-chain>
-    <css-chain title="Hello World!">
-        🌼
-    </css-chain>
+<h1>Working demo of CssChain </h1>
+<p> <a href="https://github.com/sashafirsov/css-chain">
+        <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
+        GitHub
+    </a>
+|   <a href="../coverage/lcov-report/index.html">test coverage</a></p>
+
+<p> In order to use <code>SccChain</code> within web component, make the $ method in constructor:</p>
+
+<html-demo-element type="js">
+    <template slot="source">  $( css, protoArr ){ return $( css, this.shadowRoot, protoArr ); } </template>
+    <div slot="demo" hidden></div>
+</html-demo-element>
+<p> Then <code>this.$(css)</code> is available for accessing the DOM like in sample.</p>
+
+<html-demo-element legend="Demo of css-chain use in web component">
+    <script type="module" src="../css-chain-element.js"></script>
+    <css-chain> 🍦 </css-chain>
+    <css-chain> 🌼 </css-chain>
+</html-demo-element>
+<br/>
+<html-demo-element legend="css-chain element sources" src="../src/CssChainElement.js"></html-demo-element>
 </body>
 </html>

@@ -10,7 +10,8 @@
 /npm-debug.log
 
 ## testing
-/coverage/
+# coverage is release deliverable and deployed to CDN
+# /coverage/
 
 ## temp folders
 /.tmp/
