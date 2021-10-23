@@ -130,4 +130,4 @@ npm start
 
 To run a local development server that serves the basic demo located in `demo/index.html`
 
-[coverage-image]:   test/coverage.svg
+[coverage-image]:   coverage/coverage.svg
