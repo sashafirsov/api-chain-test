@@ -3,6 +3,8 @@ This project is a test for [css-chain](https://github.com/sashafirsov/css-chain.
 
 ApiChain and CssChain JS. Collection API inherits the element API and Array.
 
+[![coverage][coverage-image]](coverage/lcov-report/index.html)
+
 ## Live demo
 https://unpkg.com/css-chain-test@1.0.0/demo/index.html
 
@@ -127,3 +129,5 @@ npm start
 ```
 
 To run a local development server that serves the basic demo located in `demo/index.html`
+
+[coverage-image]:   test/coverage.svg
