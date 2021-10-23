@@ -3,10 +3,10 @@ This project is a test for [css-chain](https://github.com/sashafirsov/css-chain.
 
 ApiChain and CssChain JS. Collection API inherits the element API and Array.
 
-[![coverage][coverage-image]](https://unpkg.com/css-chain-test@1.0.2/coverage/lcov-report/index.html)
+[![coverage][coverage-image]](https://unpkg.com/css-chain-test@1.0.3/coverage/lcov-report/index.html)
 
 ## Live demo
-https://unpkg.com/css-chain-test@1.0.0/demo/index.html
+https://unpkg.com/css-chain-test@1.0.3/demo/index.html
 
 # [CssChain](https://github.com/sashafirsov/css-chain/blob/main/CssChain.js)
 ## html elements methods 
