@@ -1,7 +1,7 @@
-# CssChain & ApiChain test and \<api-chain> demo
-This project is a test for [css-chain](https://github.com/sashafirsov/css-chain.git).
+# CssChain & ApiChain test and \<css-chain> demo
 
-ApiChain and CssChain JS. Collection API inherits the element API and Array.
+[css-chain](https://github.com/sashafirsov/css-chain.git) hosts `ApiChain` and `CssChain` JS. 
+Collection API inherits the element API and Array.
 
 [![coverage][coverage-image]](https://unpkg.com/css-chain-test@1.0.3/coverage/lcov-report/index.html)
 
@@ -81,10 +81,10 @@ npm link css-chain
 
 ```html
 <script type="module">
-    import 'api-chain/css-chain-element.js';
+    import 'css-chain/css-chain-element.js';
 </script>
 
-<api-chain></api-chain>
+<css-chain></css-chain>
 ```
 
 ## Testing with Web Test Runner

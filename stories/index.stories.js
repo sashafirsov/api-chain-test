@@ -3,7 +3,7 @@ import '../css-chain-element.js';
 
 export default {
   title: 'ApiChain',
-  component: 'api-chain',
+  component: 'css-chain',
   argTypes: {
     title: { control: 'text' },
     counter: { control: 'number' },
@@ -13,13 +13,13 @@ export default {
 
 function Template({ title = 'Hello world', counter = 5, textColor, slot }) {
   return html`
-    <api-chain
-      style="--api-chain-text-color: ${textColor || 'black'}"
+    <css-chain
+      style="--css-chain-text-color: ${textColor || 'black'}"
       .title=${title}
       .counter=${counter}
     >
       ${slot}
-    </api-chain>
+    </css-chain>
   `;
 }
 
