@@ -1,6 +1,6 @@
 import { expect } from '@open-wc/testing';
 
-import '../css-chain-element.js';
+import '../src/css-chain-element.js';
 
 const promiseTimeout = ( time, ret ) => new Promise( resolve => setTimeout( () => resolve( ret ), time ) );
 

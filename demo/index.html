@@ -2,15 +2,26 @@
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
+    <style>
+        img{ height: 1.5rem;}
+        header, header a{
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            padding: .3rem;
+        }
+        header img{ margin: 0 .2rem; }
+    </style>
     <script type="module" src="https://unpkg.com/html-demo-element@1.0.7/html-demo-element.js"></script>
 </head>
 <body>
 <h1>Working demo of CssChain </h1>
-<p> <a href="https://github.com/sashafirsov/css-chain">
+<header> <a href="https://github.com/sashafirsov/css-chain">
         <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
         GitHub
     </a>
-|   <a href="../coverage/lcov-report/index.html">test coverage</a></p>
+|   <a href="../coverage/lcov-report/index.html">test <img src="../coverage/coverage.svg"/></a>
+</header>
 
 <p> In order to use <code>SccChain</code> within web component, declare the $ method in class:</p>
 
@@ -21,7 +32,7 @@
 <p> Then <code>this.$(css)</code> is available for accessing the DOM like in sample.</p>
 
 <html-demo-element legend="Demo of css-chain use in web component">
-    <script type="module" src="../css-chain-element.js"></script>
+    <script type="module" src="../src/css-chain-element.js"></script>
 
     <css-chain> 🍦 </css-chain>
     <css-chain> 🌼 </css-chain>
