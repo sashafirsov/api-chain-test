@@ -14,22 +14,16 @@
         "analyze": "cem analyze --litelement",
         "start": "web-dev-server",
         "test": "bash test.sh",
-        "test:watch": "web-test-runner --watch",
-        "storybook": "npm run analyze -- --exclude dist && web-dev-server -c .storybook/server.mjs",
-        "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
+        "test:watch": "web-test-runner --watch"
     },
     "dependencies": {
         "css-chain": "^1.0.3",
         "lit": "^2.0.0"
     },
     "devDependencies": {
-        "@custom-elements-manifest/analyzer": "^0.5.5",
-        "@open-wc/testing": "next",
+        "@open-wc/testing": "^3.0.1",
         "@web/dev-server": "^0.1.25",
-        "@web/dev-server-storybook": "next",
-        "@web/test-runner": "^0.13.18",
-        "prismjs": "^1.25.0",
-        "trim": "^1.0.1"
+        "@web/test-runner": "^0.13.20"
     },
     "customElements": "custom-elements.json"
 }
