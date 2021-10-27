@@ -119,4 +119,51 @@ describe( 'CssChain own methods', () =>
         expect( $X[0].tagName ).to.equal('HR');
         expect( $X[1].tagName ).to.equal('BR');
     } );
+    it( 'parent()', async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><hr/></a><a id="a2"><br/></a></div>`);
+
+        const $X = $$('hr,br',el).parent();
+
+        expect( Array.isArray( $X ) ).to.equal(true);
+        expect( $X ).to.be.an('array');
+        expect( $X.length ).to.equal(2);
+        expect( $X[0].id ).to.equal('a1');
+        expect( $X[1].id ).to.equal('a2');
+    } );
+    it( 'parent().parent()', async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><hr/></a><a id="a2"><br/></a></div>`);
+
+        const $X = $$('hr,br',el).parent().parent();
+
+        expect( Array.isArray( $X ) ).to.equal(true);
+        expect( $X ).to.be.an('array');
+        expect( $X.length ).to.equal(1);
+        expect( $X[0].tagName ).to.equal('DIV');
+    } );
+    it( 'parent(css) - 1 level', async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><hr/></a><a id="a2"><br/></a></div>`);
+
+        const $X = $$('hr,br',el).parent('a');
+
+        expect( Array.isArray( $X ) ).to.equal(true);
+        expect( $X ).to.be.an('array');
+        expect( $X.length ).to.equal(2);
+        expect( $X[0].id ).to.equal('a1');
+        expect( $X[1].id ).to.equal('a2');
+    } );
+    it( 'parent(css) - 2 levels', async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><hr/></a><a id="a2"><br/></a></div>`);
+
+        const $X = $$('hr,br',el).parent('div');
+
+        expect( Array.isArray( $X ) ).to.equal(true);
+        expect( $X ).to.be.an('array');
+        expect( $X.length ).to.equal(1);
+        expect( $X[0].tagName ).to.equal('DIV');
+    } );
+
 } );

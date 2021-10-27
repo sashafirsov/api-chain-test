@@ -7,7 +7,7 @@
         "email": "suns@simulationworks.com",
         "url": "https://blog.firsov.net/"
     },
-    "version": "1.0.4",
+    "version": "1.0.5",
     "main": "index.js",
     "module": "index.js",
     "scripts": {
@@ -17,13 +17,14 @@
         "test:watch": "web-test-runner --watch"
     },
     "dependencies": {
-        "css-chain": "^1.0.4",
+        "css-chain": "^1.0.5",
         "lit": "^2.0.0"
     },
     "devDependencies": {
         "@open-wc/testing": "^3.0.1",
         "@web/dev-server": "^0.1.25",
-        "@web/test-runner": "^0.13.20"
+        "@web/test-runner": "^0.13.20",
+        "esbuild": "^0.13.9"
     },
     "customElements": "custom-elements.json"
 }

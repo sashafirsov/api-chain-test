@@ -5,7 +5,7 @@ echo $PACKAGE_VERSION
 
 rm -rf dist
 mkdir dist
-cp src/css-chain-element.js dist
-cp src/CssChainElement.js dist
-sed "s/..\/src\/CssChain.js/..\/..\/css-chain@$PACKAGE_VERSION\/CssChain.js/" src/CssChainElement.js >dist/CssChainElement.js
-sed "s/..\/src\/css-chain-element.js/css-chain-element.js/" demo/index.html >dist/demo.html
+cp src/*.html dist
+
+# https://kangax.github.io/compat-table/es2016plus/
+esbuild src/*.js --minify --sourcemap --target=chrome97,firefox95,safari15,edge96 --outdir=dist

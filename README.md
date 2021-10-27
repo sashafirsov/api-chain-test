@@ -3,10 +3,10 @@
 [css-chain](https://github.com/sashafirsov/css-chain.git) hosts `ApiChain` and `CssChain` JS. 
 Collection API inherits the element API and Array.
 
-[![coverage][coverage-image]](https://unpkg.com/css-chain-test@1.0.4/coverage/lcov-report/index.html)
+[![coverage][coverage-image]](https://unpkg.com/css-chain-test@1.0.5/coverage/lcov-report/index.html)
 
 ## Live demo
-https://unpkg.com/css-chain-test@1.0.4/dist/demo.html
+https://unpkg.com/css-chain-test@1.0.5/dist/demo.html
 
 # [CssChain](https://github.com/sashafirsov/css-chain/blob/main/CssChain.js)
 ## html elements methods 
