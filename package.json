@@ -12,6 +12,7 @@
     "module": "index.js",
     "scripts": {
         "analyze": "cem analyze --litelement",
+        "build": "bash build.sh",
         "start": "web-dev-server",
         "test": "bash test.sh",
         "test:watch": "web-test-runner --watch"
