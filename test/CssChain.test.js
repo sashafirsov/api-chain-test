@@ -13,16 +13,20 @@ customElements.define('demo-element',DemoElement );
 
 describe( 'CssChain', () =>
 {
-    it( 'blank NodeSet',  async ()=>
+    const isBlankNodeSet = $X =>
     {
-        const el = await fixture(html`<div></div>`);
-        const $X = $$('a',el)
         expect( Array.isArray( $X ) ).to.equal(true);
         expect( $X ).to.be.an('array');
         expect( $X.length ).to.equal(0);
         expect( $X.find( ()=>1) ).to.equal(undefined);
         expect( $X.innerHTML ).to.equal(undefined); // dom element prop
         expect( $X.value ).to.equal(undefined); // INPUT prop
+    };
+    it( 'blank NodeSet',  async ()=>
+    {
+        const el = await fixture(html`<div></div>`);
+        const $X = $$('a',el);
+        isBlankNodeSet($X);
     } );
     it( 'NodeSet[1]',  async ()=>
     {
@@ -101,6 +105,37 @@ describe( 'CssChain', () =>
             expect( $X[0].calledFromChange ).to.equal('checked=true');
             expect( $X[1].calledFromChange ).to.equal('checked=true');
     } );
+    it( '$.on(evName, cb )',  async ()=>
+    {
+        const el = await fixture(html`<div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
+        const $X = $$('input',el);
+
+            expect( $X[0].checked ).to.equal(false);
+            expect( $X   .checked ).to.equal(false);
+            expect( $X[1].checked ).to.equal(false);
+
+        $X.click();
+
+            expect( $X[0].checked ).to.equal(true);
+            expect( $X   .checked ).to.equal(true);
+            expect( $X[1].checked ).to.equal(true);
+
+        $X.checked = false;
+
+            expect( $X[0].checked ).to.equal(false);
+            expect( $X   .checked ).to.equal(false);
+            expect( $X[1].checked ).to.equal(false);
+
+        $X  .on('click' ,function(){ this.calledFromClick  = true; })
+            .on('change',function(){ this.calledFromChange = 'checked='+this.checked; })
+            .click();
+
+            expect( $X[0].calledFromClick ).to.equal(true);
+            expect( $X[1].calledFromClick ).to.equal(true);
+
+            expect( $X[0].calledFromChange ).to.equal('checked=true');
+            expect( $X[1].calledFromChange ).to.equal('checked=true');
+    } );
     it( 'custom element from import',  async ()=>
     {
         const el = await fixture(html`<div><demo-element/><demo-element/></div>`);
@@ -146,6 +181,74 @@ describe( 'CssChain', () =>
         expect( $X.m3    ).to.equal(3);
         expect( $X[0].m3 ).to.equal(3);
         expect( $X[1].m3 ).to.equal(3);
+    } );
+
+    it( '$.remove()',  async ()=>
+    {
+        const el = await fixture(html`<div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
+        const $X = $$('input',el).remove();
+        isBlankNodeSet($X);
+    } );
+    it( '$.remove(evName, cb )',  async ()=>
+    {
+        const el = await fixture(html`<div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
+        const $X = $$('input',el);
+
+        function markClick(){ this.name  = 'clicked'; }
+
+        $X  .on('click' ,markClick )
+            .click();
+
+        expect( $X[0].name ).to.equal('clicked');
+        expect( $X[1].name ).to.equal('clicked');
+
+        $X.title = false;
+        $X.name = false;
+
+
+        $X  .on('click',function(){ this.title = 'changed' } );
+        $X  .remove('click' ,markClick );
+
+        $X.click();
+
+        expect( $X[0].name ).to.equal('false');
+        expect( $X[1].name ).to.equal('false');
+
+        expect( $X[0].title ).to.equal('changed');
+        expect( $X[1].title ).to.equal('changed');
+
+
+    } );
+    it( '$.on(evName, cb )',  async ()=>
+    {
+        const el = await fixture(html`<div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
+        const $X = $$('input',el);
+
+        expect( $X[0].checked ).to.equal(false);
+        expect( $X   .checked ).to.equal(false);
+        expect( $X[1].checked ).to.equal(false);
+
+        $X.click();
+
+        expect( $X[0].checked ).to.equal(true);
+        expect( $X   .checked ).to.equal(true);
+        expect( $X[1].checked ).to.equal(true);
+
+        $X.checked = false;
+
+        expect( $X[0].checked ).to.equal(false);
+        expect( $X   .checked ).to.equal(false);
+        expect( $X[1].checked ).to.equal(false);
+
+        $X  .on('click' ,function(){ this.calledFromClick  = true; })
+            .on('change',function(){ this.calledFromChange = 'checked='+this.checked; })
+            .click();
+
+        expect( $X[0].calledFromClick ).to.equal(true);
+        expect( $X[1].calledFromClick ).to.equal(true);
+
+        expect( $X[0].calledFromChange ).to.equal('checked=true');
+        expect( $X[1].calledFromChange ).to.equal('checked=true');
     } );
 
 } );
