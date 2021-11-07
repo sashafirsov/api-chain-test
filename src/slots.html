@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <meta charset="utf-8">
+    <script src="slots-in-shadow.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        body>*{flex: auto;}
+    </style>
+</head>
+<body>
+    <section><h1>Unit test samples in visual presentation</h1>
+    <p>
+        <b>html-demo-element</b> uses classic shadow DOM from template for slots handling.
+    </p>
+    <p>
+        Only first level slots in template are substituted from web component content HTML.
+        The embedded slots like "inner-X" in sample template are ignored.
+    </p>
+</section>
+<html-demo-element src="slots-in-shadow.js" legend="slots-in-shadow.js is a base component"></html-demo-element>
+
+<html-demo-element legend="Only default slot values">
+    <slots-in-shadow></slots-in-shadow>
+</html-demo-element>
+<html-demo-element legend="fallback HTML is same as slot without name">
+    <slots-in-shadow>
+        <p>fallback</p>
+    </slots-in-shadow>
+</html-demo-element>
+
+<html-demo-element legend="slot without name ">
+    <slots-in-shadow>
+        <div slot>
+            without name
+        </div>
+    </slots-in-shadow>
+</html-demo-element>
+<html-demo-element legend="outer slot">
+    <slots-in-shadow>
+        <div slot="outer">
+            outer replacement
+        </div>
+    </slots-in-shadow>
+</html-demo-element>
+
+<html-demo-element legend="override inner slot by name ">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+    <slots-in-shadow>
+        <div slot>
+            <b>default slot overridden</b>
+            but inner slots ignored 👅
+        </div>
+        <div slot="inner-1"> inner-1 😭</div>
+        <div slot="inner-2"> inner-2 🙄</div>
+        <div slot="inner-2-2">inner-2-2 🤔</div>
+        <div slot="inner-2-1">inner-2-1 😳</div>
+    </slots-in-shadow>
+    </template>
+</html-demo-element>
+
+</body>
+</html>

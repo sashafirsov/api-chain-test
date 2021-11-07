@@ -6,7 +6,7 @@ Collection API inherits the element API and Array.
 [![NPM version][npm-image]][npm-url] [![coverage][coverage-image]][coverage-url]
 
 ## Live demo
-https://unpkg.com/css-chain-test@1.0.6/dist/demo.html
+https://unpkg.com/css-chain-test@1.0.7/dist/demo.html
 
 # [CssChain](https://github.com/sashafirsov/css-chain/blob/main/CssChain.js)
 ## html elements methods
@@ -65,7 +65,7 @@ The property get would return property from 1st element.
     let  v = $( 'input' ).value; // variable would receive the 1st INPUT element value
     v = $( 'input' ).prop( value ); // same as ^^
 ```
-# [ApiChain.js](./ApiChain.js)
+# [ApiChain.js](https://github.com/sashafirsov/css-chain/blob/main/ApiChain.js)
 ## Array of raw objects
 ```js
     $([ {a:1},{a:2} ]).a=1;    // all arr elements property `a` set to 1
@@ -150,5 +150,5 @@ To run a local development server that serves the basic demo located in `demo/in
 
 [npm-image]:      https://img.shields.io/npm/v/css-chain.svg
 [npm-url]:        https://npmjs.org/package/css-chain-test
-[coverage-image]: https://unpkg.com/css-chain-test@1.0.6/coverage/coverage.svg
-[coverage-url]:   https://unpkg.com/css-chain-test@1.0.6/coverage/lcov-report/index.html
+[coverage-image]: https://unpkg.com/css-chain-test@1.0.7/coverage/coverage.svg
+[coverage-url]:   https://unpkg.com/css-chain-test@1.0.7/coverage/lcov-report/index.html

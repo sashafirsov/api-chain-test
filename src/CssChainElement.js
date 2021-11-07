@@ -1,4 +1,4 @@
-import $ from '../src/CssChain.js';
+import $ from './CssChain.js';
 
     export class
 CssChainElement extends HTMLElement
