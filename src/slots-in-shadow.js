@@ -2,8 +2,8 @@ import { CssChain as $$ } from "./CssChain.js";
 
 const templateStr=`
     <i>out of slot</i>
-    <style>div{padding: 0 1rem}</style>
-    <slot>
+    <style>div{padding: 0 1rem} *[slot]{ background-color: cadetblue} *[slot] *[slot]{ background-color: deepskyblue;}</style>
+    <slot style="background-color:red ">
         default slot
         <div><slot name="inner-1">inner 1</slot></div>
         <div>
@@ -23,9 +23,8 @@ class SlotsInShadowDemo extends HTMLElement
     {   super();
         let template = document.createElement('template');
         template.innerHTML = templateStr;
-        const shadowRoot = this.attachShadow({mode: 'open'})
-                                .appendChild(template.content);
-        this.$ = css => css ?  $$(css,shadowRoot) : $$(shadowRoot);
+        this.attachShadow({mode: 'open'}).appendChild(template.content);
+        this.$ = css => css ?  $$(css,this.shadowRoot) : $$(this.shadowRoot);
     }
 }
 window.customElements.define( 'slots-in-shadow', SlotsInShadowDemo);
