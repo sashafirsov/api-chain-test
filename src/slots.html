@@ -52,13 +52,16 @@
     <template slot="source">
     <slots-in-shadow>
         <div slot>
-            <b>default slot overridden</b>
-            but inner slots ignored 👅
+            <b>default slot is overridden</b>
+            but inner slots are ignored 👅
+            <div slot="inner-2"> inner-2 🙄
+                <div slot="inner-2-2">inner-2-2 🤔</div>
+                <div slot="inner-2-1">inner-2-1 😳</div>
+            </div>
+            <div slot="inner-1"> inner-1 😭</div>
+            inverse order proves that slots in template are ignored.
         </div>
         <div slot="inner-1"> inner-1 😭</div>
-        <div slot="inner-2"> inner-2 🙄</div>
-        <div slot="inner-2-2">inner-2-2 🤔</div>
-        <div slot="inner-2-1">inner-2-1 😳</div>
     </slots-in-shadow>
     </template>
 </html-demo-element>

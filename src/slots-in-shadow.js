@@ -2,7 +2,12 @@ import { CssChain as $$ } from "./CssChain.js";
 
 const templateStr=`
     <i>out of slot</i>
-    <style>div{padding: 0 1rem} *[slot]{ background-color: cadetblue} *[slot] *[slot]{ background-color: deepskyblue;}</style>
+    <style>
+        div{padding: 0 1rem}
+        slot{ color: red}
+        slot slot{ color: green;}
+        slot slot slot{ color: blue;}
+    </style>
     <slot style="background-color:red ">
         default slot
         <div><slot name="inner-1">inner 1</slot></div>
@@ -13,9 +18,13 @@ const templateStr=`
             </slot>
         </div>
     </slot>
-    <p><slot name="outer">
-        outer slot
-    </slot></p>
+    <p>
+        prefix
+        <slot name="outer">
+            outer slot
+        </slot>
+        suffix
+    </p>
 `;
 class SlotsInShadowDemo extends HTMLElement
 {
