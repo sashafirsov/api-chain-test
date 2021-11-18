@@ -77,7 +77,7 @@ describe( 'CssChain slot methods', () =>
         expect( $arr.innerText).to.eq('fallback');
     });
 
-    it( 'slot without name',  async ()=>
+    it( 'slot without name, innerText',  async ()=>
     {
         const el = await fixture(
             html`<slots-in-shadow>

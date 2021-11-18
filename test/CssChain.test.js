@@ -19,7 +19,7 @@ describe( 'CssChain', () =>
         expect( $X ).to.be.an('array');
         expect( $X.length ).to.equal(0);
         expect( $X.find( ()=>1) ).to.equal(undefined);
-        expect( $X.innerHTML ).to.equal(undefined); // dom element prop
+        expect( $X.innerHTML ).to.equal(''); // dom element prop
         expect( $X.value ).to.equal(undefined); // INPUT prop
     };
     it( 'blank NodeSet',  async ()=>
@@ -53,7 +53,7 @@ describe( 'CssChain', () =>
         const el = await fixture(html`<div></div>`);
         const $X = $$('a,b',el);
         $X.innerText = 'B';
-        expect( $X.innerHTML ).to.equal(undefined);
+        expect( $X.innerHTML ).to.equal('');
     } );
     it( '[2] setter',  async ()=>
     {
@@ -61,9 +61,8 @@ describe( 'CssChain', () =>
         const $X = $$('a,b',el);
         $X.innerText = 'B';
         expect( $X[0].innerHTML ).to.equal('B');
-        expect( $X   .innerHTML ).to.equal('B');
         expect( $X[1].innerHTML ).to.equal('B');
-        expect( $X   .innerHTML ).to.equal('B');
+        expect( $X   .innerHTML ).to.equal('BB');
     } );
     it( 'chaining',  async ()=>
     {

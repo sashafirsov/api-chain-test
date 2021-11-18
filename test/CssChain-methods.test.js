@@ -177,5 +177,36 @@ describe( 'CssChain own methods', () =>
         expect( $X.length ).to.equal(1);
         expect( $X[0].tagName ).to.equal('DIV');
     } );
+    it( 'get innerText', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        expect( $$('a',el).innerText.trim() ).to.equal('a1a2');
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal('da1a2D');
+    } );
+    it( 'set innerText', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        $$('a',el).innerText = 'b';
+        expect( $$('a',el).innerText ).to.equal('bb');
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal('dbbD');
+    } );
+    it( 'get innerHTML', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        expect( $$('a',el).innerHTML).to.include('a1');
+        expect( $$('a',el).innerHTML).to.include('a2');
+        expect( $$('a',el).innerHTML).to.include('<hr');
+        expect( $$('a',el).innerHTML).to.include('<br');
+        expect( $$(el).innerHTML ).to.equal('d<a>a1<hr></a><a>a2<br></a>D');
+    } );
+    it( 'set innerHTML', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        $$('a',el).innerHTML = 'B'
+        expect( $$('a',el).innerText).to.include('BB');
+        $$('a',el).innerHTML = '<b>A</b>';
+        expect( $$('b',el).length ).to.equal(2);
+        expect( $$('b',el).innerText.replace(/\n/g,'') ).to.equal('AA');
+    } );
 
 } );
