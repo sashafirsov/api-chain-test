@@ -2,7 +2,7 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import '../src/slots-in-shadow.js';
 
-import { CssChain as $$, map, csv, collectionText, getNodeText } from '../src/CssChain.js';
+import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText } from '../src/CssChain.js';
 
 describe( 'CssChain internal helpers', () =>
 {
@@ -101,6 +101,29 @@ describe( 'CssChain internal helpers', () =>
         expect( getNodeText( el.childNodes[3] ) ).to.eq('');
 
         expect( getNodeText( el.childNodes[4] ).trim() ).to.eq('suffix');
+    });
+    it( 'setNodeText(node, text)',  async ()=>
+    {
+        const el = await fixture(
+            html`<a>prefix
+                    <b>A</b>
+                    suffix
+                </a>`);
+        expect( getNodeText( el )).to.eq('prefix A suffix');
+        setNodeText( $$('b', el )[0], 'B' );
+        expect( getNodeText( el )).to.eq('prefix B suffix');
+        setNodeText( el, 'C' );
+        expect( el.innerText).to.eq('C');
+    });
+    it( 'setNodeText(node, text) slot',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="outer">outer replacement</div>
+            </slots-in-shadow>`);
+        expect( getNodeText( el )).to.eq('outer replacement');
+        setNodeText( el.$().slot('outer')[0], 'A' );
+        expect( getNodeText( el )).to.eq('A');
     });
 
 } );
