@@ -117,5 +117,30 @@ describe( 'CssChain slot methods', () =>
         expect( $arr.innerText).to.not.include('outer slot');
         expect( $arr.innerText).to.eq('outer replacement');
     });
+    it( 'innerText with slots',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="">default slot replacement</div>
+                <div slot="outer">outer replacement</div>
+            </slots-in-shadow>`);
+
+        const $arr = el.$('slot:not([name]),slot[name="outer"]');
+        expect( $arr.length).to.eq(2);
+        expect( $arr.innerText).to.include('default slot replacement');
+        expect( $arr.innerText).to.include('outer replacement');
+
+        $arr.innerText='A';
+        expect( $arr.innerText).to.eq('AA');
+
+        expect( el.$().slot('').innerText).to.eq('A');
+        expect( el.$().slot('outer').innerText).to.eq('A');
+        // native access to slots content
+        expect( [...el.querySelectorAll('[slot]')].map(s=>s.innerText).join('')).to.eq('AA');
+
+        el.$().slot('').innerText = 'B';
+        expect( el.$().slot('','outer').innerText).to.eq('BA');
+
+    });
 
 } );

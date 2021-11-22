@@ -5,6 +5,7 @@ const templateStr=`
     <style>
         div{padding: 0 1rem}
         slot{ color: red}
+        p>slot{ color: darkviolet;}
         slot slot{ color: green;}
         slot slot slot{ color: blue;}
     </style>
@@ -22,6 +23,7 @@ const templateStr=`
         prefix
         <slot name="outer">
             outer slot
+            <script type="bogus">ignore it</script>
         </slot>
         suffix
     </p>
