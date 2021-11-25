@@ -142,5 +142,31 @@ describe( 'CssChain slot methods', () =>
         expect( el.$().slot('','outer').innerText).to.eq('BA');
 
     });
+    it( 'innerHTML with slots',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="">default <s>slot</s> replacement</div>
+                <div slot="outer">outer replacement</div>
+            </slots-in-shadow>`);
 
+        const $arr = el.$('slot:not([name]),slot[name="outer"]');
+        expect( $arr.length).to.eq(2);
+        expect( $arr.innerHTML).to.include('default <s>slot</s> replacement');
+        expect( $arr.innerHTML).to.include('outer replacement');
+
+        $arr.innerHTML='<i>A</i>';
+        expect( $arr.innerHTML ).to.eq('<i>A</i><i>A</i>');
+
+        expect( el.$().slot('').innerHTML).to.eq('<i>A</i>');
+        expect( el.$().slot('outer').innerHTML).to.eq('<i>A</i>');
+        // native access to slots content
+        expect( [...el.querySelectorAll('[slot]')].map(s=>s.innerHTML).join('')).to.eq('<i>A</i><i>A</i>');
+
+        el.$().slot('').innerHTML = '<i>B</i>';
+        expect( el.$().slot('','outer').innerHTML).to.eq('<i>B</i><i>A</i>');
+
+        el.$().slot('outer','').html( (el,i)=>`<i>C${i}</i>`);
+        expect( el.$().slot('','outer').innerHTML).to.eq('<i>C0</i><i>C1</i>');
+    });
 } );

@@ -83,6 +83,24 @@
             vanilla [...slot].innerText='C' </button>
     </template>
 </html-demo-element>
+<html-demo-element legend="slot.innerHTML = val">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+        <slots-in-shadow id="slots2innerHTML">
+            <div slot="">default slot replacement</div>
+            <div slot="outer">outer replacement</div>
+        </slots-in-shadow>
+        <button onclick="slots2innerHTML.$().slot().innerHTML='<i>A</i>'">
+            $().slot().innerHTML='<i>A</i>' 💪</button>
+        <button onclick="
+            slots2innerHTML.$().slot().html( (s,i)=>`<b>B${i}</b>`)">
+            $().slot().html( (s,i)=›`<b>B${i}</b>`) 🎨</button>
+        <button onclick="
+            [...slots2innerHTML.querySelectorAll('[slot]') ]
+                .map((s,i)=> s.innerHTML = `<u>C${i}</u>`) ">
+            vanilla [...slot].innerHTML='<u>C${i}</u>' </button>
+    </template>
+</html-demo-element>
 
 </body>
 </html>

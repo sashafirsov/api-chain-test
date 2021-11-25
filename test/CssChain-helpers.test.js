@@ -2,7 +2,7 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import '../src/slots-in-shadow.js';
 
-import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText } from '../src/CssChain.js';
+import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText, setNodeHtml } from '../src/CssChain.js';
 
 describe( 'CssChain internal helpers', () =>
 {
@@ -124,6 +124,45 @@ describe( 'CssChain internal helpers', () =>
         expect( getNodeText( el )).to.eq('outer replacement');
         setNodeText( el.$().slot('outer')[0], 'A' );
         expect( getNodeText( el )).to.eq('A');
+    });
+    it( 'setNodeHtml(node, text)',  async ()=>
+    {
+        const el = await fixture(
+            html`<a>prefix
+                    <b>A</b>
+                    suffix
+                    <i>B</i>
+                </a>`);
+        setNodeHtml($$('b',el)[0],'<i>C</i>');  // str
+        expect($$('b',el)[0].innerHTML).to.eq('<i>C</i>');
+        expect($$('i',el)[1].innerHTML).to.eq('B');
+
+        setNodeHtml($$('b',el)[0],['<i>C</i>','<u>D</u>']); // str[]
+        expect($$('b',el)[0].innerHTML).to.eq('<i>C</i><u>D</u>');
+
+        setNodeHtml($$('b',el)[0],['']); // str[]
+        expect($$('b',el)[0].innerHTML).to.eq('');
+
+        el.innerHTML = `<s><b>A</b><i>B</i></s>`;
+        setNodeHtml( $$('s', el )[0], el.querySelectorAll('b,i') ); // NodeList
+        expect($$('s',el)[0].innerHTML).to.eq('<b>A</b><i>B</i>');
+
+        el.innerHTML = `<s><b>A</b><i>B</i></s>`;
+        setNodeHtml( $$('s', el )[0], [...el.querySelectorAll('b,i')] );// Node[]
+        expect($$('s',el)[0].innerHTML).to.eq('<b>A</b><i>B</i>');
+
+        setNodeHtml( $$('s', el )[0], 7 );// number
+        expect($$('s',el)[0].innerHTML).to.eq('7');
+    });
+    it( 'setNodeHtml(node, text) slot',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="outer">outer replacement</div>
+            </slots-in-shadow>`);
+        expect( getNodeText( el )).to.eq('outer replacement');
+        setNodeHtml( el.$().slot('outer')[0], '<u>A</u>' );
+        expect(el.$().slot('outer').innerHTML).to.eq('<u>A</u>');
     });
 
 } );
