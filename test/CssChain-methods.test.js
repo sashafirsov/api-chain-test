@@ -208,5 +208,46 @@ describe( 'CssChain own methods', () =>
         expect( $$('b',el).length ).to.equal(2);
         expect( $$('b',el).innerText.replace(/\n/g,'') ).to.equal('AA');
     } );
+    it( 'cloneNode()', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        let $X = $$('a',el).cloneNode(); // shallow - only 1st tags are cloned
+        expect( $X.length ).to.eq(2);
+        expect( $X.tagName ).to.eq('A');
+        expect( $X.innerHTML ).to.not.include('hr');
+        expect( $X.innerHTML ).to.not.include('a1');
+        expect( $X.innerHTML ).to.not.include('a2');
+    } );
+    const testCloned = $X =>
+    {
+        expect( $X.length ).to.eq(2);
+        expect( $X.tagName.toLowerCase() ).to.eq('a');
+        expect( $X[0].innerHTML ).to.include('a1');
+        expect( $X[1].innerHTML ).to.include('a2');
+        expect( $X[0].innerHTML ).to.include('<hr');
+        expect( $X[1].innerHTML ).to.include('<br');
+        return $X;
+    };
+    it( 'cloneNode(true)', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        let $X = $$('a',el).cloneNode(true);
+        testCloned( $X );
+    } );
+    it( 'clone()', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        testCloned( $$('a',el ).clone() );
+    } );
+    it( 'clone(doc)', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const doc = new Document();
+        const $X = $$('a',el );
+        const $Y = testCloned( $X.clone(doc) );
+        expect( $Y.ownerDocument ).to.eq(doc);
+        expect( $X.ownerDocument ).to.eq(document);
+        expect( $Y.ownerDocument ).to.eq(doc);
+    } );
 
 } );
