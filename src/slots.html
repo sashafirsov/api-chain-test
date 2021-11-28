@@ -101,6 +101,28 @@
             vanilla [...slot].innerHTML='<u>C${i}</u>' </button>
     </template>
 </html-demo-element>
+<html-demo-element legend="Clone slot" description="practical for programmatic template content manipulation">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+        <slots-in-shadow id="slots2clone">
+            <div slot=""></div>
+            <div slot="outer"><b>1</b> clone</div>
+            <div slot="outer"><b>2</b> clone</div>
+        </slots-in-shadow>
+        <button onclick="cloneOuter()">cloneOuter() </button>
+        <script>
+            let cloneCount = 2;
+            function cloneOuter()
+            {
+                debugger;
+                let $o = slots2clone.$().slot( 'outer' )
+                ,   c = $o.clone();
+                c.$( 'b' ).innerText = ++cloneCount;
+                $o.parent().append(c);
+            }
+        </script>
+    </template>
+</html-demo-element>
 
 </body>
 </html>
