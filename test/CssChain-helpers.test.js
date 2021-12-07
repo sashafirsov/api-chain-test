@@ -162,7 +162,7 @@ describe( 'CssChain internal helpers', () =>
             </slots-in-shadow>`);
         expect( getNodeText( el )).to.eq('outer replacement');
         setNodeHtml( el.$().slot('outer')[0], '<u>A</u>' );
-        expect(el.$().slot('outer').innerHTML).to.eq('<u>A</u>');
+        expect(el.$().slot('outer').innerHTML).to.eq('<u slot="outer">A</u>');
     });
 
 } );

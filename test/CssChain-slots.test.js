@@ -156,17 +156,17 @@ describe( 'CssChain slot methods', () =>
         expect( $arr.innerHTML).to.include('outer replacement');
 
         $arr.innerHTML='<i>A</i>';
-        expect( $arr.innerHTML ).to.eq('<i>A</i><i>A</i>');
+        expect( $arr.innerHTML ).to.eq('<i slot="">A</i><i slot="outer">A</i>');
 
-        expect( el.$().slot('').innerHTML).to.eq('<i>A</i>');
-        expect( el.$().slot('outer').innerHTML).to.eq('<i>A</i>');
+        expect( el.$().slot('').innerHTML).to.eq('<i slot="">A</i>');
+        expect( el.$().slot('outer').innerHTML).to.eq('<i slot="outer">A</i>');
         // native access to slots content
-        expect( [...el.querySelectorAll('[slot]')].map(s=>s.innerHTML).join('')).to.eq('<i>A</i><i>A</i>');
+        expect( [...el.querySelectorAll('[slot]')].map(s=>s.outerHTML).join('') ).to.eq('<i slot="">A</i><i slot="outer">A</i>');
 
         el.$().slot('').innerHTML = '<i>B</i>';
-        expect( el.$().slot('','outer').innerHTML).to.eq('<i>B</i><i>A</i>');
+        expect( el.$().slot('','outer').innerHTML).to.eq('<i slot="">B</i><i slot="outer">A</i>');
 
         el.$().slot('outer','').html( (el,i)=>`<i>C${i}</i>`);
-        expect( el.$().slot('','outer').innerHTML).to.eq('<i>C0</i><i>C1</i>');
+        expect( el.$().slot('','outer').innerHTML).to.eq('<i slot="">C0</i><i slot="outer">C1</i>');
     });
 } );

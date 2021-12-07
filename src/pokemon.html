@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <meta charset="utf-8">
+    <script src="slots-in-shadow.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        body>*{flex: auto;}
+    </style>
+</head>
+<body>
+<section>
+    <header>
+        <h1>Pokemon - Visual presentation of Slot in shadow DOM from unit test </h1>
+        <a href="demo.html"> Demo home</a> |
+        <a href="https://pokeapi.co/">The RESTful Pokémon API</a> |
+        <a href="https://github.com/sashafirsov/pokeapi-sprites">Sprites</a>
+    </header>
+    JSON data filled into web component sample. <br/>
+    Template uses slots for JSON object key and embedded slot for inner key-value. <br/>
+
+</section>
+
+
+<html-demo-element legend="override inner slot by name ">
+    <nav>
+        <h3><b><slot name="counter">loading...</slot></b> pokemons</h3>
+        <button>prev</button>
+        <label slot="slot-select"><code><slot name="index">0</slot></code><i slot="name"></i><img src=""></label>
+        <button slot="pokemon-"></button>
+        <button>next</button>
+    </nav>
+    <main>
+
+    </main>
+    <script type="module" src="pokemon.js"></script>
+</html-demo-element>
+<html-demo-element legend="Code" src="pokemon.js">
+
+</html-demo-element>
+</body>
+</html>
