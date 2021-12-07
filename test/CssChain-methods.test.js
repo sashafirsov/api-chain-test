@@ -249,5 +249,32 @@ describe( 'CssChain own methods', () =>
         expect( $X.ownerDocument ).to.eq(document);
         expect( $Y.ownerDocument ).to.eq(doc);
     } );
+    it( 'append(str)', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const doc = new Document();
+        const $X = $$('a',el );
+        const $Y = $X.append( '<b>B1</b>' );
+        expect( $X ).to.eq($Y);
+        expect( $X.innerHTML ).to.eq("a1<hr><b>B1</b>a2<br><b>B1</b>");
+    } );
+    it( 'append( str[] )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const doc = new Document();
+        const $X = $$('a',el );
+        const $Y = $X.append( ['<b>B1</b>','<i>I1</i>'] );
+        expect( $X ).to.eq($Y);
+        expect( $X.innerHTML ).to.eq("a1<hr><b>B1</b><i>I1</i>a2<br><b>B1</b><i>I1</i>");
+    } );
+    it( 'append( el[] )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1</a><a>a2</a>D</div>`);
+        const doc = new Document();
+        const $X = $$('a',el );
+        const $Y = $X.append( [document.createElement('hr'),document.createElement('br')] );
+        expect( $X ).to.eq($Y);
+        expect( $X.innerHTML ).to.eq("a1a2<hr><br>");
+    } );
 
 } );
