@@ -8,6 +8,10 @@
     <style>
         body { display: flex; flex-wrap: wrap; gap: 1rem; }
         body>*{flex: auto;}
+        nav>slot{ display: flex; }
+        nav img{ height: 3rem; }
+        [slot="demo"], nav label{ display: flex; align-items: center; }
+        label>*{ flex:auto;}
     </style>
 </head>
 <body>
@@ -27,10 +31,14 @@
 <html-demo-element legend="override inner slot by name ">
     <nav>
         <h3><b><slot name="counter">loading...</slot></b> pokemons</h3>
-        <button>prev</button>
-        <label slot="slot-select"><code><slot name="index">0</slot></code><i slot="name"></i><img src=""></label>
+        <button id="prevBtn">prev</button>
+        <slot name="slot-select" hidden>
+            <label ><code><slot name="index">0</slot></code>
+                <slot name="name"><i></i></slot>
+                <slot name="image"><img src="" /></slot>
+            </label></slot>
         <button slot="pokemon-"></button>
-        <button>next</button>
+        <button id="nextBtn">next</button>
     </nav>
     <main>
 
