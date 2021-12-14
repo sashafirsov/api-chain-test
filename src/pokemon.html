@@ -4,44 +4,65 @@
     <title>Slots in HTML template - Unit test samples in visual presentation</title>
     <meta charset="utf-8">
     <script src="slots-in-shadow.js" type="module"></script>
+
     <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
     <style>
         body { display: flex; flex-wrap: wrap; gap: 1rem; }
         body>*{flex: auto;}
-        nav>slot{ display: flex; }
-        nav img{ height: 3rem; }
-        [slot="demo"], nav label{ display: flex; align-items: center; }
-        label>*{ flex:auto;}
+        body>h1,header{width: 100%;}
+        fieldset>slot{ display: flex; }
+        fieldset img{ height: 3rem; }
+        [slot="demo"], fieldset label{ display: flex; align-items: center; }
+        label,label>*{ flex:auto; gap: 1rem; }
+        input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
+        [slot="demo"] { align-items: flex-start; }
+
+        fieldset {
+            display: inline-flex;
+            flex-wrap: wrap;
+            border-bottom: none;
+            border-left: none;
+            padding-bottom: 0;
+            border-radius: 1rem;
+        }
     </style>
 </head>
 <body>
-<section>
+<h1>Pokemon - Visual presentation of Slot in shadow DOM from unit test </h1>
+
     <header>
-        <h1>Pokemon - Visual presentation of Slot in shadow DOM from unit test </h1>
         <a href="demo.html"> Demo home</a> |
         <a href="https://pokeapi.co/">The RESTful Pokémon API</a> |
         <a href="https://github.com/sashafirsov/pokeapi-sprites">Sprites</a>
+        <section>
+            JSON data filled into web component sample. <br/>
+            Template uses slots for JSON object key and embedded slot for inner key-value. <br/>
+        </section>
     </header>
-    JSON data filled into web component sample. <br/>
-    Template uses slots for JSON object key and embedded slot for inner key-value. <br/>
-
-</section>
 
 
 <html-demo-element legend="override inner slot by name ">
-    <nav>
-        <h3><b><slot name="counter">loading...</slot></b> pokemons</h3>
+
+    <fieldset>
+        <legend>
+            <b><slot name="counter">loading...</slot></b> pokemons
+        </legend>
         <button id="prevBtn">prev</button>
+        <button id="nextBtn">next</button>
+
         <slot name="slot-select" hidden>
-            <label ><code><slot name="index">0</slot></code>
+            <label >
+                <input type="radio" name="selected-pokemon"/>
+                <code><slot name="index">0</slot></code>
                 <slot name="name"><i></i></slot>
                 <slot name="image"><img src="" /></slot>
-            </label></slot>
-        <button slot="pokemon-"></button>
-        <button id="nextBtn">next</button>
-    </nav>
-    <main>
+            </label>
+        </slot>
+        <dl>...</dl>
 
+    </fieldset>
+    <main>
+        <pokemon-info-element></pokemon-info-element>
     </main>
     <script type="module" src="pokemon.js"></script>
 </html-demo-element>
