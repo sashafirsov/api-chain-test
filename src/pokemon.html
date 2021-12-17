@@ -12,13 +12,16 @@
         body>h1,header{width: 100%;}
         fieldset>slot{ display: flex; }
         fieldset img{ height: 3rem; }
-        [slot="demo"], fieldset label{ display: flex; align-items: center; }
+        [slot="demo"], fieldset label>div{ display: flex; align-items: center; }
         label,label>*{ flex:auto; gap: 1rem; }
         input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
+        [type="radio"]:checked+*{ background-color: #0074D9; }
         [slot="demo"] { align-items: flex-start; }
 
+        .vflex{ display: flex; flex-direction: column; }
+        .hiflex{ display: inline-flex; gap: 1rem;}
         fieldset {
-            display: inline-flex;
+            display: inline-flex; gap: .5rem;
             flex-wrap: wrap;
             border-bottom: none;
             border-left: none;
@@ -41,9 +44,9 @@
     </header>
 
 
-<html-demo-element legend="override inner slot by name ">
+<html-demo-element legend="html template ">
 
-    <fieldset>
+    <fieldset class="vflex">
         <legend>
             <b><slot name="counter">loading...</slot></b> pokemons
         </legend>
@@ -53,16 +56,18 @@
         <slot name="slot-select" hidden>
             <label >
                 <input type="radio" name="selected-pokemon"/>
-                <code><slot name="index">0</slot></code>
-                <slot name="name"><i></i></slot>
-                <slot name="image"><img src="" /></slot>
+                <div>
+                    <code><slot name="index">0</slot></code>
+                    <slot name="name"><i></i></slot>
+                    <slot name="image"><img src="" /></slot>
+                </div>
             </label>
         </slot>
         <dl>...</dl>
 
     </fieldset>
     <main>
-        <pokemon-info-element></pokemon-info-element>
+        <pokemon-info-element>loading</pokemon-info-element>
     </main>
     <script type="module" src="pokemon.js"></script>
 </html-demo-element>
