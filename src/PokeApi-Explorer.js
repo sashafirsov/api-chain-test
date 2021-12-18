@@ -1,5 +1,5 @@
 import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
-import { CssChain as $$ } from "./CssChain.js";
+import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.7/CssChain.js";
 const $ = $$()
 , arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
 ,   isImg = url => url && url.endsWith && ['png','gif','svg'].find( x=>url.endsWith(x) );
