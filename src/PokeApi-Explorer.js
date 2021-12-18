@@ -55,7 +55,7 @@ window.customElements.define('pokemon-link-element',
                                 if( d.url )
                                     break;
                             case 'url':
-                                d.url && d.name && ret.push( link );
+                                d.url && d.name && ret.push( link ); break;
                             default:
                                 if( Array.isArray( d[ k ] ) )
                                     ret.push( `<fieldset><legend>${ k }</legend>${
@@ -74,8 +74,6 @@ window.customElements.define('pokemon-link-element',
 window.customElements.define('pokemon-info-element',
     class PokemonInfoElement extends FetchElement
     {
-
-
         render(pokemon)
         {
             const { other, versions, ...sprites } = pokemon.sprites;
@@ -120,10 +118,7 @@ const getPokeList = async () =>
     ).json()
 ,   $t = $.slot('slot-select')
 ,   $listContainer = $t.parent().$('dl')
-,   onSelected = async (p) =>
-    {   const $main = $$('main');
-        $$('pokemon-info-element').attr('src',p.url);
-    }
+,   onSelected = async (p) => $$('pokemon-info-element').attr( 'src', p.url )
 ,   renderList = async()=>
     {
         const page = await getPokeList();
@@ -134,8 +129,7 @@ const getPokeList = async () =>
         {
             const $c = $t.clone()
             ,   arr = p.url.split('/')
-            ,   x = arr.pop()
-            ,   id = arr.pop();
+            ,   id = ( arr.pop(), arr.pop() );
             $c.hidden = false;
             $c.$('input').checked = !i;
             $c.slot( 'index' ).innerText = offset + i;

@@ -104,6 +104,10 @@ npm link css-chain
 
 <css-chain></css-chain>
 ```
+# Samples of use
+
+PokéAPI Explorer:
+[![PokéAPI Explorer][PokeApi-explorer-image]][PokeApi-explorer-url]
 
 ## Testing with Web Test Runner
 
@@ -152,3 +156,5 @@ To run a local development server that serves the basic demo located in `demo/in
 [npm-url]:        https://npmjs.org/package/css-chain-test
 [coverage-image]: https://unpkg.com/css-chain-test@1.0.7/coverage/coverage.svg
 [coverage-url]:   https://unpkg.com/css-chain-test@1.0.7/coverage/lcov-report/index.html
+[PokeApi-explorer-image]: https://unpkg.com/css-chain-test@1.0.7/src/PokeApi-Explorer.png
+[PokeApi-explorer-url]: https://unpkg.com/css-chain-test@1.0.7/src/PokeApi-Explorer.html

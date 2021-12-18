@@ -7,15 +7,16 @@
 
     <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
     <style>
-        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        @import "https://fonts.googleapis.com/css?family=Lato:400,700";
+        body { display: flex; flex-wrap: wrap; gap: 1rem; font-family: Lato,sans-serif; }
         body>*{ flex: auto; }
         body>h1,header{ width: 100%; display: flex; flex-wrap: wrap; gap: 1rem; }
         fieldset>slot{ display: flex; }
         fieldset img{ height: 3rem; }
         [slot="demo"], fieldset label>div{ display: flex; align-items: center; justify-content: space-between; }
-        label,label>*{ flex:auto; gap: 1rem; }
+        label,label>*{ flex:auto; gap: 1rem; padding: 0.25rem; }
         input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
-        [type="radio"]:checked+*{ background-color: #0074D9; }
+        [type="radio"]:checked+*{ background-color: #0074D9; color:white; }
         [slot="demo"] { align-items: flex-start; }
 
         .vflex>dl{ padding: 0; }
@@ -49,9 +50,9 @@
 
     <header>
         <a href="demo.html"> Demo home</a> |
-        <a href="https://pokeapi.co/">The RESTful Pokémon API</a> |
-        <a href="https://github.com/sashafirsov/pokeapi-sprites">Sprites</a> |
-        <a href="https://github.com/sashafirsov/css-chain-test/blob/main/src/pokemon.html">
+        <a href="https://pokeapi.co/"> The RESTful Pokémon API </a> |
+        <a href="https://github.com/sashafirsov/pokeapi-sprites"> Sprites </a> |
+        <a href="https://github.com/sashafirsov/css-chain-test/blob/main/src/PokeApi-Explorer.html">
             Source
             <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
         </a>
@@ -60,7 +61,6 @@
             Template uses slots for JSON object key and embedded slot for inner key-value. <br/>
         </section>
     </header>
-
 
     <fieldset class="vflex">
         <legend>
@@ -85,9 +85,9 @@
     <main>
         <pokemon-info-element>loading</pokemon-info-element>
     </main>
-    <script type="module" src="pokemon.js"></script>
+    <script type="module" src="PokeApi-Explorer.js"></script>
 
-<html-demo-element legend="JS Code for page" src="pokemon.js">
+<html-demo-element legend="JS Code for page" src="PokeApi-Explorer.js">
 </html-demo-element>
 </body>
 </html>
