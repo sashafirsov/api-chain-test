@@ -1,50 +1,66 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
-    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <title>PokéAPI Explorer -  CssChain use sample</title>
     <meta charset="utf-8">
     <script src="slots-in-shadow.js" type="module"></script>
 
     <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
     <style>
         body { display: flex; flex-wrap: wrap; gap: 1rem; }
-        body>*{flex: auto;}
-        body>h1,header{width: 100%;}
+        body>*{ flex: auto; }
+        body>h1,header{ width: 100%; display: flex; flex-wrap: wrap; gap: 1rem; }
         fieldset>slot{ display: flex; }
         fieldset img{ height: 3rem; }
-        [slot="demo"], fieldset label>div{ display: flex; align-items: center; }
+        [slot="demo"], fieldset label>div{ display: flex; align-items: center; justify-content: space-between; }
         label,label>*{ flex:auto; gap: 1rem; }
         input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
         [type="radio"]:checked+*{ background-color: #0074D9; }
         [slot="demo"] { align-items: flex-start; }
 
-        .vflex{ display: flex; flex-direction: column; }
-        .hiflex{ display: inline-flex; gap: 1rem;}
-        fieldset {
-            display: inline-flex; gap: .5rem;
-            flex-wrap: wrap;
-            border-bottom: none;
-            border-left: none;
-            padding-bottom: 0;
-            border-radius: 1rem;
+        .vflex>dl{ padding: 0; }
+        .vflex{ display: flex; flex-direction: column; flex: 1; align-items: stretch; }
+        .hiflex{ display: inline-flex; gap: 1rem; flex-wrap: wrap;}
+
+        fieldset
+        {   display: inline-flex; gap: .5rem; align-items: flex-start; flex-wrap: wrap;
+            border-bottom: none; border-left: none;
+            padding-bottom: 0; border-radius: 1rem;
+        }
+        main{ flex:10; }
+        html-demo-element{ flex:4; width: 100%; min-width:100%; }
+        details {
+            border: 1px blue dashed;
+            border-radius: 0.51rem;
+        }
+        hr{ width: 100%; }
+        pokemon-link-element {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+        dl{ padding: 1rem; margin: 0; }
+        dl:empty {
+            padding: 0;
         }
     </style>
 </head>
 <body>
-<h1>Pokemon - Visual presentation of Slot in shadow DOM from unit test </h1>
+<h1> PokéAPI Explorer -  CssChain use sample </h1>
 
     <header>
         <a href="demo.html"> Demo home</a> |
         <a href="https://pokeapi.co/">The RESTful Pokémon API</a> |
-        <a href="https://github.com/sashafirsov/pokeapi-sprites">Sprites</a>
+        <a href="https://github.com/sashafirsov/pokeapi-sprites">Sprites</a> |
+        <a href="https://github.com/sashafirsov/css-chain-test/blob/main/src/pokemon.html">
+            Source
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
+        </a>
         <section>
             JSON data filled into web component sample. <br/>
             Template uses slots for JSON object key and embedded slot for inner key-value. <br/>
         </section>
     </header>
 
-
-<html-demo-element legend="html template ">
 
     <fieldset class="vflex">
         <legend>
@@ -70,9 +86,8 @@
         <pokemon-info-element>loading</pokemon-info-element>
     </main>
     <script type="module" src="pokemon.js"></script>
-</html-demo-element>
-<html-demo-element legend="Code" src="pokemon.js">
 
+<html-demo-element legend="JS Code for page" src="pokemon.js">
 </html-demo-element>
 </body>
 </html>

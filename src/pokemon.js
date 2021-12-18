@@ -1,8 +1,8 @@
 import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
 import { CssChain as $$ } from "./CssChain.js";
 const $ = $$()
-, arr2str = (arr,cb) => arr.map(cb).join('')
-,   isImg = url => url && ['png','gif','svg'].find( x=>url.endsWith(x) );
+, arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
+,   isImg = url => url && url.endsWith && ['png','gif','svg'].find( x=>url.endsWith(x) );
 
 window.customElements.define('pokemon-link-element',
     class PokemonInfoElement extends HTMLElement
@@ -16,39 +16,56 @@ window.customElements.define('pokemon-link-element',
             if( isImg(url) )
                 return $.html(`<img title="${name}" src="${url}">`);
 
-            $this.html(`<a href="${url}">${name}</a><dd></dd>`);
+            $this.html(`<a href="${url}">${name}</a><dl></dl>`);
 
             $('a').on('click', async e=>
             {   e.preventDefault();
                 if(this.loaded)
-                    return;
+                    return $('dl').clear(), this.loaded=0;
                 this.loaded =1;
                 const d = await ( await fetch(url) ).json();
-                $('dd').html( render(d) );
+                $('dl').html( render(d) );
             });
 
-            function render( d )
+            function render( d, n='' )
             {
-                if( 'string' === typeof d)
-                    return d;
-                let ret = [];
-                if( d.name && d.url )
-                    ret.push(`<pokemon-link-element name="${d.name}" url="${d.url}"></pokemon-link-element> `);
-                for( let k in d )
-                    switch( k )
-                    {   case url:
-                        if( d.name && d.url )
-                            ret.push( isImg(d.url)
-                                      ? `<img title="${name}" src="${url}"/>`
-                                      : `<pokemon-link-element name="${d.name}" url="${d.url}"></pokemon-link-element> `);
-                        break;
-                        default:
-                            if( Array.isArray( d[k] ))
-                                ret.push(`<fieldset><legend>${k}</legend>${  arr2str( d[k], render ) }</fieldset>`);
-                            else
-                                ret.push(`<details><summary>${k}</summary>${  render( d[k] ) }</details>`);
-                    }
+                if( d === undefined || d === null || 'string' === typeof d || 'number' === typeof d )
+                {   if( isImg(d) )
+                        return `<img title="${n}\n${d}" src="${d}">`;
+                    return n ? `<span><code>${ n }</code> : <val>${ d }</val></span>` : `<val>${ d }</val>`;
+                }
+                if( Array.isArray( d ))
+                    return `<fieldset><legend>${n}</legend>${  arr2str( d, render,'<hr/>' ) }</fieldset>`;
 
+                let ret = [], keys = Object.keys(d);
+                const link = ( d.name && d.url ) && isImg(d.url)
+                       ? `<img title="${name}" src="${url}"/>`
+                       : `<pokemon-link-element name="${d.name}" url="${d.url}"></pokemon-link-element> `;
+
+                if( keys.length ===2 && d.name && d.url )
+                    ret.push( link )
+                else
+                {   if( n )
+                    {   ret.push( '<fieldset>' );
+                        ret.push( `<legend>${ n }</legend>` )
+                    }
+                    for( let k in d )
+                        switch( k )
+                        {   case 'name':
+                                if( d.url )
+                                    break;
+                            case 'url':
+                                d.url && d.name && ret.push( link );
+                            default:
+                                if( Array.isArray( d[ k ] ) )
+                                    ret.push( `<fieldset><legend>${ k }</legend>${
+                                        arr2str( d[ k ], v=>render(v),'<hr/>' )
+                                    }</fieldset>` );
+                                else
+                                    ret.push( render( d[ k ], k ) );
+                        }
+                    n && ret.push( '</fieldset>' );
+                }
                 return ret.join('')
             }
         }
