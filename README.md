@@ -106,7 +106,7 @@ npm link css-chain
 ```
 # Samples of use
 
-[PokéAPI Explorer]([PokeApi-explorer-url]):
+[PokéAPI Explorer][PokeApi-explorer-url]:
 [![PokéAPI Explorer][PokeApi-explorer-image]][PokeApi-explorer-url]
 
 ## Testing with Web Test Runner
