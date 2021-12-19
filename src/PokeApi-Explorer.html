@@ -3,7 +3,6 @@
 <head>
     <title>PokéAPI Explorer -  CssChain use sample</title>
     <meta charset="utf-8">
-    <script src="slots-in-shadow.js" type="module"></script>
 
     <script type="module" src="https://unpkg.com/html-demo-element@1.0.8/html-demo-element.js"></script>
     <style>
@@ -66,8 +65,8 @@
         <legend>
             <b><slot name="counter">loading...</slot></b> pokemons
         </legend>
-        <button id="prevBtn">prev</button>
-        <button id="nextBtn">next</button>
+        <button id="prevBtn" disabled>prev</button>
+        <button id="nextBtn" disabled>next</button>
 
         <slot name="slot-select" hidden>
             <label >

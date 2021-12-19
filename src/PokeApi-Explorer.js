@@ -122,7 +122,6 @@ const getPokeList = async () =>
 ,   renderList = async()=>
     {
         const page = await getPokeList();
-        console.log(page);
 
         $listContainer.clear();
         page.results.forEach( (p,i)=>
@@ -140,6 +139,8 @@ const getPokeList = async () =>
             $c.$('img').src=`https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${id}.svg`;
             $listContainer.append($c);
         });
+        prevBtn.disabled = offset <= 0;
+        nextBtn.disabled = offset+limit >= page.count;
         return page;
     };
 $t.remove();
