@@ -1,20 +1,25 @@
 import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
 import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.8/CssChain.js";
-const $ = $$()
-, arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
+// import { CssChain as $$ } from "./CssChain.js";
+
+const arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
 ,   isImg = url => url && url.endsWith && ['png','gif','svg'].find( x=>url.endsWith(x) );
 
 window.customElements.define('pokemon-link-element',
     class PokemonInfoElement extends HTMLElement
     {
         connectedCallback()
-        {   const $this = $$(this)
+        {
+            const $this = $$(this)
             ,   $ = x => $this.$(x)
             ,     name = $this.attr('name')
             ,      url = $this.attr('url');
-
             if( isImg(url) )
-                return $.html(`<img title="${name}" src="${url}">`);
+            {
+                debugger;
+                return $this.html( `<img title="${ name }" src="${ url }">` );
+            }
+
 
             $this.html(`<a href="${url}">${name}</a><dl></dl>`);
 
@@ -71,6 +76,8 @@ window.customElements.define('pokemon-link-element',
         }
 
     });
+
+
 window.customElements.define('pokemon-info-element',
     class PokemonInfoElement extends FetchElement
     {
@@ -116,6 +123,7 @@ const getPokeList = async () =>
         // fetch( '../test/pokeapi-page0.json')
         fetch( `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
     ).json()
+,   $ = $$()
 ,   $t = $.slot('slot-select')
 ,   $listContainer = $t.parent().$('dl')
 ,   onSelected = async (p) => $$('pokemon-info-element').attr( 'src', p.url )
@@ -134,7 +142,6 @@ const getPokeList = async () =>
             $c.slot( 'index' ).innerText = offset + i;
             $c.slot( 'name' ).innerText = p.name;
             $c.on('click', ()=>onSelected(p) )
-            $c.$('input').checked = !i;
             i || onSelected(p);
             $c.$('img').src=`https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${id}.svg`;
             $listContainer.append($c);

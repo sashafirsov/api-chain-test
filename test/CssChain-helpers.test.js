@@ -60,7 +60,7 @@ describe( 'CssChain internal helpers', () =>
         expect( collectionText([...el.querySelectorAll('[slot]')])).to.eq('AA');
 
         el.$().slot('').innerText = 'B';
-        expect( collectionText(el.$().slot('','outer')) ).to.eq('BA');
+        expect( collectionText(el.$().slot(',outer')) ).to.eq('BA');
     });
     it( 'getNodeText(node) with slots',  async ()=>
     {
@@ -152,7 +152,8 @@ describe( 'CssChain internal helpers', () =>
         expect($$('s',el)[0].innerHTML).to.eq('<b>A</b><i>B</i>');
 
         setNodeHtml( $$('s', el )[0], 7 );// number
-        expect($$('s',el)[0].innerHTML).to.eq('7');
+        expect($$('s',el)[0].innerText).to.eq('7');
+        expect($$('s',el)[0].innerHTML).to.eq('<span>7</span>');
     });
     it( 'setNodeHtml(node, text) slot',  async ()=>
     {

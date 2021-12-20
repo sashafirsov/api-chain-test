@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>169/169</span>
+                <span class='fraction'>180/180</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>104/104</span>
+                <span class='fraction'>110/110</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>50/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>169/169</span>
+                <span class='fraction'>180/180</span>
             </div>
         
             
@@ -226,7 +226,18 @@
 <a name='L167'></a><a href='#L167'>167</a>
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -266,6 +277,13 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -336,6 +354,8 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -343,6 +363,8 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -434,7 +456,14 @@ export const collectionHtml = arr =&gt; map( arr, n=&gt;n.assignedElements
 export const html2NodeArr = html =&gt;
 {   const n = document.createElement('div');
     n.innerHTML = html;
-    return [...n.childNodes].map(e=&gt;(e.remove(),e));
+    const wrapIfText = e=&gt;{
+        if( e.nodeType !== 3 )
+            return e;
+        const n = document.createElement('span');
+        n.append(e);
+        return n;
+    };
+    return [...n.childNodes].map(e=&gt;(e.remove(),e)).map(wrapIfText);
 };
 &nbsp;
 export const addNodeHtml = ( n, val ) =&gt;
@@ -485,34 +514,38 @@ CssChainLocal extends Array
     }
     clear(){ this.innerHTML=''; return this }
     slot(...arr)
-    {   return this.$( arr.length
-                        ? csv( arr
-                            , name=&gt;
-                                csv( name.split(',')
-                                    , n=&gt; ['""',"''"].includes(n) || !n
-                                          ? `slot:not([name])`
-                                          : `slot[name="${n}"]`
-                                    )
+    {   const ret = this.$( arr.length
+                        ? csv( arr[0].split(',')
+                            , n=&gt; ['""',"''"].includes(n) || !n
+                                  ? `slot:not([name])`
+                                  : `slot[name="${n}"]`
                             )
                         : 'slot');
+        if( arr.length === 2 )
+            ret.html(arr[1])
+        return ret;
     }
     get innerText(){ return this.text() }
     set innerText( val ){ return this.text( val ) }
-    text( val )
-    {   return val === undefined
-               ? collectionText( this )
-               : this.forEach( typeof val === 'function'
-                                ? (n,i)=&gt;setNodeText(n,val(n,i,this))
-                                : n=&gt;setNodeText(n,val) );
+    text( val, css=undefined )
+    {   const arr = css? this.$(css): this;
+        if( val === undefined )
+            return collectionText( arr );
+        arr.forEach( typeof val === 'function'
+                    ? (n,i)=&gt;setNodeText(n,val(n,i,arr))
+                    : n=&gt;setNodeText(n,val) );
+        return this;
     }
     get innerHTML(){ return this.html() }
     set innerHTML( val ){ return this.html(val) }
-    html( val )
-    {   return val === undefined
-            ? collectionHtml( this )
-            : this.forEach( typeof val === 'function'
-               ? (n,i)=&gt;setNodeHtml(n,val(n,i,this))
+    html( val, css=undefined )
+    {   const arr = css? this.$(css): this;
+        if( val === undefined )
+            return collectionHtml( arr );
+        arr.forEach( typeof val === 'function'
+               ? (n,i)=&gt;setNodeHtml(n,val(n,i,arr))
                : n=&gt;setNodeHtml(n,val) );
+        return this;
     }
     assignedElements(){ return CssChain([].concat( ...this.map( el=&gt;el.assignedElements ? el.assignedElements():[] ) ) ) }
     cloneNode(...args){ return this.map( el=&gt;el.cloneNode &amp;&amp; el.cloneNode(...args) ) }
@@ -571,7 +604,7 @@ export default CssChain;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Dec 18 2021 23:09:34 GMT-0800 (Pacific Standard Time)
+                at Mon Dec 20 2021 12:35:39 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="prettify.js"></script>

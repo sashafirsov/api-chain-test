@@ -291,4 +291,88 @@ describe( 'CssChain own methods', () =>
         expect( $Z.outerHTML ).to.eq("<div></div>");
     } );
 
+    it( 'text( val )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$('a',el ).text('Z');
+        expect( $X.length ).to.eq(2);
+        expect( $X.innerText ).to.eq("ZZ");
+    } );
+
+    it( 'text( cb(el,i,arr) )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        const $X = $$('a',el ).text( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`);
+        expect( $X.length ).to.eq(2);
+        expect( $X.innerText ).to.eq("A1:one:0:2A2:two:1:2");
+    } );
+
+    it( 'text( val,css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$(el).text('Z','a');
+        expect( $X.length ).to.eq(1);
+        expect( $X[0].tagName ).to.eq('DIV');
+        expect( $X.$('a').innerText ).to.eq("ZZ");
+    } );
+    it( 'text( undefined,css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$(el).text(undefined,'a');
+        expect( $X ).to.eq('a1a2');
+        expect( $$(el).text(undefined) ).to.eq('d a1 - a2 D');
+        expect( $$(el).text() ).to.eq('d a1 - a2 D');
+    } );
+
+    it( 'text( cb(el,i,arr), css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        const $X = $$( el ).text( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`, 'a');
+        expect( $X.length ).to.eq(1);
+        expect( $X[0].tagName ).to.eq('DIV');
+        expect( $X.innerText ).to.eq("d A1:one:0:2 - A2:two:1:2 D");
+    } );
+
+    it( 'html( val )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$('a',el ).html('Z');
+        expect( $X.length ).to.eq(2);
+        expect( $X.innerText ).to.eq("ZZ");
+    } );
+
+    it( 'html( cb(el,i,arr) )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        const $X = $$('a',el ).html( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`);
+        expect( $X.length ).to.eq(2);
+        expect( $X.innerText ).to.eq("A1:one:0:2A2:two:1:2");
+    } );
+
+    it( 'html( val,css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$(el).html('Z','a');
+        expect( $X.length ).to.eq(1);
+        expect( $X[0].tagName ).to.eq('DIV');
+        expect( $X.$('a').innerText ).to.eq("ZZ");
+    } );
+    it( 'html( undefined,css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
+        const $X = $$(el).html(undefined,'a');
+        expect( $X ).to.eq('a1a2');
+        expect( $$(el).html(undefined) ).to.eq("d <a>a1</a> - <a>a2</a> D");
+        expect( $$(el).html() ).to.eq("d <a>a1</a> - <a>a2</a> D");
+    } );
+
+    it( 'html( cb(el,i,arr), css )', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        const $X = $$( el ).html( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`, 'a');
+        expect( $X.length ).to.eq(1);
+        expect( $X[0].tagName ).to.eq('DIV');
+        expect( $X.innerText ).to.eq("d A1:one:0:2 - A2:two:1:2 D");
+    } );
+
 } );

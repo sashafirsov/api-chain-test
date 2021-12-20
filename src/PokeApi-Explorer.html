@@ -10,6 +10,7 @@
         body { display: flex; flex-wrap: wrap; gap: 1rem; font-family: Lato,sans-serif; }
         body>*{ flex: auto; }
         body>h1,header{ width: 100%; display: flex; flex-wrap: wrap; gap: 1rem; }
+        pokemon-info-element { display: flex; flex-wrap: wrap; gap: 1rem; }
         fieldset>slot{ display: flex; }
         fieldset img{ height: 3rem; }
         [slot="demo"], fieldset label>div{ display: flex; align-items: center; justify-content: space-between; }
@@ -20,7 +21,7 @@
 
         .vflex>dl{ padding: 0; }
         .vflex{ display: flex; flex-direction: column; flex: 1; align-items: stretch; }
-        .hiflex{ display: inline-flex; gap: 1rem; flex-wrap: wrap;}
+        .hiflex{ display: inline-flex; gap: 1rem; flex-wrap: wrap; align-content: flex-start; }
 
         fieldset
         {   display: inline-flex; gap: .5rem; align-items: flex-start; flex-wrap: wrap;
