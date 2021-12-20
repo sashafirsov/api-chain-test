@@ -252,7 +252,6 @@ describe( 'CssChain own methods', () =>
     it( 'append(str)', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
-        const doc = new Document();
         const $X = $$('a',el );
         const $Y = $X.append( '<b>B1</b>' );
         expect( $X ).to.eq($Y);
@@ -261,7 +260,6 @@ describe( 'CssChain own methods', () =>
     it( 'append( str[] )', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
-        const doc = new Document();
         const $X = $$('a',el );
         const $Y = $X.append( ['<b>B1</b>','<i>I1</i>'] );
         expect( $X ).to.eq($Y);
@@ -270,7 +268,6 @@ describe( 'CssChain own methods', () =>
     it( 'append( el[] )', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1</a><a>a2</a>D</div>`);
-        const doc = new Document();
         const $X = $$('a',el );
         const $Y = $X.append( [document.createElement('hr'),document.createElement('br')] );
         expect( $X ).to.eq($Y);
@@ -279,7 +276,6 @@ describe( 'CssChain own methods', () =>
     it( 'clear()', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1</a><a>a2</a>D</div>`);
-        const doc = new Document();
         const $X = $$('a',el );
         const $Y = $X.clear();
         expect( $X ).to.eq($Y);
@@ -373,6 +369,30 @@ describe( 'CssChain own methods', () =>
         expect( $X.length ).to.eq(1);
         expect( $X[0].tagName ).to.eq('DIV');
         expect( $X.innerText ).to.eq("d A1:one:0:2 - A2:two:1:2 D");
+    } );
+    it( 'outerHTML', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        const txt = $$('a',el ).outerHTML;
+        expect( txt ).to.eq('<a title="A1">one</a><a title="A2">two</a>');
+    } );
+    it( 'outerHTML=html', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        $$('a',el ).outerHTML = `<b>Z</b>`;
+        expect( $$('a',el ).length ).to.eq(0);
+        expect( $$('b',el ).outerHTML ).to.eq('<b>Z</b><b>Z</b>');
+    } );
+    it( 'outerHTML=cb(e,i,arr)', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+        expect( $$('a',el ).length ).to.eq(2);
+
+        $$('a',el ).outerHTML = (e,i,arr)=>`${i}.<b>${e.title}</b>:${arr.length}`;
+        expect( $$('a',el ).length ).to.eq(0);
+        expect( $$('b',el ).length ).to.eq(2);
+        expect( $$('b',el ).outerHTML ).to.eq('<b>A1</b><b>A2</b>');
+        expect( $$(el ).innerHTML ).to.eq('d <span>0.</span><b>A1</b><span>:2</span> - <span>1.</span><b>A2</b><span>:2</span> D');
     } );
 
 } );
