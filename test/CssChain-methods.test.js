@@ -241,6 +241,15 @@ describe( 'CssChain own methods', () =>
         expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. #1 in arr[2]1. #2 in arr[2]D");
         expect( $$('b,i',el).length ).to.equal( 4 );
     } );
+    it( 'html( arr )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
+        let $X = $$('a',el).html( ['X','<b>Y</b>','<b>Z</b>'] );
+        expect( $X.length ).to.equal(2);
+        expect( $$('a',el).innerText            ).to.equal("XYZXYZ");
+        expect( $$('b',el).length ).to.equal( 4 );
+        expect( $$('b',el).innerText            ).to.equal("YZYZ");
+    } );
     it( 'cloneNode()', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
