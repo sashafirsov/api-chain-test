@@ -75,9 +75,9 @@ describe( 'CssChain internal helpers', () =>
         expect( getNodeText( el.$().slot('') )).to.eq('prefixBsuffixdefault slot replacement');
         expect( getNodeText( el.$().slot('outer') )).to.eq('outer replacement');
         expect( el.$('style').textContent).to.include('padding');
-        expect( getNodeText( el.$('style'))).to.eq('');
+        expect( getNodeText( el.$('style')[0])).to.eq('');
         expect( el.$('script').textContent).to.include('ignore it');
-        expect( getNodeText( el.$('script'))).to.eq('');
+        expect( getNodeText( el.$('script')[0])).to.eq('');
     });
     it( 'getNodeText(node) with text + CDATA',  async ()=>
     {

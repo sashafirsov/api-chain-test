@@ -222,4 +222,18 @@ describe( 'CssChain slot methods', () =>
         expect( $arr.length).to.eq(2);
         expect( $arr.innerText).to.eq('0-DEFAULT-21-OUTER-2');
     });
+    it( 'slots().clear()',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="">DEFAULT</div>
+                <div slot="outer">OUTER</div>
+            </slots-in-shadow>`);
+        expect( el.$().slot(',outer').innerText).to.eq('DEFAULTOUTER');
+        el.$().slot().clear();
+        // clearing slots would reset to template values
+        expect( el.$().slot('outer').innerText).to.contain('outer slot');
+        expect( el.$().slot('').innerText).to.contain('default slot');
+        expect( el.$().slot(',outer').length).to.eq(2);
+    });
 } );
