@@ -79,6 +79,14 @@ describe( 'CssChain slot methods', () =>
         expect( $arr.innerText).to.eq('fallback');
     });
 
+    it( 'assignedNodes()',  async ()=>
+    {
+        const el = await fixture(html`<slots-in-shadow>textnode<p>fallback</p></slots-in-shadow>`);
+        const $arr = el.$().slot('').assignedNodes();
+        expect( $arr.length).to.eq(2);
+        expect( $arr.innerText).to.eq('textnodefallback');
+    });
+
     it( 'slot without name, innerText',  async ()=>
     {
         const el = await fixture(
