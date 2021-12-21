@@ -14,12 +14,14 @@
         fieldset>slot{ display: flex; }
         fieldset img{ height: 3rem; }
         [slot="demo"], fieldset label>div{ display: flex; align-items: center; justify-content: space-between; }
-        label,label>*{ flex:auto; gap: 1rem; padding: 0.25rem; }
+        label{ cursor: pointer; display: flex; }
+        label:hover{ box-shadow: inset 0 0 2px 4px rgba(0, 0, 125, .2); }
+        label>*{ flex:auto; gap: 1rem;  padding: .5rem; }
         input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
         [type="radio"]:checked+*{ background-color: #0074D9; color:white; }
         [slot="demo"] { align-items: flex-start; }
 
-        .vflex>dl{ padding: 0; }
+        .vflex>dl{ padding: 0; gap: 0; flex-direction: column; }
         .vflex{ display: flex; flex-direction: column; flex: 1; align-items: stretch; }
         .hiflex{ display: inline-flex; gap: 1rem; flex-wrap: wrap; align-content: flex-start; }
 
@@ -39,7 +41,7 @@
             display: inline-block;
             padding: 0 0.5rem;
         }
-        dl{ padding: 1rem; margin: 0; }
+        dl{ padding: 1rem; margin: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
         dl:empty {
             padding: 0;
         }

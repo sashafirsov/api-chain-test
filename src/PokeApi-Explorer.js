@@ -124,33 +124,47 @@ const getPokeList = async () =>
         fetch( `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
     ).json()
 ,   $ = $$()
-,   $t = $.slot('slot-select')
-,   $listContainer = $t.parent().$('dl')
 ,   onSelected = async (p) => $$('pokemon-info-element').attr( 'src', p.url )
+,   getPokemonId = p=> ( arr=>(arr.pop(), arr.pop()) )( p.url.split('/') )
+,   getImgByPokemon = p =>`https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${getPokemonId(p)}.svg`
+,   $template = $.slot('slot-select')
+,   $listContainer = $template.parent().$('dl')
 ,   renderList = async()=>
     {
         const page = await getPokeList();
 
         $listContainer.clear();
+        // yield version
+
+        // cb version
+        // $template.clone( page.results, (cloned, p,i)=>
+        //     $listContainer.append( $$(cloned)
+        //             .prop('hidden', false )
+        //             .prop('checked', !i, 'input') // todo
+        //             .prop('src', getImgByPokemon( p ), 'img') // todo
+        //             .on('click', ()=>onSelected(p) )
+        //             .slot( 'index', offset + i )
+        //             .slot( 'name', p.name ) ) );
+
         page.results.forEach( (p,i)=>
         {
-            const $c = $t.clone()
-            ,   arr = p.url.split('/')
-            ,   id = ( arr.pop(), arr.pop() );
+            const $c = $template.clone();
             $c.hidden = false;
             $c.$('input').checked = !i;
             $c.slot( 'index' ).innerText = offset + i;
             $c.slot( 'name' ).innerText = p.name;
             $c.on('click', ()=>onSelected(p) )
-            i || onSelected(p);
-            $c.$('img').src=`https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${id}.svg`;
+            $c.$('img').src = getImgByPokemon( p );
             $listContainer.append($c);
         });
+
+        onSelected( page.results[0] );
+
         prevBtn.disabled = offset <= 0;
         nextBtn.disabled = offset+limit >= page.count;
         return page;
     };
-$t.remove();
+$template.remove();
 const firstPage = await renderList()
 $.slot('counter').text( firstPage.count );
 prevBtn.onclick = ()=> renderList( offset-=limit );
