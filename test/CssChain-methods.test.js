@@ -195,9 +195,9 @@ describe( 'CssChain own methods', () =>
     it( 'text( cb(el,i,arr) )', async ()=>
     {
         const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
-        $$('a',el).text( (el,i,arr)=>`${i}. ${el.tag} ${el.href} in arr[${arr.length}]`);
-        expect( $$('a',el).innerText            ).to.equal("0. undefined in arr[2]1. undefined in arr[2]");
-        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. undefined in arr[2]1. undefined in arr[2]D");
+        $$('a',el).text( (el,i,arr)=>`${i}. ${el.title} ${el.href} in arr[${arr.length}]`);
+        expect( $$('a',el).innerText            ).to.equal("0. #1 in arr[2]1. #2 in arr[2]");
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. #1 in arr[2]1. #2 in arr[2]D");
     } );
     it( 'get innerHTML, html()', async ()=>
     {
@@ -222,7 +222,7 @@ describe( 'CssChain own methods', () =>
         expect( $$('b',el).length ).to.equal(2);
         expect( $$('b',el).innerText.replace(/\n/g,'') ).to.equal('AA');
     } );
-    it( 'html( htmlStr ) ', async ()=>
+    it( 'html( htmlStr )', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
         let $X = $$('a',el).html( 'B' );
@@ -231,6 +231,15 @@ describe( 'CssChain own methods', () =>
         $$('a',el).html( '<b>A</b>' );
         expect( $$('b',el).length ).to.equal(2);
         expect( $$('b',el).innerText.replace(/\n/g,'') ).to.equal('AA');
+    } );
+    it( 'html( cb(el,i,arr) )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
+        let $X = $$('a',el).html( (el,i,arr)=>`${i}. <b>${el.title}</b> <i>${el.href}</i> in arr[${arr.length}]` );
+        expect( $X.length ).to.equal(2);
+        expect( $$('a',el).innerText            ).to.equal("0. #1 in arr[2]1. #2 in arr[2]");
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. #1 in arr[2]1. #2 in arr[2]D");
+        expect( $$('b,i',el).length ).to.equal( 4 );
     } );
     it( 'cloneNode()', async ()=>
     {
