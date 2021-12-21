@@ -1,5 +1,5 @@
 import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
-import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.8/CssChain.js";
+import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.9/CssChain.js";
 // import { CssChain as $$ } from "./CssChain.js";
 
 const arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
