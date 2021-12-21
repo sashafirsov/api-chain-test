@@ -177,11 +177,13 @@ describe( 'CssChain own methods', () =>
         expect( $X.length ).to.equal(1);
         expect( $X[0].tagName ).to.equal('DIV');
     } );
-    it( 'get innerText', async ()=>
+    it( 'get innerText, text()', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
         expect( $$('a',el).innerText.trim() ).to.equal('a1a2');
+        expect( $$('a',el).text().trim() ).to.equal('a1a2');
         expect( $$(el).innerText.replace(/\n/g,'') ).to.equal('da1a2D');
+        expect( $$(el).text().replace(/\n/g,'') ).to.equal('da1a2D');
     } );
     it( 'set innerText', async ()=>
     {
@@ -189,6 +191,13 @@ describe( 'CssChain own methods', () =>
         $$('a',el).innerText = 'b';
         expect( $$('a',el).innerText ).to.equal('bb');
         expect( $$(el).innerText.replace(/\n/g,'') ).to.equal('dbbD');
+    } );
+    it( 'text( cb(el,i,arr) )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
+        $$('a',el).text( (el,i,arr)=>`${i}. ${el.tag} ${el.href} in arr[${arr.length}]`);
+        expect( $$('a',el).innerText            ).to.equal("0. undefined in arr[2]1. undefined in arr[2]");
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. undefined in arr[2]1. undefined in arr[2]D");
     } );
     it( 'get innerHTML, html()', async ()=>
     {
