@@ -394,5 +394,29 @@ describe( 'CssChain own methods', () =>
         expect( $$('b',el ).outerHTML ).to.eq('<b>A1</b><b>A2</b>');
         expect( $$(el ).innerHTML ).to.eq('d <span>0.</span><b>A1</b><span>:2</span> - <span>1.</span><b>A2</b><span>:2</span> D');
     } );
+    it( 'firstElementChild, firstChild', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+
+        expect( $$(el).firstElementChild.innerText ).to.eq('one');
+        expect( $$('a',el).firstElementChild.innerText ).to.eq('');
+
+        expect( $$(el).firstChild.innerText ).to.eq('d ');
+        expect( $$('a',el).firstChild.innerText ).to.eq('onetwo');
+    } );
+    it( 'children, childElements', async ()=>
+    {
+        const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
+
+        expect( $$(el).children.length ).to.eq(2);
+        expect( $$(el).children.innerText ).to.eq('onetwo');
+        expect( $$('a',el).children.length ).to.eq(0);
+        expect( $$('a',el).children.innerText ).to.eq('');
+
+        expect( $$(el).childNodes.length ).to.eq(5);
+        expect( $$(el).childNodes.innerText ).to.eq("d one - two D");
+        expect( $$('a',el).childNodes.length ).to.eq(2);
+        expect( $$('a',el).childNodes.innerText ).to.eq('onetwo');
+    } );
 
 } );
