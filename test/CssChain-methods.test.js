@@ -250,6 +250,23 @@ describe( 'CssChain own methods', () =>
         expect( $$('b',el).length ).to.equal( 4 );
         expect( $$('b',el).innerText            ).to.equal("YZYZ");
     } );
+    it( 'html( val, css )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
+        let $X = $$(el).html( ['X','<b>Y</b>','<b>Z</b>'], 'a' );
+        expect( $X.length ).to.equal(1);
+        expect( $$('a',el).innerText            ).to.equal("XYZXYZ");
+        expect( $$('b',el).length ).to.equal( 4 );
+        expect( $$('b',el).innerText            ).to.equal("YZYZ");
+
+        // html( cb, css )
+        $X = $$(el).html( (el,i,arr)=>`${i}. <b>${el.title}</b> <i>${el.href}</i> in arr[${arr.length}]`, 'a' );
+        expect( $X.length ).to.equal(1);
+        expect( $$('a',el).innerText            ).to.equal("0. #1 in arr[2]1. #2 in arr[2]");
+        expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. #1 in arr[2]1. #2 in arr[2]D");
+        expect( $$('b,i',el).length ).to.equal( 4 );
+    } );
+
     it( 'cloneNode()', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
