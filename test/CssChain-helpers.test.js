@@ -2,7 +2,8 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import '../src/slots-in-shadow.js';
 
-import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText, setNodeHtml } from '../src/CssChain.js';
+import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText, setNodeHtml, html2NodeArr }
+    from '../src/CssChain.js';
 
 describe( 'CssChain internal helpers', () =>
 {
@@ -164,6 +165,14 @@ describe( 'CssChain internal helpers', () =>
         expect( getNodeText( el )).to.eq('outer replacement');
         setNodeHtml( el.$().slot('outer')[0], '<u>A</u>' );
         expect(el.$().slot('outer').innerHTML).to.eq('<u slot="outer">A</u>');
+    });
+    it( 'html2NodeArr(html) ',  async ()=>
+    {
+        const arr = html2NodeArr(`Hello <i>World</i><b>!</b>`)
+        expect( arr.length).to.eq(3);
+        expect( arr[0].textContent).to.eq('Hello ');
+        expect( arr[1].outerHTML).to.eq('<i>World</i>');
+        expect( arr[2].outerHTML).to.eq('<b>!</b>');
     });
 
 } );
