@@ -202,8 +202,10 @@ describe( 'CssChain slot methods', () =>
             </slots-in-shadow>`);
 
         const $arr = el.$().slot('outer,','<i>B</i>');
-        expect( $arr.length).to.eq(2);
-        expect( $arr.innerText).to.eq('BB');
+        expect( $arr.tagName ).to.eq(undefined);// document fragment
+        expect( $arr.length ).to.eq(1);
+        expect( $arr.slot('outer,').innerText ).to.eq('BB');
+        expect(  $arr.slot('outer,').innerHTML ).to.eq( '<i slot="">B</i><i slot="outer">B</i>' );
     });
     it( 'slots(csv,text)',  async ()=>
     {
@@ -213,9 +215,11 @@ describe( 'CssChain slot methods', () =>
                 <div slot="outer">OUTER</div>
             </slots-in-shadow>`);
 
-        const $arr = el.$().slot('outer,','B');
-        expect( $arr.length).to.eq(2);
-        expect( $arr.innerText).to.eq('BB');
+        const $el = el.$()
+        ,    $arr = $el.slot('outer,','B');
+        expect( $arr ).to.eq($el);
+        expect( $arr.length ).to.eq(1);
+        expect( $arr.slot('outer,').innerText ).to.eq('BB');
     });
     it( 'slots( csv, cb(el,i,arr) )',  async ()=>
     {
@@ -227,8 +231,8 @@ describe( 'CssChain slot methods', () =>
         expect( el.$().slot(',outer').innerText).to.eq('DEFAULTOUTER');
 
         const $arr = el.$().slot(',outer',(el,i,arr)=> '<b>'+i+'-'+slotText( el )+'-'+arr.length+'</b>');
-        expect( $arr.length).to.eq(2);
-        expect( $arr.innerText).to.eq('0-DEFAULT-21-OUTER-2');
+        expect( $arr.length).to.eq(1);
+        expect( $arr.slot('outer,').innerText ).to.eq('0-DEFAULT-21-OUTER-2');
     });
     it( 'slots().clear()',  async ()=>
     {
