@@ -308,6 +308,92 @@ describe( 'CssChain own methods', () =>
         expect( $X.ownerDocument ).to.eq(document);
         expect( $Y.ownerDocument ).to.eq(doc);
     } );
+    it( 'clone(count)', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const $X = $$('a',el );
+        expect( $X.length ).to.eq(2);
+        const CLONES_COUNT = 3;
+        const $Y = $X.clone(CLONES_COUNT);
+        expect( $Y.length ).to.eq(CLONES_COUNT*2);
+
+        expect( $$('a',el).length ).to.eq(2);
+        $X.append($Y);
+        expect( $$('a',el).length ).to.eq((CLONES_COUNT+1)*2);
+        expect( $$('hr',el).length ).to.eq(CLONES_COUNT+1);
+    } );
+    it( 'clone(count, cb(el,i)=>void )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const $X = $$('a',el );
+        expect( $X.length ).to.eq(2);
+        const CLONES_COUNT = 3;
+
+        const $Y = $X.clone(CLONES_COUNT, (n,i)=> { n.title='T'+i;  } );
+        expect( $Y.length ).to.eq(CLONES_COUNT*2);
+
+        expect( $Y.filter( n=>n.title==='T0').length ).to.eq(2);
+        expect( $Y.filter( n=>n.title==='T1').length ).to.eq(2);
+        expect( $Y.filter( n=>n.title==='T2').length ).to.eq(2);
+        expect( $Y.$('hr').length ).to.eq(3);
+        expect( $Y.$('br').length ).to.eq(3);
+    } );
+    it( 'clone(count, cb(el,i)=>string )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const $X = $$('a',el );
+        expect( $X.length ).to.eq(2);
+        const CLONES_COUNT = 3;
+
+        const $Y = $X.clone(CLONES_COUNT, (n,i)=> { n.title='T'+i; return n.outerHTML } );
+        expect( $Y.length ).to.eq(CLONES_COUNT*2);
+
+        expect( $Y.filter( n=>n.title==='T0').length ).to.eq(2);
+        expect( $Y.filter( n=>n.title==='T1').length ).to.eq(2);
+        expect( $Y.filter( n=>n.title==='T2').length ).to.eq(2);
+        expect( $Y.$('hr').length ).to.eq(3);
+        expect( $Y.$('br').length ).to.eq(3);
+    } );
+    it( 'clone(count, cb(el,i)=>el )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const $X = $$('a',el );
+        expect( $X.length ).to.eq(2);
+        const CLONES_COUNT = 3;
+
+        const $Y = $X.clone(CLONES_COUNT, (n,i)=>
+        {   const el = document.createElement('h'+(i+1) );
+            el.innerHTML = n.outerHTML;
+            return el
+        } );
+        expect( $Y.length ).to.eq(CLONES_COUNT*2);
+
+        expect( $Y.filter( n=>n.tagName === 'H1').length ).to.eq(2);
+        expect( $Y.filter( n=>n.tagName === 'H2').length ).to.eq(2);
+        expect( $Y.filter( n=>n.tagName === 'H3').length ).to.eq(2);
+        expect( $Y.$( 'a').length ).to.eq(CLONES_COUNT*2);
+        expect( $Y.$('hr').length ).to.eq(CLONES_COUNT);
+        expect( $Y.$('br').length ).to.eq(CLONES_COUNT);
+    } );
+    it( 'clone( arr, cb( clonedNode, dataItem, index, arr ) )', async ()=>
+    {
+        const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
+        const $X = $$('a',el );
+        expect( $X.length ).to.eq(2);
+
+        const DATA = ['X','Y','Z']
+        ,   CLONES_COUNT = DATA.length;
+
+        const $Y = $X.clone(DATA, (n,d,i,arr)=>
+        {   const el = document.createElement('h'+(i+1) );
+            el.innerHTML = `<s><i>${d}-${i}-${arr.length}</i> ${n.outerHTML}</s>`;
+            return el
+        } );
+        expect( $Y.length ).to.eq(CLONES_COUNT*2);
+        expect( $Y.$( 'i').length ).to.eq(CLONES_COUNT*2);
+        expect( $Y.$( 'i').innerText ).to.eq("X-0-3Y-1-3Z-2-3X-0-3Y-1-3Z-2-3");
+    } );
+
     it( 'append(str)', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
