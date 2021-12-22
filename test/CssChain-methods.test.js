@@ -49,6 +49,30 @@ describe( 'CssChain own methods', () =>
 
         expect( $X.attr('id') ).to.equal('AZ');
     } );
+    it( 'prop(name,val,css)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$(el)
+
+        expect( $X.prop('id', 'AZ','a').length ).to.equal(1);
+        expect( $X.$('a').prop('id') ).to.equal('AZ');
+        expect( $X.$('a')[0].id ).to.equal('AZ');
+        expect( $X.$('a')[1].id ).to.equal('AZ');
+
+        expect( $X.$('a').attr('id') ).to.equal('AZ');
+    } );
+    it( 'attr(name,val,css)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$(el)
+
+        expect( $X.attr('id', 'AZ','a').length ).to.equal(1);
+        expect( $X.$('a').prop('id') ).to.equal('AZ');
+        expect( $X.$('a')[0].id ).to.equal('AZ');
+        expect( $X.$('a')[1].id ).to.equal('AZ');
+
+        expect( $X.$('a').prop('id') ).to.equal('AZ');
+    } );
 
     it( 'forEach',  async ()=>
     {

@@ -1,6 +1,6 @@
 import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
-import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.9/CssChain.js";
-// import { CssChain as $$ } from "./CssChain.js";
+// import { CssChain as $$ } from "https://unpkg.com/css-chain@1.0.9/CssChain.js";
+import { CssChain as $$ } from "./CssChain.js";
 
 const arr2str = (arr,cb, separator='') => arr.map(cb).join(separator)
 ,   isImg = url => url && url.endsWith && ['png','gif','svg'].find( x=>url.endsWith(x) );
@@ -137,26 +137,28 @@ const getPokeList = async () =>
         // yield version
 
         // cb version
-        // $template.clone( page.results, (cloned, p,i)=>
-        //     $listContainer.append( $$(cloned)
-        //             .prop('hidden', false )
-        //             .prop('checked', !i, 'input') // todo
-        //             .prop('src', getImgByPokemon( p ), 'img') // todo
-        //             .on('click', ()=>onSelected(p) )
-        //             .slot( 'index', offset + i )
-        //             .slot( 'name', p.name ) ) );
+        $listContainer.append(
+            $template.clone( page.results, (cloned, p,i)=>
+             $$(cloned)
+                    .prop('hidden', false )
+                    .prop('checked', !i, 'input') // todo
+                    .prop('src', getImgByPokemon( p ), 'img') // todo
+                    .on('click', ()=>onSelected(p) )
+                    .slot( 'index', offset + i )
+                    .slot( 'name', p.name ) ) );
 
-        page.results.forEach( (p,i)=>
-        {
-            const $c = $template.clone();
-            $c.hidden = false;
-            $c.$('input').checked = !i;
-            $c.slot( 'index' ).innerText = offset + i;
-            $c.slot( 'name' ).innerText = p.name;
-            $c.on('click', ()=>onSelected(p) )
-            $c.$('img').src = getImgByPokemon( p );
-            $listContainer.append($c);
-        });
+        // same without call chain
+        // page.results.forEach( (p,i)=>
+        // {
+        //     const $c = $template.clone();
+        //     $c.hidden = false;
+        //     $c.$('input').checked = !i;
+        //     $c.slot( 'index' ).innerText = offset + i;
+        //     $c.slot( 'name' ).innerText = p.name;
+        //     $c.on('click', ()=>onSelected(p) )
+        //     $c.$('img').src = getImgByPokemon( p );
+        //     $listContainer.append($c);
+        // });
 
         onSelected( page.results[0] );
 
