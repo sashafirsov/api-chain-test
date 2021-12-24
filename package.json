@@ -7,7 +7,7 @@
         "email": "suns@simulationworks.com",
         "url": "https://blog.firsov.net/"
     },
-    "version": "1.0.10",
+    "version": "1.0.11",
     "main": "index.js",
     "module": "index.js",
     "repository": {
@@ -22,8 +22,8 @@
         "test:watch": "web-test-runner --watch"
     },
     "dependencies": {
-        "css-chain": "^1.0.10",
-        "lit": "^2.0.0"
+        "css-chain": "^1.0.11",
+        "lit": "^2.0.2"
     },
     "devDependencies": {
         "@open-wc/testing": "^3.0.1",
