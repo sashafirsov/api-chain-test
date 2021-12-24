@@ -11,7 +11,6 @@ CssChainElement extends HTMLElement
 
         const t = document.createElement('div');
         t.innerHTML = this.template;
-        // this.innerHTML = this.template;
 
         this.attachShadow({mode: 'open'}).appendChild(t);
         this.$('button').addEventListener('click', ()=>this.__increment() );
@@ -25,10 +24,10 @@ CssChainElement extends HTMLElement
 `
     }
 
-    $( css, protoArr ){ return $( css, this.shadowRoot, protoArr ); }
+    $( ...arr ){ return $( this.shadowRoot ).$(...arr); }
 
     __increment()
-    {   const slotContent = this.$('slot')[0].assignedNodes()[0].textContent;
+    {   const slotContent = this.$().slot().text();
         this.$('b').innerHTML += `<span>${ slotContent }</span>`;
         this.counter = this.$('input').value = this.$('span').length;
     }

@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>139/139</span>
+                <span class='fraction'>147/147</span>
             </div>
         
             
@@ -298,10 +298,10 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -377,30 +377,30 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -511,18 +511,18 @@ const nop = ()=&gt;''
 ,   isFn   = a =&gt; isT(a, 'function')
 ,   isNode = n =&gt; n &amp;&amp; n.nodeType
 ,   inWC   = n =&gt; n.getRootNode().host
-,   hasAssigned = n=&gt; inWC(n) &amp;&amp; n.assignedElements
+,   hasAssigned = n=&gt; inWC(n) &amp;&amp; n.assignedNodes
 ,   each = (arr, cb )=&gt; (arr.forEach(cb),arr)
 ,   clear = n =&gt; hasAssigned(n)
-               ? n.assignedElements().forEach( a =&gt; a.remove() )
+               ? n.assignedNodes().forEach( a =&gt; a.remove() )
                : n.innerHTML='' ;
 &nbsp;
-const node2text =   {   1:  n=&gt;n.assignedElements
-                             ? collectionText(n.assignedElements()) || collectionText(n.childNodes)
-                             : ['SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT','PICTURE','IFRAME','METER','NOSCRIPT'
-                                   ,'SELECT','OPTGROUP','PROGRESS','TEMPLATE','VIDEO']
-                                   .includes(n.nodeName) ? ''
-                                                         : n.innerText //collectionText(n.children)
+const node2text =   {   1:  n=&gt;n.assignedNodes
+                             ? collectionText(n.assignedNodes()) || collectionText(n.childNodes)
+                             : [ 'SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT'
+                               , 'PICTURE','IFRAME','METER','NOSCRIPT'
+                               , 'SELECT','OPTGROUP','PROGRESS','TEMPLATE','VIDEO'
+                               ].includes(n.nodeName)? '' : n.innerText //collectionText(n.children)
                     ,   3: n=&gt;n.nodeValue
                     ,   11:n=&gt;collectionText(n.children)
                     };
@@ -578,7 +578,7 @@ CssChainLocal extends Array
     push(...args){ Array.prototype.push.apply(this,args); return this; }
     querySelector(css){ return new CssChainLocal().push( this.querySelectorAll(css)[0] )  }
     querySelectorAll(css){ return this.reduce( ($,el)=&gt; $.push(...el.querySelectorAll(css) ), new CssChainLocal()) }
-    $(...args){ return this.querySelectorAll(...args) }
+    $(...args){ return args.length ? this.querySelectorAll(...args) : this; }
     parent(css)
     {   const s = new Set()
         , add = n=&gt; s.has(n) ? 0 : (s.add(n), n)
@@ -724,7 +724,7 @@ export default CssChain;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 22 2021 10:41:16 GMT-0800 (Pacific Standard Time)
+                at Thu Dec 23 2021 17:03:38 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="prettify.js"></script>
