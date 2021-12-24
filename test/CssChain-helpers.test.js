@@ -43,8 +43,8 @@ describe( 'CssChain internal helpers', () =>
     {
         const el = await fixture(
             html`<slots-in-shadow>
-                <div slot="">default slot replacement</div>
-                <div slot="outer">outer replacement</div>
+                <span slot="">default slot replacement</span>
+                <span slot="outer">outer replacement</span>
             </slots-in-shadow>`);
 
         const $arr = el.$('slot:not([name]),slot[name="outer"]');
@@ -53,15 +53,15 @@ describe( 'CssChain internal helpers', () =>
         expect( collectionText($arr)).to.include('outer replacement');
 
         $arr.innerText='A';
-        expect( collectionText($arr)).to.eq('AA');
+        expect( collectionText($arr).replace(/\s+/g,'')).to.eq('AA');
 
-        expect( collectionText(el.$().slot(''))).to.eq('A');
+        expect( collectionText(el.$().slot('')).trim()).to.eq('A');
         expect( collectionText(el.$().slot('outer')) ).to.eq('A');
         // native access to slots content
         expect( collectionText([...el.querySelectorAll('[slot]')])).to.eq('AA');
 
         el.$().slot('').innerText = 'B';
-        expect( collectionText(el.$().slot(',outer')) ).to.eq('BA');
+        expect( collectionText(el.$().slot(',outer')).replace(/\s+/g,'') ).to.eq('BA');
     });
     it( 'getNodeText(node) with slots',  async ()=>
     {
@@ -73,7 +73,7 @@ describe( 'CssChain internal helpers', () =>
             </slots-in-shadow>`);
         expect( getNodeText( el.shadowRoot ) ).to.include('prefixBsuffix');
         expect( getNodeText( $$('a',el)[0] )).to.eq('prefixBsuffix');
-        expect( getNodeText( el.$().slot('') )).to.eq('prefixBsuffixdefault slot replacement');
+        expect( getNodeText( el.$().slot('') ).replace(/\s+/g,'')).to.eq('prefixBsuffixdefaultslotreplacement');
         expect( getNodeText( el.$().slot('outer') )).to.eq('outer replacement');
         expect( el.$('style').textContent).to.include('padding');
         expect( getNodeText( el.$('style')[0])).to.eq('');

@@ -10,6 +10,10 @@
     "version": "1.0.10",
     "main": "index.js",
     "module": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sashafirsov/css-chain-test.git"
+    },
     "scripts": {
         "analyze": "cem analyze --litelement",
         "build": "bash build.sh",

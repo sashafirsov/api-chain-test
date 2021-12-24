@@ -22,6 +22,13 @@ describe( 'CssChain', () =>
         expect( $X.innerHTML ).to.equal(''); // dom element prop
         expect( $X.value ).to.equal(undefined); // INPUT prop
     };
+    it( '$() matched document',  async ()=>
+    {
+        const el = await fixture(html`<main>Hi</main>`);
+        const $X = $$();
+        expect( $X[0] ).to.equal(document);
+        expect( $X.$('main').innerText ).to.equal('Hi');
+    } );
     it( 'blank NodeSet',  async ()=>
     {
         const el = await fixture(html`<div></div>`);
