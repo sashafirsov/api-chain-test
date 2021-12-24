@@ -10,6 +10,7 @@
     "version": "1.0.11",
     "main": "index.js",
     "module": "index.js",
+    "files": ["*","**/*"],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/sashafirsov/css-chain-test.git"

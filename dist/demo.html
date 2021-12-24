@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
+    <title> css-chain demo </title>
     <meta charset="utf-8">
     <style>
         img{ height: 1.5rem;}
@@ -12,6 +13,9 @@
         }
         header img{ margin: 0 .2rem; }
         code{ color: darkgreen; font-weight: bold;}
+
+        slot[hidden]{ display:none!important;}
+
     </style>
     <script type="module" src="https://unpkg.com/html-demo-element@1/html-demo-element.js"></script>
 </head>
@@ -21,13 +25,18 @@
         <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
         GitHub
     </a>
-|   <a href="../coverage/lcov-report/index.html">test <img src="../coverage/coverage.svg"/></a>
+|   <a href="../coverage/lcov-report/index.html"
+        ><img alt="test coverage" src="../coverage/coverage.svg"/></a>
+|   <a href="slots.html"
+        >Working with slots </a>
+|   <a href="PokeApi-Explorer.html"
+        >PokéAPI Explorer </a>
 </header>
 
 <p> In order to use <code>SccChain</code> within web component, declare the $ method in class:</p>
 
 <html-demo-element type="js">
-    <template slot="source">  $( css, protoArr ){ return $( css, this.shadowRoot, protoArr ); } </template>
+    <template slot="source">  $( ...arr ){ return $( this.shadowRoot ).$(...arr); } </template>
     <div slot="demo" hidden></div>
 </html-demo-element>
 <p> Then <code>this.$(css)</code> is available for accessing the DOM like in sample.</p>
