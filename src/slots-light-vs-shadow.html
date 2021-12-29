@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <meta charset="utf-8">
+    <script src="slots-light-vs-shadow.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/html-demo-element@1/html-demo-element.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        body>*{flex: auto;}
+        [slot="description"] {
+            margin: 0;
+            padding: 0 1rem 1rem 1rem;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <header>
+            <h1>Visual presentation of Slot in shadow DOM from unit test </h1>
+            <a href="demo.html"> Demo home</a>
+            | <a href="PokeApi-Explorer.html"> List from data </a>
+        </header>
+
+    Only first level slots in template are substituted from web component content HTML.<br/>
+    The embedded slots like "inner-X" in sample template are ignored by shadowDOM.
+
+</section>
+
+
+<html-demo-element legend="1. Basics">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/main/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L8"
+       > Elements only </a>
+    </h3>
+    <template>
+        <div id="test_basic" slot="text">
+            <div id="host">
+                <template data-mode="open">
+                    <slot id="s1" name="slot1"></slot>
+                </template>
+                <div id="c1" slot="slot1"></div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+
+<html-demo-element src="slots-light-vs-shadow.js" legend="slots-light-vs-shadow.js"></html-demo-element>
+
+<script src="./slots-light-vs-shadow.js" type="module"></script>
+<script type="module">
+    import { expect } from "@open-wc/testing";
+    import { runTests } from "@web/test-runner-mocha";
+    import { createTestTree, removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
+
+    const test = ( cb, title )=>{ it(title, cb); }
+    ,   assert_equals = (a,b)=>expect(a).to.equal(b)
+    ,   assert_array_equals = (a,b)=>expect(a).to.eql(b);
+
+    runTests(async () => {
+        describe("test_basic", () => {
+
+            test(() => {
+                let n = createTestTree(test_basic);
+                removeWhiteSpaceOnlyTextNodes(n.test_basic);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+            }, 'Slots: Basic.');
+
+            test(() => {
+                let n = createTestTree(test_basic);
+
+                assert_array_equals(n.s1.assignedElements(), [n.c1]);
+            }, 'Slots: Basic, elements only.');
+
+            it('has a default title "Hey there" and counter 5', async () => {
+                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
+
+                expect(el.title).to.equal("Hey there");
+                expect(el.counter).to.equal(5);
+            });
+
+            it("increases the counter on button click", async () => {
+                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
+                el.shadowRoot.querySelector("button").click();
+
+                expect(el.counter).to.equal(6);
+            });
+
+            it("can override the title via attribute", async () => {
+                const el = await fixture(html`
+          <slots-in-shadow title="attribute title"></slots-in-shadow>
+        `);
+
+                expect(el.title).to.equal("attribute title");
+            });
+
+            it("passes the a11y audit", async () => {
+                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
+
+                await expect(el).shadowDom.to.be.accessible();
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
