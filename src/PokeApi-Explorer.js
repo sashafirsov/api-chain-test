@@ -136,29 +136,28 @@ const getPokeList = async () =>
         $listContainer.clear();
         // yield version
 
-        // call chain with callbacks version
-        $listContainer.append(
-            $template.clone( page.results, (cloned, p,i)=>
-             $$(cloned)
-                    .prop('hidden', false )
-                    .prop('checked', !i, 'input')
-                    .prop('src', getImgByPokemon( p ), 'img')
-                    .on('click', ()=>onSelected(p) )
-                    .slot( 'index', offset + i )
-                    .slot( 'name', p.name ) ) );
-
-        // same without call chain
-        page.results.forEach( (p,i)=>
-        {
-            const $c = $template.clone();
-            $c.hidden = false;
-            $c.$('input').checked = !i;
-            $c.slot( 'index' ).innerText = offset + i;
-            $c.slot( 'name' ).innerText = p.name;
-            $c.on('click', ()=>onSelected(p) )
-            $c.$('img').src = getImgByPokemon( p );
-            $listContainer.append($c);
-        });
+        if( offset ) // call chain with callbacks version
+            $listContainer.append(
+                $template.clone( page.results, (cloned, p,i)=>
+                 $$(cloned)
+                        .prop('hidden', false )
+                        .prop('checked', !i, 'input')
+                        .prop('src', getImgByPokemon( p ), 'img')
+                        .on('click', ()=>onSelected(p) )
+                        .slot( 'index', offset + i )
+                        .slot( 'name', p.name ) ) );
+        else // same without call chain, just as show case of HTMLElement API in CssChain
+            page.results.forEach( (p,i)=>
+            {
+                const $c = $template.clone();
+                $c.hidden = false;
+                $c.$('input').checked = !i;
+                $c.slot( 'index' ).innerText = offset + i;
+                $c.slot( 'name' ).innerText = p.name;
+                $c.on('click', ()=>onSelected(p) )
+                $c.$('img').src = getImgByPokemon( p );
+                $listContainer.append($c);
+            });
 
         onSelected( page.results[0] );
 

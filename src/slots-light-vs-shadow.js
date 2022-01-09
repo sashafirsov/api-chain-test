@@ -1,3 +1,7 @@
+/* tests are using createTestTree(node) to
+ * append the node clone with
+ * initiated shadowDom on template parent ( id=host )
+ */
 import { CssChain as $ } from "./CssChain.js";
 
 // from https://github.com/chromium/chromium/edit/main/third_party/blink/web_tests/external/wpt/shadow-dom/resources/shadow-dom.js
@@ -53,7 +57,7 @@ export function createTestTree( node )
         }
     }
 
-    function walkLightDom( root )
+    function walkLightDom( root ) // using CssChain
     {   if( root.id )
             ids.light[ root.id ] = root;
 
@@ -68,18 +72,17 @@ export function createTestTree( node )
             });
     }
 
-    const parent = node.parentNode
-    ,   cloneAppend = n =>
+    const cloneAppend = (n,classname) =>
     {   let x = node.cloneNode( true );
         x.id='';
+        x.classList.add(classname);
         ids[node.id]=x;
         n.parentNode.appendChild(x);
         return x
     };
 
-
-    // walkLightDom ( parent.appendChild( node.cloneNode( true ) ) );
-    walkShadowDom( cloneAppend( node ) );
+    walkShadowDom( cloneAppend( node,'shadow' ) );
+    walkLightDom( cloneAppend( node ,'light'  ) );
 
     return ids;
 }
