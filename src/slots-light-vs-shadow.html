@@ -64,6 +64,7 @@
     import { expect } from "@open-wc/testing";
     import { runTests } from "@web/test-runner-mocha";
     import { createTestTree, removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
+    import $ from './CssChain.js';
 
     const test = ( cb, title )=>{ it(title, cb); }
     ,   assert_equals = (a,b)=>expect(a).to.equal(b)
@@ -87,32 +88,14 @@
             }, 'Slots: Basic, elements only.');
 
             it('createTestTree$: Basic', async () => {
-                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
 
-                expect(el.title).to.equal("Hey there");
-                expect(el.counter).to.equal(5);
+                const lightText  = $($(test_basic).parent().$('.light  #host')[0]        ).text().replace( /\s+/g ,' ').trim();
+                const shadowText = $($(test_basic).parent().$('.shadow #host').shadowRoot).text().replace( /\s+/g ,' ').trim();
+
+                expect(lightText).to.equal(shadowText);
+                expect(lightText).to.equal('before slot slot1 override after slot');
             });
 
-            it("increases the counter on button click", async () => {
-                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
-                el.shadowRoot.querySelector("button").click();
-
-                expect(el.counter).to.equal(6);
-            });
-
-            it("can override the title via attribute", async () => {
-                const el = await fixture(html`
-          <slots-in-shadow title="attribute title"></slots-in-shadow>
-        `);
-
-                expect(el.title).to.equal("attribute title");
-            });
-
-            it("passes the a11y audit", async () => {
-                const el = await fixture(html` <slots-in-shadow></slots-in-shadow> `);
-
-                await expect(el).shadowDom.to.be.accessible();
-            });
         });
     });
 
