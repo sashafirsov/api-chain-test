@@ -76,7 +76,10 @@ export function createTestTree( node )
     {   let x = node.cloneNode( true );
         x.id='';
         x.classList.add(classname);
-        ids[node.id]=x;
+        if( classname==='light')
+            ids.light[node.id]=x;
+        else
+            ids[node.id]=x;
         n.parentNode.appendChild(x);
         return x
     };

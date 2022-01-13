@@ -281,6 +281,41 @@
     </template>
 </html-demo-element>
 
+<html-demo-element legend="13. Slots: Complex case: Basi line.">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L331"
+       > assignedSlot, assignedNodes((),assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_complex">
+            <div id="host1">
+                <template data-mode="open">
+                    <div id="host2">
+                        <template data-mode="open">
+                            <slot id="s5" name="slot5">#s5</slot>
+                            <slot id="s6" name="slot6">#s6</slot>
+                            <slot id="s7">#s7</slot>
+                            <slot id="s8" name="slot8">#s8</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot5">#s1</slot>
+                        <slot id="s2" name="slot2" slot="slot6">#s2</slot>
+                        <slot id="s3">#s3</slot>
+                        <slot id="s4" name="slot4" slot="slot-none">#s4</slot>
+                        <div id="c5" slot="slot5">#c5</div>
+                        <div id="c6" slot="slot6">#c6</div>
+                        <div id="c7">#c7</div>
+                        <div id="c8" slot="slot-none">c8</div>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+                <div id="c2" slot="slot2">#c2</div>
+                <div id="c3">#c3</div>
+                <div id="c4" slot="slot-none">#c4</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
 
 <html-demo-element src="slots-light-vs-shadow.js" legend="slots-light-vs-shadow.js"></html-demo-element>
 
@@ -578,13 +613,139 @@
                 assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
                 assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c1]);
             }, 'Slots: Closed > Open.');
-            it('12 createTestTree$: Closed > Closed', ()=>
+            it('12 createTestTree$: Closed > Open', ()=>
             {
                 const shadow = $(test_closed_open).parent().$('.shadow');
-                // 12. no shadow test for closed>closed as DOM is not available for JS
+                // 12. no shadow test for closed>open as DOM is not available for JS
                 const light  = $(test_closed_open).parent().$('.light' );
                 expect(  light.$('#host1').text() ).to.equal( '#c1' );
             });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.c2.assignedSlot, n.s2);
+                assert_equals(n.c3.assignedSlot, n.s3);
+                assert_equals(n.c4.assignedSlot, null);
+
+                assert_equals(n.s1.assignedSlot, n.s5);
+                assert_equals(n.s2.assignedSlot, n.s6);
+                assert_equals(n.s3.assignedSlot, n.s7);
+                assert_equals(n.s4.assignedSlot, null);
+
+                assert_equals(n.c5.assignedSlot, n.s5);
+                assert_equals(n.c6.assignedSlot, n.s6);
+                assert_equals(n.c7.assignedSlot, n.s7);
+                assert_equals(n.c8.assignedSlot, null);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.c2]);
+                assert_array_equals(n.s3.assignedNodes(), [n.c3]);
+                assert_array_equals(n.s4.assignedNodes(), []);
+                assert_array_equals(n.s5.assignedNodes(), [n.s1, n.c5]);
+                assert_array_equals(n.s6.assignedNodes(), [n.s2, n.c6]);
+                assert_array_equals(n.s7.assignedNodes(), [n.s3, n.c7]);
+                assert_array_equals(n.s8.assignedNodes(), []);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c2]);
+                assert_array_equals(n.s3.assignedNodes({ flatten: true }), [n.c3]);
+                // assert_array_equals(n.s4.assignedNodes({ flatten: true }), []); // text node #s4
+                assert_array_equals(n.s4.assignedElements({ flatten: true }), []);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, n.c5]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c2, n.c6]);
+                assert_array_equals(n.s7.assignedNodes({ flatten: true }), [n.c3, n.c7]);
+                // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
+                assert_array_equals(n.s8.assignedElements({ flatten: true }), []);
+            }, 'Slots: Complex case: Basi line.');
+            it('13 createTestTree$: Complex case: Basi line.', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+                const assert_assignedSlot = (k,s) => {
+                    assert_equals( n[k].assignedSlot, s && n[s] ); // same in prev test
+                    expect(shadow.$('#'+k).assignedSlot || shadow.$('#host1').$('#'+k).assignedSlot || null)
+                        .to.equal( s
+                                   && (  shadow.$('#host1').slot().find( e=>e.id===s)
+                                        || shadow.$('#host1').$('#host2').slot().find( e=>e.id===s)
+                                        || null
+                                      )
+                                );
+                    expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slot().find( e=>e.id===s));
+                    // node.assignedSlot in light DOM equals the parent slot
+                };
+                const assert_assignedNodes = (k,arr)=>
+                {   assert_array_equals( n[k].assignedNodes(), arr.map( e=>n[e] ) );
+                    expect( [].concat( shadow.$('#'+k).assignedNodes()
+                                     , shadow.$('#host1').$('#'+k).assignedNodes()
+                                     , shadow.$('#host1').$('#host2').$('#'+k).assignedNodes()
+                                     ).map( e=>e.id )
+                    ).to.eql( arr );
+
+                    expect( light.$('#'+k).children.map( e=>e.id ) ).to.eql( arr );
+                    // node.assignedNodes in light DOM equals the child nodes
+                };
+                const assert_assignedNodesF = (k,arr)=>
+                {   const F = { flatten: true };
+                    assert_array_equals( n[k].assignedNodes(F).filter( e=> e.nodeType !== 3 ), arr.map( e=>n[e] ) );
+                    expect( [].concat( shadow.$('#'+k).assignedNodes(F)
+                                     , shadow.$('#host1').$('#'+k).assignedNodes(F).filter( e=> e.nodeType !== 3 )
+                                     , shadow.$('#host1').$('#host2').$('#'+k).assignedNodes(F).filter( e=> e.nodeType !== 3 )
+                                     ).map( e=>e.id )
+                    ).to.eql( arr );
+
+                    expect( light.$('#'+k).children.map( e=>e.tagName==='SLOT'?e.firstChild:e ).map( e=>e.id ) ).to.eql( arr );
+                    // node.assignedNodes in light DOM equals the child nodes
+                };
+
+                // same sequence as in prev test but testing using CssChain of shadow and light dom
+                assert_assignedSlot('c1', 's1');
+                assert_assignedSlot('c2', 's2');
+                assert_assignedSlot('c3', 's3');
+                assert_assignedSlot('c4', null);
+
+                assert_assignedSlot('s1', 's5');
+                assert_assignedSlot('s2', 's6');
+                assert_assignedSlot('s3', 's7');
+                assert_assignedSlot('s4', null);
+
+                assert_assignedSlot('c5', 's5');
+                assert_assignedSlot('c6', 's6');
+                assert_assignedSlot('c7', 's7');
+                assert_assignedSlot('c8', null);
+
+                assert_assignedNodes('s1', ['c1']);
+                assert_assignedNodes('s2', ['c2']);
+                assert_assignedNodes('s3', ['c3']);
+                assert_assignedNodes('s4', []);
+                assert_assignedNodes('s5', ['s1', 'c5']);
+                assert_assignedNodes('s6', ['s2', 'c6']);
+                assert_assignedNodes('s7', ['s3', 'c7']);
+                assert_assignedNodes('s8', []);
+
+                assert_assignedNodesF('s1', ['c1']);
+                assert_assignedNodesF('s2', ['c2']);
+                assert_assignedNodesF('s3', ['c3']);
+                // assert_array_equals(n.s4.assignedNodes({ flatten: true }), []); // text node #s4
+                assert_assignedNodesF('s4', []);
+                assert_assignedNodesF('s5', ['c1', 'c5']);
+                assert_assignedNodesF('s6', ['c2', 'c6']);
+                assert_assignedNodesF('s7', ['c3', 'c7']);
+                // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
+                assert_assignedNodesF('s8', []);
+
+                expect( shadow.$('#host1').text() ).to.equal( '#c1\n#c2\n#c3' );
+                expect( shadow.$('#host1').$('#host2').text() ).to.equal( '#c5\n#c6\n#c7' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
+            });
+
 
         });
     });
