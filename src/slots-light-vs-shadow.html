@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <meta charset="utf-8">
+    <script src="slots-light-vs-shadow.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/html-demo-element@1/html-demo-element.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        body>*{flex: auto;}
+        [slot="description"] {
+            margin: 0;
+            padding: 0 1rem 1rem 1rem;
+        }
+        #host {
+            border: 1px dashed green;
+            margin: 0.5rem;
+        }
+        .shadow,.light{ border: 2px dashed blue; margin: .5rem;}
+        .light { border-color:green;}
+    </style>
+</head>
+<body>
+    <section>
+        <header>
+            <h1>Visual presentation of Slot in shadow DOM from
+                <a href="https://github.com/chromium/chromium/blob/main/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L8"
+                    > Chromium unit test </a></h1>
+            <a href="demo.html"> Demo home</a>
+            | <a href="PokeApi-Explorer.html"> List from data </a>
+        </header>
+        <br/>
+        Outline:
+        <span class="shadow">shadow DOM blue </span>,
+        <span class="light" >light  DOM green</span>. They should be rendered identical.
+
+</section>
+
+
+<html-demo-element legend="1. Basics">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/main/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L8"
+       > Slots: Basic. Basic, elements only. </a>
+    </h3>
+    <template>
+        <div id="test_basic" slot="text">
+            <div id="host">
+                <template data-mode="open">
+                    before slot
+                    <slot id="s1" name="slot1">slot s1</slot>
+                    after slot
+                </template>
+                <div id="c1" slot="slot1">slot1 override</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="2. Slots: Slots in closed">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L33"
+       > Slots in closed; Slots in closed, elements only </a>
+    </h3>
+    <template>
+        <div id="test_basic_closed">
+            <div id="host">
+                <template data-mode="closed">
+                    before slot
+                    <slot id="s1" name="slot1">slot s1</slot>
+                    after slot
+                </template>
+                <div id="c1" slot="slot1">slot1 override</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="3. Slots: Slots not in a shadow tree">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L58"
+       > Slots not in a shadow tree, ... elements only </a>
+    </h3>
+    <template>
+        <div id="test_slot_not_in_shadow">
+            <slot id="s1"></slot>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="4. Slots: Distributed nodes for Slots not in a shadow tree.">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L77"
+       > assignedSlot, assignedNodes(), assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_slot_not_in_shadow_2">
+            <slot id="s1">
+                <div id="c1"></div>
+            </slot>
+            <slot id="s2">
+                <div id="c2"></div>
+                <slot id="s3">
+                    <div id="c3_1"></div>
+                    <div id="c3_2"></div>
+                </slot>
+            </slot>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="5. Slots: Name matching">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L110"
+       > assignedSlot </a>
+    </h3>
+    <template>
+        <div id="test_slot_name_matching">
+            <div id="host">
+                <template data-mode="open">
+                    <slot id="s1" name="slot1"></slot>
+                    <slot id="s2" name="slot2"></slot>
+                    <slot id="s3" name="xxx"></slot>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+                <div id="c2" slot="slot2">#c2</div>
+                <div id="c3" slot="yyy"  >#c3</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="6. Slots: No direct host child">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L134"
+       > assignedSlot </a>
+    </h3>
+    <template>
+        <div id="test_no_direct_host_child">
+            <div id="host">
+                <template data-mode="open">
+                    <slot id="s1" name="slot1">#s1</slot>
+                    <slot id="s2" name="slot1">#s2</slot>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+                <div id="c2" slot="slot1">#c2</div>
+                <div>
+                    <div id="c3" slot="slot1">#c3</div>
+                </div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="7. Slots: Default Slot">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L161"
+       > assignedSlot </a>
+    </h3>
+    <template>
+        <div id="test_default_slot">
+            <div id="host">
+                <template data-mode="open">
+                    <slot id="s1" name="slot1">#s1</slot>
+                    <slot id="s2">#s2</slot>
+                    <slot id="s3">#s3</slot>
+                </template>
+                <div id="c1">#c1</div>
+                <div id="c2" slot="">#c2</div>
+                <div id="c3" slot="foo">#c3</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="8. Slots: Slot in Slot does not matter in assignment.">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L185"
+       > assignedSlot </a>
+    </h3>
+    <template>
+        <div id="test_slot_in_slot">
+            <div id="host">
+                <template data-mode="open">
+                    <slot id="s1" name="slot1">
+                        #s1
+                        <slot id="s2" name="slot2">#s2</slot>
+                    </slot>
+                </template>
+                <div id="c1" slot="slot2">#c1</div>
+                <div id="c2" slot="slot1">#c2</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="9. Slots: Slot is assigned to another slot">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L207"
+       > assignedSlot </a>
+    </h3>
+    <template>
+        <div id="test_slot_is_assigned_to_slot">
+            <div id="host1">
+                <template data-mode="open">
+                    <div id="host2">
+                        <template data-mode="open">
+                            <slot id="s2" name="slot2">#s2</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot2">#s1</slot>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="10. Slots: Open > Closed">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L237"
+       > assignedSlot, assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_open_closed">
+            <div id="host1">
+                <template data-mode="open">
+                    <div id="host2">
+                        <template data-mode="closed">
+                            <slot id="s2" name="slot2">#s2</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot2">#s1</slot>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="11. Slots: Closed > Closed">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L268"
+       > assignedSlot, assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_closed_closed">
+            <div id="host1">
+                <template data-mode="closed">
+                    <div id="host2">
+                        <template data-mode="closed">
+                            <slot id="s2" name="slot2">#s2</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot2">#s1</slot>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="12. Slots: Closed > Open">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L300"
+       > assignedSlot, assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_closed_open">
+            <div id="host1">
+                <template data-mode="closed">
+                    <div id="host2">
+                        <template data-mode="open">
+                            <slot id="s2" name="slot2">#s2</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot2">#s1</slot>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+<html-demo-element legend="13. Slots: Complex case: Basi line. Mutation: appendChild, change slot attr">
+    <h3 slot="description"><a
+        href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L331"
+       > assignedSlot, assignedNodes((),assignedNodes({ flatten: true }) </a>
+    </h3>
+    <template>
+        <div id="test_complex">
+            <div id="host1">
+                <template data-mode="open">
+                    <div id="host2">
+                        <template data-mode="open">
+                            <slot id="s5" name="slot5">#s5</slot>
+                            <slot id="s6" name="slot6">#s6</slot>
+                            <slot id="s7">#s7</slot>
+                            <slot id="s8" name="slot8">#s8</slot>
+                        </template>
+                        <slot id="s1" name="slot1" slot="slot5">#s1</slot>
+                        <slot id="s2" name="slot2" slot="slot6">#s2</slot>
+                        <slot id="s3">#s3</slot>
+                        <slot id="s4" name="slot4" slot="slot-none">#s4</slot>
+                        <div id="c5" slot="slot5">#c5</div>
+                        <div id="c6" slot="slot6">#c6</div>
+                        <div id="c7">#c7</div>
+                        <div id="c8" slot="slot-none">c8</div>
+                    </div>
+                </template>
+                <div id="c1" slot="slot1">#c1</div>
+                <div id="c2" slot="slot2">#c2</div>
+                <div id="c3">#c3</div>
+                <div id="c4" slot="slot-none">#c4</div>
+            </div>
+        </div>
+    </template>
+</html-demo-element>
+
+
+<html-demo-element src="slots-light-vs-shadow.js" legend="slots-light-vs-shadow.js"></html-demo-element>
+
+<script src="./slots-light-vs-shadow.js" type="module"></script>
+<script type="module">
+    import { expect } from "@open-wc/testing";
+    import { runTests } from "@web/test-runner-mocha";
+    import { createTestTree, removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
+    import $ from './CssChain.js';
+
+    const test = ( cb, title )=>{ it(title, cb); }
+    ,   assert_equals = (a,b)=>expect(a).to.equal(b)
+    ,   assert_array_equals = (a,b)=>expect(a).to.eql(b);
+
+    runTests(async () => {
+        describe("test_basic", () => {
+
+            test(() => {
+                let n = createTestTree(test_basic);
+                removeWhiteSpaceOnlyTextNodes(n.test_basic);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+            }, 'Slots: Basic.');
+            test(() => {
+                let n = createTestTree(test_basic);
+
+                assert_array_equals(n.s1.assignedElements(), [n.c1]);
+            }, 'Slots: Basic, elements only.');
+            it('createTestTree$: Basic', async () => {
+
+                const lightText  = $($(test_basic).parent().$('.light  #host')[0]        ).text().replace( /\s+/g ,' ').trim();
+                const shadowText = $($(test_basic).parent().$('.shadow #host').shadowRoot).text().replace( /\s+/g ,' ').trim();
+
+                expect(lightText).to.equal(shadowText);
+                expect(lightText).to.equal('before slot slot1 override after slot');
+            });
+            test(() => {
+                let n = createTestTree(test_basic_closed);
+                removeWhiteSpaceOnlyTextNodes(n.test_basic_closed);
+
+                assert_equals(n.c1.assignedSlot, null);
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+            }, 'Slots: Slots in closed.');
+            test(() => {
+                let n = createTestTree(test_basic_closed);
+                assert_array_equals(n.s1.assignedElements(), [n.c1]);
+            }, 'Slots: Slots in closed, elements only.');
+            it('createTestTree$: Slots in closed', async () => {
+
+                expect($(test_basic_closed).parent().$('.shadow #host').shadowRoot).to.equal(null);// closed shadow mode makes shadowRoot not available by JS
+                const lightText  = $($(test_basic_closed).parent().$('.light  #host')[0]        ).text().replace( /\s+/g ,' ').trim();
+                expect(lightText).to.equal('before slot slot1 override after slot');
+            });
+            test(() => {
+                let n = createTestTree(test_slot_not_in_shadow);
+                removeWhiteSpaceOnlyTextNodes(n.test_slot_not_in_shadow);
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+            }, 'Slots: Slots not in a shadow tree.');
+            test(() => {
+                let n = createTestTree(test_slot_not_in_shadow);
+
+                assert_array_equals(n.s1.assignedElements(), []);
+            }, 'Slots: Slots not in a shadow tree, elements only.');
+            it('createTestTree$: Slots not in a shadow tree', ()=>
+            {
+                const slotLight  = $(test_slot_not_in_shadow).parent().$('.light' ).slot();
+                const slotShadow = $(test_slot_not_in_shadow).parent().$('.shadow').slot();
+                expect(slotLight .assignedNodes   ().length).to.equal(0);
+                expect(slotShadow.assignedNodes   ().length).to.equal(0);
+                expect(slotLight .assignedElements().length).to.equal(0);
+                expect(slotShadow.assignedElements().length).to.equal(0);
+            });
+            test(() => {
+                let n = createTestTree(test_slot_not_in_shadow_2);
+                removeWhiteSpaceOnlyTextNodes(n.test_slot_not_in_shadow_2);
+
+                assert_equals(n.c1.assignedSlot, null);
+                assert_equals(n.c2.assignedSlot, null);
+                assert_equals(n.c3_1.assignedSlot, null);
+                assert_equals(n.c3_2.assignedSlot, null);
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_array_equals(n.s2.assignedNodes(), []);
+                assert_array_equals(n.s3.assignedNodes(), []);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), []);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), []);
+                assert_array_equals(n.s3.assignedNodes({ flatten: true }), []);
+            }, 'Slots: Distributed nodes for Slots not in a shadow tree.');
+            it('createTestTree$: Distributed nodes for Slots not in a shadow tree.', ()=>
+            {
+                const shadow = $(test_slot_not_in_shadow_2).parent().$('.shadow');
+                const light  = $(test_slot_not_in_shadow_2).parent().$('.light' );
+
+                expect(shadow.$('#c1'  ).assignedSlot).to.equal(null);
+                expect(light .$('#c1'  ).assignedSlot).to.equal(null);
+                expect(shadow.$('#c3_1').assignedSlot).to.equal(null);
+                expect(light .$('#c3_1').assignedSlot).to.equal(null);
+                expect(shadow.$('#c3_2').assignedSlot).to.equal(null);
+                expect(light .$('#c3_2').assignedSlot).to.equal(null);
+
+                expect(shadow.$('#s1').assignedNodes().length).to.equal(0);
+                expect(light .$('#s1').assignedNodes().length).to.equal(0);
+                expect(shadow.$('#s2').assignedNodes().length).to.equal(0);
+                expect(light .$('#s2').assignedNodes().length).to.equal(0);
+                expect(shadow.$('#s3').assignedNodes().length).to.equal(0);
+                expect(light .$('#s3').assignedNodes().length).to.equal(0);
+
+                expect(shadow.$('#s1').assignedNodes({ flatten: true }).length).to.equal(0);
+                expect(light .$('#s1').assignedNodes({ flatten: true }).length).to.equal(0);
+                expect(shadow.$('#s2').assignedNodes({ flatten: true }).length).to.equal(0);
+                expect(light .$('#s2').assignedNodes({ flatten: true }).length).to.equal(0);
+                expect(shadow.$('#s3').assignedNodes({ flatten: true }).length).to.equal(0);
+                expect(light .$('#s3').assignedNodes({ flatten: true }).length).to.equal(0);
+            });
+            test(() => {
+                let n = createTestTree(test_slot_name_matching);
+                removeWhiteSpaceOnlyTextNodes(n.test_slot_name_matching);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.c2.assignedSlot, n.s2);
+                assert_equals(n.c3.assignedSlot, null);
+            }, 'Slots: Name matching');
+            it('createTestTree$: Name matching', ()=>
+            {
+                const shadow = $(test_slot_name_matching).parent().$('.shadow');
+                const light  = $(test_slot_name_matching).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+
+                // assignedSlot in light DOM is not working, testing content instead
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                expect( light.$('#host').slot('slot1').text() ).to.equal( '#c1' );
+                expect( light.$('#s1').text() ).to.equal( '#c1' );
+
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('slot2')[0]);
+                expect( light.$('#host').slot('slot2').text() ).to.equal( '#c2' );
+                expect( light.$('#s2').text() ).to.equal( '#c2' );
+
+                expect(shadow.$('#c3').assignedSlot).to.equal(null);
+                expect( light.$('#host').slot('xxx').text() ).to.equal( '' );
+                expect( light.$('#s3').text() ).to.equal( '' );
+            });
+            test(() => {
+                let n = createTestTree(test_no_direct_host_child);
+                removeWhiteSpaceOnlyTextNodes(n.test_no_direct_host_child);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.c2.assignedSlot, n.s1);
+                assert_equals(n.c3.assignedSlot, null);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1, n.c2]);
+            }, 'Slots: No direct host child.');
+            it('6 createTestTree$: No direct host child', ()=>
+            {
+                const shadow = $(test_no_direct_host_child).parent().$('.shadow');
+                const light  = $(test_no_direct_host_child).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+
+                // assignedSlot in light DOM is not working, testing content instead
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                expect( shadow.$('#host').slot('slot1').text() ).to.equal( '#c1#c2#s2' );
+                expect(  light.$('#host').slot('slot1').text() ).to.equal( '#c1#c2#s2' );
+            });
+            test(() => {
+                let n = createTestTree(test_default_slot);
+                removeWhiteSpaceOnlyTextNodes(n.test_default_slot);
+
+                assert_equals(n.c1.assignedSlot, n.s2);
+                assert_equals(n.c2.assignedSlot, n.s2);
+                assert_equals(n.c3.assignedSlot, null);
+            }, 'Slots: Default Slot.');
+            it('7 createTestTree$: Default Slot', ()=>
+            {
+                const shadow = $(test_default_slot).parent().$('.shadow');
+                const light  = $(test_default_slot).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('')[0]);
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('')[0]);
+                expect(shadow.$('#c3').assignedSlot).to.equal(null);
+
+                // assignedSlot in light DOM is not working, testing content instead
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                expect( shadow.$('#host').slot().text().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
+                expect(  light.$('#host').slot().text().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
+            });
+            test(() => {
+                let n = createTestTree(test_slot_in_slot);
+                removeWhiteSpaceOnlyTextNodes(n.test_slot_in_slot);
+
+                assert_equals(n.c1.assignedSlot, n.s2);
+                assert_equals(n.c2.assignedSlot, n.s1);
+            }, 'Slots: Slot in Slot does not matter in assignment.');
+            it('8 createTestTree$: Slot in Slot does not matter in assignment', ()=>
+            {
+                const shadow = $(test_slot_in_slot).parent().$('.shadow');
+                const light  = $(test_slot_in_slot).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot2')[0]);
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+
+                // assignedSlot in light DOM is not working, testing content instead
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                expect( shadow.$('#host').text() ).to.equal( '#c2' );
+                expect(  light.$('#host').text() ).to.equal( '#c2' );
+            });
+            test(() => {
+                let n = createTestTree(test_slot_is_assigned_to_slot);
+                removeWhiteSpaceOnlyTextNodes(n.test_slot_is_assigned_to_slot);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.s1.assignedSlot, n.s2);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.s1]);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c1]);
+            }, 'Slots: Slot is assigned to another slot');
+            it('9 createTestTree$: Slot is assigned to another slot', ()=>
+            {
+                const shadow = $(test_slot_is_assigned_to_slot).parent().$('.shadow');
+                const light  = $(test_slot_is_assigned_to_slot).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slot('slot1')[0]);
+                expect(shadow.$('#s1').assignedSlot).to.equal(shadow.$('#host1').slot('slot2')[0]);
+
+                // assignedSlot in light DOM is not working, testing content instead
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                expect( shadow.$('#host1').text() ).to.equal( '#c1' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1' );
+            });
+            test(() => {
+                let n = createTestTree(test_open_closed);
+                removeWhiteSpaceOnlyTextNodes(n.test_open_closed);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.s1.assignedSlot, null,
+                    'A slot in a closed shadow tree should not be accessed via assignedSlot');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.s1]);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c1]);
+            }, 'Slots: Open > Closed.');
+            it('10 createTestTree$: Open > Closed', ()=>
+            {
+                const shadow = $(test_open_closed).parent().$('.shadow');
+                const light  = $(test_open_closed).parent().$('.light' );
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slot('slot1')[0]);
+                expect(shadow.$('#host1').slot('slot1').assignedSlot).to.equal(null);
+                expect(shadow.$('#s1').length).to.equal(0);// slot tag is replaced and not available anymore
+
+
+                expect(shadow.$('#host1').slot('slot1').assignedNodes()).to.eql(shadow.$('#c1'));
+                // host2 shadowRoot is closed and children including slots not available.
+                // expect(shadow.$('#host1').$('#host2').slot('slot2').assignedNodes()).to.eql(shadow.$('#host1').slot('slot1'));
+                expect(shadow.$('#host1').slot('slot1').assignedNodes({ flatten: true })).to.eql(shadow.$('#c1'));
+
+                expect( shadow.$('#host1').text() ).to.equal( '#c1' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1' );
+            });
+            test(() => {
+                let n = createTestTree(test_closed_closed);
+                removeWhiteSpaceOnlyTextNodes(n.test_closed_closed);
+
+                assert_equals(n.c1.assignedSlot, null,
+                    'A slot in a closed shadow tree should not be accessed via assignedSlot');
+                assert_equals(n.s1.assignedSlot, null,
+                    'A slot in a closed shadow tree should not be accessed via assignedSlot');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.s1]);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c1]);
+            }, 'Slots: Closed > Closed.');
+            it('11 createTestTree$: Closed > Closed', ()=>
+            {
+                const shadow = $(test_open_closed).parent().$('.shadow');
+                // 11. no shadow test for closed>closed as DOM is not available for JS
+                const light  = $(test_open_closed).parent().$('.light' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1' );
+            });
+            test(() => {
+                let n = createTestTree(test_closed_open);
+                removeWhiteSpaceOnlyTextNodes(n.test_closed_open);
+
+                assert_equals(n.c1.assignedSlot, null,
+                    'A slot in a closed shadow tree should not be accessed via assignedSlot');
+                assert_equals(n.s1.assignedSlot, n.s2);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.s1]);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c1]);
+            }, 'Slots: Closed > Open.');
+            it('12 createTestTree$: Closed > Open', ()=>
+            {
+                const shadow = $(test_closed_open).parent().$('.shadow');
+                // 12. no shadow test for closed>open as DOM is not available for JS
+                const light  = $(test_closed_open).parent().$('.light' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1' );
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                assert_equals(n.c1.assignedSlot, n.s1);
+                assert_equals(n.c2.assignedSlot, n.s2);
+                assert_equals(n.c3.assignedSlot, n.s3);
+                assert_equals(n.c4.assignedSlot, null);
+
+                assert_equals(n.s1.assignedSlot, n.s5);
+                assert_equals(n.s2.assignedSlot, n.s6);
+                assert_equals(n.s3.assignedSlot, n.s7);
+                assert_equals(n.s4.assignedSlot, null);
+
+                assert_equals(n.c5.assignedSlot, n.s5);
+                assert_equals(n.c6.assignedSlot, n.s6);
+                assert_equals(n.c7.assignedSlot, n.s7);
+                assert_equals(n.c8.assignedSlot, null);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes(), [n.c2]);
+                assert_array_equals(n.s3.assignedNodes(), [n.c3]);
+                assert_array_equals(n.s4.assignedNodes(), []);
+                assert_array_equals(n.s5.assignedNodes(), [n.s1, n.c5]);
+                assert_array_equals(n.s6.assignedNodes(), [n.s2, n.c6]);
+                assert_array_equals(n.s7.assignedNodes(), [n.s3, n.c7]);
+                assert_array_equals(n.s8.assignedNodes(), []);
+
+                assert_array_equals(n.s1.assignedNodes({ flatten: true }), [n.c1]);
+                assert_array_equals(n.s2.assignedNodes({ flatten: true }), [n.c2]);
+                assert_array_equals(n.s3.assignedNodes({ flatten: true }), [n.c3]);
+                // assert_array_equals(n.s4.assignedNodes({ flatten: true }), []); // text node #s4
+                assert_array_equals(n.s4.assignedElements({ flatten: true }), []);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, n.c5]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c2, n.c6]);
+                assert_array_equals(n.s7.assignedNodes({ flatten: true }), [n.c3, n.c7]);
+                // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
+                assert_array_equals(n.s8.assignedElements({ flatten: true }), []);
+            }, 'Slots: Complex case: Basi line.');
+            it('13.1 createTestTree$: Complex case: Basi line.', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+                const assert_assignedSlot = (k,s) => {
+                    assert_equals( n[k].assignedSlot, s && n[s] ); // same in prev test
+                    expect(shadow.$('#'+k).assignedSlot || shadow.$('#host1').$('#'+k).assignedSlot || null)
+                        .to.equal( s
+                                   && (  shadow.$('#host1').slot().find( e=>e.id===s)
+                                        || shadow.$('#host1').$('#host2').slot().find( e=>e.id===s)
+                                        || null
+                                      )
+                                );
+                    expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slot().find( e=>e.id===s));
+                    // node.assignedSlot in light DOM equals the parent slot
+                };
+                const assert_assignedNodes = (k,arr)=>
+                {   assert_array_equals( n[k].assignedNodes(), arr.map( e=>n[e] ) );
+                    expect( [].concat( shadow.$('#'+k).assignedNodes()
+                                     , shadow.$('#host1').$('#'+k).assignedNodes()
+                                     , shadow.$('#host1').$('#host2').$('#'+k).assignedNodes()
+                                     ).map( e=>e.id )
+                    ).to.eql( arr );
+
+                    expect( light.$('#'+k).children.map( e=>e.id ) ).to.eql( arr );
+                    // node.assignedNodes in light DOM equals the child nodes
+                };
+                const assert_assignedNodesF = (k,arr)=>
+                {   const F = { flatten: true };
+                    assert_array_equals( n[k].assignedNodes(F).filter( e=> e.nodeType !== 3 ), arr.map( e=>n[e] ) );
+                    expect( [].concat( shadow.$('#'+k).assignedNodes(F)
+                                     , shadow.$('#host1').$('#'+k).assignedNodes(F).filter( e=> e.nodeType !== 3 )
+                                     , shadow.$('#host1').$('#host2').$('#'+k).assignedNodes(F).filter( e=> e.nodeType !== 3 )
+                                     ).map( e=>e.id )
+                    ).to.eql( arr );
+
+                    expect( light.$('#'+k).children.map( e=>e.tagName==='SLOT'?e.firstChild:e ).map( e=>e.id ) ).to.eql( arr );
+                    // node.assignedNodes in light DOM equals the child nodes
+                };
+
+                // same sequence as in prev test but testing using CssChain of shadow and light dom
+                assert_assignedSlot('c1', 's1');
+                assert_assignedSlot('c2', 's2');
+                assert_assignedSlot('c3', 's3');
+                assert_assignedSlot('c4', null);
+
+                assert_assignedSlot('s1', 's5');
+                assert_assignedSlot('s2', 's6');
+                assert_assignedSlot('s3', 's7');
+                assert_assignedSlot('s4', null);
+
+                assert_assignedSlot('c5', 's5');
+                assert_assignedSlot('c6', 's6');
+                assert_assignedSlot('c7', 's7');
+                assert_assignedSlot('c8', null);
+
+                assert_assignedNodes('s1', ['c1']);
+                assert_assignedNodes('s2', ['c2']);
+                assert_assignedNodes('s3', ['c3']);
+                assert_assignedNodes('s4', []);
+                assert_assignedNodes('s5', ['s1', 'c5']);
+                assert_assignedNodes('s6', ['s2', 'c6']);
+                assert_assignedNodes('s7', ['s3', 'c7']);
+                assert_assignedNodes('s8', []);
+
+                assert_assignedNodesF('s1', ['c1']);
+                assert_assignedNodesF('s2', ['c2']);
+                assert_assignedNodesF('s3', ['c3']);
+                // assert_array_equals(n.s4.assignedNodes({ flatten: true }), []); // text node #s4
+                assert_assignedNodesF('s4', []);
+                assert_assignedNodesF('s5', ['c1', 'c5']);
+                assert_assignedNodesF('s6', ['c2', 'c6']);
+                assert_assignedNodesF('s7', ['c3', 'c7']);
+                // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
+                assert_assignedNodesF('s8', []);
+
+                expect( shadow.$('#host1').text() ).to.equal( '#c1\n#c2\n#c3' );
+                expect( shadow.$('#host1').$('#host2').text() ).to.equal( '#c5\n#c6\n#c7' );
+                expect(  light.$('#host1').text() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                let d1 = document.createElement('div');
+                d1.setAttribute('slot', 'slot1');
+                n.host1.appendChild(d1);
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1, d1]);
+                assert_equals(d1.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, d1, n.c5]);
+            }, 'Slots: Mutation: appendChild.');
+            it('13.2 createTestTree$: Mutation: appendChild', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#host1').append('<div slot="slot1" id="d1">#d1</div>');
+                expect(shadow.$('#host1').slot('slot1').assignedNodes().map( e=>e.id )).to.eql( ['c1', 'd1']);
+                expect(shadow.$('#d1').assignedSlot).to.eql( shadow.$('#host1').slot('slot1')[0]);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, d1, n.c5]);
+                expect( shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).map( e=>e.id )).to.eql(['c1','d1','c5']);
+
+                // there is no mutation to test in light dom as content is replaced by template
+                // and no ability to get original children for applying template again
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.setAttribute('slot', 'slot-none');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+            }, 'Slots: Mutation: Change slot= attribute 1.');
+            it('13.3 createTestTree$: Mutation: Change slot= attribute 1', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#c1').attr('slot','slot-none');
+                assert_array_equals(n.s1.assignedNodes(), []);
+                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                assert_equals(n.c1.assignedSlot, null);
+                expect(shadow.$('#c1').assignedSlot ).to.eql(null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                expect(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 )).to.eql([n.c5]);
+                // no mutation test on light dom
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.setAttribute('slot', 'slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_array_equals(n.s2.assignedNodes(), [n.c1, n.c2]);
+                assert_equals(n.c1.assignedSlot, n.s2);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+            }, 'Slots: Mutation: Change slot= attribute 2.');
+            it('13.4 createTestTree$: Mutation: Change slot= attribute 1', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#c1').attr('slot','slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                assert_array_equals(n.s2.assignedNodes(), [n.c1, n.c2]);
+                expect(shadow.$('#host1').slot('slot2').assignedNodes() ).to.eql([n.c1, n.c2]);
+                assert_equals(shadow.$('#c1').assignedSlot, shadow.$('#host1').slot('slot2')[0]);
+
+                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot6').assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+
+                // no mutation test on light dom
+            });
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c4.setAttribute('slot', 'slot1');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1, n.c4]);
+                assert_equals(n.c4.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, n.c4, n.c5]);
+            }, 'Slots: Mutation: Change slot= attribute 3.');
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.remove();
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+            }, 'Slots: Mutation: Remove a child.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                let slot = document.createElement('slot');
+                slot.setAttribute('name', 'slot1');
+                n.host2.appendChild(slot);
+
+                assert_array_equals(slot.assignedNodes(), []);
+            }, 'Slots: Mutation: Add a slot: after.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                let slot = document.createElement('slot');
+                slot.setAttribute('name', 'slot1');
+                n.host2.insertBefore(slot, n.s1);
+
+                assert_array_equals(slot.assignedNodes(), [n.c1]);
+                assert_equals(n.c1.assignedSlot, slot);
+
+                assert_array_equals(n.s7.assignedNodes(), [slot, n.s3, n.c7]);
+                assert_array_equals(n.s7.assignedNodes({ flatten: true }), [n.c1, n.c3, n.c7]);
+            }, 'Slots: Mutation: Add a slot: before.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.remove();
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.c5]);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c5]);
+            }, 'Slots: Mutation: Remove a slot.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.setAttribute('name', 'slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c2]);
+                assert_equals(n.c1.assignedSlot, null);
+                assert_equals(n.c2.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.s1, n.c5]);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c2, n.c5]);
+            }, 'Slots: Mutation: Change slot name= attribute.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.setAttribute('slot', 'slot6');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.c5]);
+                assert_array_equals(n.s6.assignedNodes(), [n.s1, n.s2, n.c6]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+            }, 'Slots: Mutation: Change slot slot= attribute.');
+        });
+    });
+
+
+</script>
+</body>
+</html>

@@ -248,4 +248,6 @@ describe( 'CssChain slot methods', () =>
         expect( el.$().slot('').innerText).to.contain('default slot');
         expect( el.$().slot(',outer').length).to.eq(2);
     });
+
+
 } );
