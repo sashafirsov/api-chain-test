@@ -281,7 +281,7 @@
     </template>
 </html-demo-element>
 
-<html-demo-element legend="13. Slots: Complex case: Basi line.">
+<html-demo-element legend="13. Slots: Complex case: Basi line. Mutation: appendChild, change slot attr">
     <h3 slot="description"><a
         href="https://github.com/chromium/chromium/blob/7c6820016905bc3c7fee8a7b58e41694bdfcbef1/third_party/blink/web_tests/external/wpt/shadow-dom/slots.html#L331"
        > assignedSlot, assignedNodes((),assignedNodes({ flatten: true }) </a>
@@ -659,7 +659,7 @@
                 // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
                 assert_array_equals(n.s8.assignedElements({ flatten: true }), []);
             }, 'Slots: Complex case: Basi line.');
-            it('13 createTestTree$: Complex case: Basi line.', ()=>
+            it('13.1 createTestTree$: Complex case: Basi line.', ()=>
             {
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
@@ -745,8 +745,218 @@
                 expect( shadow.$('#host1').$('#host2').text() ).to.equal( '#c5\n#c6\n#c7' );
                 expect(  light.$('#host1').text() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
             });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
+                let d1 = document.createElement('div');
+                d1.setAttribute('slot', 'slot1');
+                n.host1.appendChild(d1);
 
+                assert_array_equals(n.s1.assignedNodes(), [n.c1, d1]);
+                assert_equals(d1.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, d1, n.c5]);
+            }, 'Slots: Mutation: appendChild.');
+            it('13.2 createTestTree$: Mutation: appendChild', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#host1').append('<div slot="slot1" id="d1">#d1</div>');
+                expect(shadow.$('#host1').slot('slot1').assignedNodes().map( e=>e.id )).to.eql( ['c1', 'd1']);
+                expect(shadow.$('#d1').assignedSlot).to.eql( shadow.$('#host1').slot('slot1')[0]);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, d1, n.c5]);
+                expect( shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).map( e=>e.id )).to.eql(['c1','d1','c5']);
+
+                // there is no mutation to test in light dom as content is replaced by template
+                // and no ability to get original children for applying template again
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.setAttribute('slot', 'slot-none');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+            }, 'Slots: Mutation: Change slot= attribute 1.');
+            it('13.3 createTestTree$: Mutation: Change slot= attribute 1', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#c1').attr('slot','slot-none');
+                assert_array_equals(n.s1.assignedNodes(), []);
+                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                assert_equals(n.c1.assignedSlot, null);
+                expect(shadow.$('#c1').assignedSlot ).to.eql(null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                expect(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 )).to.eql([n.c5]);
+                // no mutation test on light dom
+            });
+            test(() => {
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.setAttribute('slot', 'slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_array_equals(n.s2.assignedNodes(), [n.c1, n.c2]);
+                assert_equals(n.c1.assignedSlot, n.s2);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+            }, 'Slots: Mutation: Change slot= attribute 2.');
+            it('13.4 createTestTree$: Mutation: Change slot= attribute 1', ()=>
+            {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                const shadow = $(test_complex).parent().$('.shadow');
+                const light  = $(test_complex).parent().$('.light' );
+
+                shadow.$('#c1').attr('slot','slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                assert_array_equals(n.s2.assignedNodes(), [n.c1, n.c2]);
+                expect(shadow.$('#host1').slot('slot2').assignedNodes() ).to.eql([n.c1, n.c2]);
+                assert_equals(shadow.$('#c1').assignedSlot, shadow.$('#host1').slot('slot2')[0]);
+
+                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot6').assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+
+                // no mutation test on light dom
+            });
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c4.setAttribute('slot', 'slot1');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1, n.c4]);
+                assert_equals(n.c4.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, n.c4, n.c5]);
+            }, 'Slots: Mutation: Change slot= attribute 3.');
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.c1.remove();
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+            }, 'Slots: Mutation: Remove a child.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                let slot = document.createElement('slot');
+                slot.setAttribute('name', 'slot1');
+                n.host2.appendChild(slot);
+
+                assert_array_equals(slot.assignedNodes(), []);
+            }, 'Slots: Mutation: Add a slot: after.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                let slot = document.createElement('slot');
+                slot.setAttribute('name', 'slot1');
+                n.host2.insertBefore(slot, n.s1);
+
+                assert_array_equals(slot.assignedNodes(), [n.c1]);
+                assert_equals(n.c1.assignedSlot, slot);
+
+                assert_array_equals(n.s7.assignedNodes(), [slot, n.s3, n.c7]);
+                assert_array_equals(n.s7.assignedNodes({ flatten: true }), [n.c1, n.c3, n.c7]);
+            }, 'Slots: Mutation: Add a slot: before.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.remove();
+
+                assert_array_equals(n.s1.assignedNodes(), []);
+                assert_equals(n.c1.assignedSlot, null);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.c5]);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c5]);
+            }, 'Slots: Mutation: Remove a slot.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.setAttribute('name', 'slot2');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c2]);
+                assert_equals(n.c1.assignedSlot, null);
+                assert_equals(n.c2.assignedSlot, n.s1);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.s1, n.c5]);
+                assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c2, n.c5]);
+            }, 'Slots: Mutation: Change slot name= attribute.');
+
+            test(() => {
+                $(test_complex).parent().$('.shadow').remove();
+                $(test_complex).parent().$('.light').remove();
+
+                let n = createTestTree(test_complex);
+                removeWhiteSpaceOnlyTextNodes(n.test_complex);
+
+                n.s1.setAttribute('slot', 'slot6');
+
+                assert_array_equals(n.s1.assignedNodes(), [n.c1]);
+
+                assert_array_equals(n.s5.assignedNodes(), [n.c5]);
+                assert_array_equals(n.s6.assignedNodes(), [n.s1, n.s2, n.c6]);
+                assert_array_equals(n.s6.assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+            }, 'Slots: Mutation: Change slot slot= attribute.');
         });
     });
 

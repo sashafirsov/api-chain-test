@@ -20,7 +20,7 @@ export function createTestTree( node )
         parent.removeChild( template );
         let shadowRoot;
         if( template.getAttribute( 'data-slot-assignment' ) === 'manual' )
-        {
+        {   /* c8 ignore next 5 */
             shadowRoot =
                 parent.attachShadow( {
                     mode: template.getAttribute( 'data-mode' ),
@@ -32,6 +32,7 @@ export function createTestTree( node )
                 { mode: template.getAttribute( 'data-mode' ) } );
         }
         let id = template.id;
+        /* c8 ignore next 5 */
         if( id )
         {
             shadowRoot.id = id;
@@ -42,7 +43,7 @@ export function createTestTree( node )
     }
 
     function walkShadowDom( root )
-    {
+    {   /* c8 ignore next 4 */
         if( root.id )
         {
             ids[ root.id ] = root;
