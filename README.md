@@ -6,7 +6,7 @@ Collection API inherits the element API and Array.
 [![NPM version][npm-image]][npm-url] [![coverage][coverage-image]][coverage-url]
 
 ## Live demo
-https://unpkg.com/css-chain-test@1.0.12/dist/demo.html
+https://unpkg.com/css-chain-test@1.0.13/dist/demo.html
 
 # [CssChain](https://github.com/sashafirsov/css-chain/blob/main/CssChain.js)
 ## html elements methods
@@ -154,7 +154,7 @@ To run a local development server that serves the basic demo located in `demo/in
 
 [npm-image]:      https://img.shields.io/npm/v/css-chain.svg
 [npm-url]:        https://npmjs.org/package/css-chain-test
-[coverage-image]: https://unpkg.com/css-chain-test@1.0.12/coverage/coverage.svg
-[coverage-url]:   https://unpkg.com/css-chain-test@1.0.12/coverage/lcov-report/index.html
-[PokeApi-explorer-image]: https://unpkg.com/css-chain-test@1.0.12/src/PokeApi-Explorer.png
-[PokeApi-explorer-url]: https://unpkg.com/css-chain-test@1.0.12/src/PokeApi-Explorer.html
+[coverage-image]: https://unpkg.com/css-chain-test@1.0.13/coverage/coverage.svg
+[coverage-url]:   https://unpkg.com/css-chain-test@1.0.13/coverage/lcov-report/index.html
+[PokeApi-explorer-image]: https://unpkg.com/css-chain-test@1.0.13/src/PokeApi-Explorer.png
+[PokeApi-explorer-url]: https://unpkg.com/css-chain-test@1.0.13/src/PokeApi-Explorer.html
