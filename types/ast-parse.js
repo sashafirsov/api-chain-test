@@ -1,6 +1,13 @@
 import ts from "typescript";
+import fs  from 'fs';
 
-let checker;
+let checker, sourceFile;
+
+const getNodeName = node => node.name?.text;
+// checker.getSymbolAtLocation(node.name).getName();
+// checker.getFullyQualifiedName( checker.getSymbolAtLocation(node.name) )
+// node.name?.text;
+// node.name?.escapedText;
 
 function getParents( node /* ts.ClassDeclaration*/ )
 {
@@ -20,8 +27,7 @@ function getParents( node /* ts.ClassDeclaration*/ )
 
 const mapInterfaceName2deps = {
     // HTMLElement: // given for sample
-    //     {
-    //         extends: [ 'Element', 'DocumentAndElementEventHandlers', 'ElementCSSInlineStyle', 'ElementContentEditable', 'GlobalEventHandlers', 'HTMLOrSVGElement' ],
+    //     {   extends: [ 'Element', 'DocumentAndElementEventHandlers', 'ElementCSSInlineStyle', 'ElementContentEditable', 'GlobalEventHandlers', 'HTMLOrSVGElement' ],
     //         inheritedBy: [ 'HTMLEmbedElement' ]
     //     }
 };
@@ -43,32 +49,21 @@ function extract( file )
     const sourceFile = program.getSourceFile( file );
     // To print the AST, we'll use TypeScript's printer
     const printer = ts.createPrinter( { newLine: ts.NewLineKind.LineFeed } );
-    // To give constructive error messages, keep track of found and un-found identifiers
-    const foundNodes = [];
-    // Loop through the root AST nodes of the file
-    // @ts-ignore
     ts.forEachChild( sourceFile, node =>
     {
-        let name = "";
-        // This is an incomplete set of AST nodes which could have a top level identifier
-        // it's left to you to expand this list, which you can do by using
-        // https://ts-ast-viewer.com/ to see the AST of a file then use the same patterns
-        // as below
-        if( ts.isFunctionDeclaration( node ) )
+        // if( ts.isFunctionDeclaration( node ) )
+        // {   name = getNodeName(node);
+        //     console.log('function',name);
+        // }else if( ts.isVariableStatement( node ) )
+        // {
+        //     name = node.declarationList.declarations[ 0 ].name.getText( sourceFile );
+        //     console.log('variable',name);
+        // }else
+        if( ts.isInterfaceDeclaration( node ) )
         {
-            // @ts-ignore
-            name = node.name.text;
-            // Hide the method body when printing
-            // @ts-ignore
-            node.body = undefined;
-        }else if( ts.isVariableStatement( node ) )
-        {
-            name = node.declarationList.declarations[ 0 ].name.getText( sourceFile );
-        }else if( ts.isInterfaceDeclaration( node ) )
-        {
-            name = node.name.text;
-            foundNodes.push( [ name, node ] );
+            const name = getNodeName(node);
             let deps = assureMemberAsMap( mapInterfaceName2deps, name );
+            deps.interfaceNode = node;
             const classes = getParents( node );
             classes.map( c =>
             {
@@ -83,4 +78,70 @@ function extract( file )
 // extract(process.argv[2], process.argv.slice(3));
 extract( "node_modules/typescript/lib/lib.dom.d.ts" );
 const interfaces = Object.keys(mapInterfaceName2deps);
-console.log( mapInterfaceName2deps );
+// console.log( mapInterfaceName2deps );
+const member2commentCount = {};
+
+
+function scanMembers( dep )
+{
+    dep.interfaceNode.members.map( node =>
+    {
+        const name = getNodeName(node);
+        if( !name )
+            return;
+        const txt = node.getText(sourceFile).replace('readonly ','');
+        const symbol = checker.getSymbolAtLocation(node.name);
+        const comment = ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim();
+        if( !member2commentCount[ txt ] ) // assureMemberAsMap(member2commentCount,txt)[comment] )
+            member2commentCount[ txt ]={};
+        if( !member2commentCount[ txt ][ comment ] )
+            member2commentCount[ txt ][ comment ] = 0;
+        member2commentCount[ txt ][ comment ]++;
+
+        // get comments
+        // const commentRanges = ts.getLeadingCommentRanges(
+        //     sourceFile.getFullText(),
+        //     node.getFullStart());
+        // if (commentRange?.length)
+        //     const commentStrings:string[] =
+        //               commentRanges.map(r=>sourceFile.getFullText().slice(r.pos,r.end))
+
+        // console.log( name, 'comment',member2commentCount[txt][comment]  )
+    });
+}
+const traverseParents = clazz =>
+{   for( let name in mapInterfaceName2deps[clazz].extends )
+    {   scanMembers( mapInterfaceName2deps[name] );
+        traverseParents(name);
+    }
+};
+function traverseChildren ( clazz, parentName )
+{   for( let name in mapInterfaceName2deps[clazz].inheritedBy )
+    if( name !== parentName )
+    {   scanMembers( mapInterfaceName2deps[name] );
+        traverseChildren ( name, clazz )
+    }
+}
+
+// extract methods with JSDoc
+scanMembers(mapInterfaceName2deps.HTMLElement );
+traverseParents( 'HTMLElement' );
+traverseChildren ( 'HTMLElement', 'Element' );
+
+const methods =  Object.keys(member2commentCount).map( m=>
+{
+    const comments = Object.keys( member2commentCount[ m ] ).filter(c=>c);
+    const commentsStr = comments.length ? '/* '+ comments.map( c => ` ${ c } ` ).join( '\n\n' ) + '*/\n' : '';
+    return  commentsStr + m + '\n'
+}).join('\n');
+
+var stream = fs.createWriteStream("methods.d.ts");
+stream.once('open', function(fd) {
+    stream.write("interface HTMLInputElement {\n");
+    stream.write(methods);
+    stream.write("\n}\n");
+    stream.end();
+});
+
+// how to extract JSDocs https://stackoverflow.com/questions/47429792/is-it-possible-to-get-comments-as-nodes-in-the-ast-using-the-typescript-compiler
+// how to write type with JSDocs https://stackoverflow.com/questions/67575784/typescript-ast-factory-how-to-use-comments
