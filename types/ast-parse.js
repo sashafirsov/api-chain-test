@@ -33,7 +33,7 @@ const mapInterfaceName2deps = {
 };
 
 const assureMemberAsMap = ( o, field ) => o[field] || ( o[field] = { extends: {}, inheritedBy: {} } );
-
+const assureInit = (o, field, defaultValue = {}) => o[field] || ( o[field] = defaultValue );
 /**
  * Prints out particular nodes from a source file
  *
@@ -80,7 +80,7 @@ extract( "node_modules/typescript/lib/lib.dom.d.ts" );
 const interfaces = Object.keys(mapInterfaceName2deps);
 // console.log( mapInterfaceName2deps );
 const member2commentCount = {};
-
+const member2types = {};
 
 function scanMembers( dep )
 {
@@ -89,14 +89,20 @@ function scanMembers( dep )
         const name = getNodeName(node);
         if( !name )
             return;
-        const txt = node.getText(sourceFile).replace('readonly ','');
+        // const txt = node.getText(sourceFile).replace('readonly ','');
         const symbol = checker.getSymbolAtLocation(node.name);
         const comment = ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim();
-        if( !member2commentCount[ txt ] ) // assureMemberAsMap(member2commentCount,txt)[comment] )
-            member2commentCount[ txt ]={};
-        if( !member2commentCount[ txt ][ comment ] )
-            member2commentCount[ txt ][ comment ] = 0;
-        member2commentCount[ txt ][ comment ]++;
+        const m2c = assureInit( member2commentCount, name, {} );
+        assureInit( m2c, comment, 0 );
+        m2c[ comment ]++;
+
+        const m2t = assureInit( member2types, name, {} );
+        const tt = node?.type?.types ||[];
+        tt.map( n=>
+        {   const t = n.getText();
+            assureInit( m2t, t, 0 );
+            m2t[ t ]++;
+        });
 
         // get comments
         // const commentRanges = ts.getLeadingCommentRanges(
