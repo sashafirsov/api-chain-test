@@ -77,42 +77,36 @@ function extract( file )
 // Run the extract function with the script's arguments
 // extract(process.argv[2], process.argv.slice(3));
 extract( "node_modules/typescript/lib/lib.dom.d.ts" );
-const interfaces = Object.keys(mapInterfaceName2deps);
-// console.log( mapInterfaceName2deps );
-const member2commentCount = {};
-const member2types = {};
 
+const member2comment = {};
+const member2types = {};
+const SKIP={start:'HTMLOListElement:start number'}
 function scanMembers( dep )
 {
     dep.interfaceNode.members.map( node =>
     {
-        const name = getNodeName(node);
-        if( !name )
+        const fullSignature = node.getText(sourceFile);
+        const name = 'parameters' in node // method
+                    ? fullSignature.substring(0,fullSignature.lastIndexOf('):')+1)
+                    : getNodeName(node);
+        if( !name || name in SKIP )
             return;
-        // const txt = node.getText(sourceFile).replace('readonly ','');
-        const symbol = checker.getSymbolAtLocation(node.name);
-        const comment = ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim();
-        const m2c = assureInit( member2commentCount, name, {} );
-        assureInit( m2c, comment, 0 );
-        m2c[ comment ]++;
 
+        // types
         const m2t = assureInit( member2types, name, {} );
-        const tt = node?.type?.types ||[];
+        const tt = node?.type?.types || (node?.type? [node?.type]:[]);
         tt.map( n=>
-        {   const t = n.getText();
+        {   const t = n.getText().trim();
             assureInit( m2t, t, 0 );
             m2t[ t ]++;
         });
 
-        // get comments
-        // const commentRanges = ts.getLeadingCommentRanges(
-        //     sourceFile.getFullText(),
-        //     node.getFullStart());
-        // if (commentRange?.length)
-        //     const commentStrings:string[] =
-        //               commentRanges.map(r=>sourceFile.getFullText().slice(r.pos,r.end))
-
-        // console.log( name, 'comment',member2commentCount[txt][comment]  )
+        // comments
+        const symbol = checker.getSymbolAtLocation(node.name);
+        const comment = ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim();
+        const m2c = assureInit( member2comment, name, {} );
+        assureInit( m2c, comment, 0 );
+        m2c[ comment ]++;
     });
 }
 const traverseParents = clazz =>
@@ -134,16 +128,17 @@ scanMembers(mapInterfaceName2deps.HTMLElement );
 traverseParents( 'HTMLElement' );
 traverseChildren ( 'HTMLElement', 'Element' );
 
-const methods =  Object.keys(member2commentCount).map( m=>
+const methods =  Object.keys(member2types).map( m=>
 {
-    const comments = Object.keys( member2commentCount[ m ] ).filter(c=>c);
+    const comments = Object.keys( member2comment[ m ] ).filter(c=>c);
     const commentsStr = comments.length ? '/* '+ comments.map( c => ` ${ c } ` ).join( '\n\n' ) + '*/\n' : '';
-    return  commentsStr + m + '\n'
+    return  commentsStr + m +':'
+    + Object.keys(member2types[m] ).join('|') + ';\n'
 }).join('\n');
 
-var stream = fs.createWriteStream("methods.d.ts");
+var stream = fs.createWriteStream("src/HTMLElementMixin.d.ts");
 stream.once('open', function(fd) {
-    stream.write("interface HTMLInputElement {\n");
+    stream.write("interface HTMLElementMixin {\n");
     stream.write(methods);
     stream.write("\n}\n");
     stream.end();

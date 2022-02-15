@@ -2,6 +2,27 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import { CssChain as $$ } from '../src/CssChain.js';
 
+interface A{ ma: string; f(); }
+interface B{ mb: string; f(b:string); }
+interface C  extends A,B
+{
+    // ma: string;
+    // mb: string;
+
+    // f();
+    // f(b:string);
+    // f(a?);
+    f(a?:string,b?:string);
+}
+type ABC = A|B|C;
+const getAbc = (i):ABC=>{ return i? new class implements C{ma;mb;f(a?,b?){}} : new class implements A{ ma:string; f(){return 0}};}
+// @ts-ignore
+let abc:C = getAbc(1);
+abc.ma;
+abc.mb;
+abc.f('1','2');
+(abc as B).f('1');
+
 class DemoElement extends HTMLElement
 {
     b:string;

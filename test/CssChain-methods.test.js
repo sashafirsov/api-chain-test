@@ -205,9 +205,9 @@ describe( 'CssChain own methods', () =>
     {
         const el = await fixture(html`<div>d<a>a1<hr/></a><a>a2<br/></a>D</div>`);
         expect( $$('a',el).innerText.trim() ).to.equal('a1a2');
-        expect( $$('a',el).text().trim() ).to.equal('a1a2');
+        expect( $$('a',el).txt().trim() ).to.equal('a1a2');
         expect( $$(el).innerText.replace(/\n/g,'') ).to.equal('da1a2D');
-        expect( $$(el).text().replace(/\n/g,'') ).to.equal('da1a2D');
+        expect( $$(el).txt().replace(/\n/g,'') ).to.equal('da1a2D');
     } );
     it( 'set innerText', async ()=>
     {
@@ -219,7 +219,7 @@ describe( 'CssChain own methods', () =>
     it( 'text( cb(el,i,arr) )', async ()=>
     {
         const el = await fixture(html`<div>d<a title="#1">a1<hr/></a><a title="#2">a2<br/></a>D</div>`);
-        $$('a',el).text( (el,i,arr)=>`${i}. ${el.title} ${el.href} in arr[${arr.length}]`);
+        $$('a',el).txt( (el,i,arr)=>`${i}. ${el.title} ${el.href} in arr[${arr.length}]`);
         expect( $$('a',el).innerText            ).to.equal("0. #1 in arr[2]1. #2 in arr[2]");
         expect( $$(el).innerText.replace(/\n/g,'') ).to.equal("d0. #1 in arr[2]1. #2 in arr[2]D");
     } );
@@ -446,12 +446,12 @@ describe( 'CssChain own methods', () =>
     {
         const el = await fixture(html`<div>d<a>a1</a><a>a2</a>D</div>`);
         const $X = $$('a',el );
-        const $Y = $X.clear();
+        const $Y = $X.empty();
         expect( $X ).to.eq($Y);
         expect( $X.innerHTML ).to.eq("");
 
         const $Z= $$(el);
-        $Z.clear();
+        $Z.empty();
         expect( $Z.innerHTML ).to.eq("");
         expect( $Z.outerHTML ).to.eq("<div></div>");
     } );
@@ -459,7 +459,7 @@ describe( 'CssChain own methods', () =>
     it( 'text( val )', async ()=>
     {
         const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
-        const $X = $$('a',el ).text('Z');
+        const $X = $$('a',el ).txt('Z');
         expect( $X.length ).to.eq(2);
         expect( $X.innerText ).to.eq("ZZ");
     } );
@@ -467,7 +467,7 @@ describe( 'CssChain own methods', () =>
     it( 'text( cb(el,i,arr) )', async ()=>
     {
         const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
-        const $X = $$('a',el ).text( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`);
+        const $X = $$('a',el ).txt( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`);
         expect( $X.length ).to.eq(2);
         expect( $X.innerText ).to.eq("A1:one:0:2A2:two:1:2");
     } );
@@ -475,7 +475,7 @@ describe( 'CssChain own methods', () =>
     it( 'text( val,css )', async ()=>
     {
         const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
-        const $X = $$(el).text('Z','a');
+        const $X = $$(el).txt('Z','a');
         expect( $X.length ).to.eq(1);
         expect( $X[0].tagName ).to.eq('DIV');
         expect( $X.$('a').innerText ).to.eq("ZZ");
@@ -483,16 +483,16 @@ describe( 'CssChain own methods', () =>
     it( 'text( undefined,css )', async ()=>
     {
         const el = await fixture(html`<div>d <a>a1</a> - <a>a2</a> D</div>`);
-        const $X = $$(el).text(undefined,'a');
+        const $X = $$(el).txt(undefined,'a');
         expect( $X ).to.eq('a1a2');
-        expect( $$(el).text(undefined) ).to.eq('d a1 - a2 D');
-        expect( $$(el).text() ).to.eq('d a1 - a2 D');
+        expect( $$(el).txt(undefined) ).to.eq('d a1 - a2 D');
+        expect( $$(el).txt() ).to.eq('d a1 - a2 D');
     } );
 
     it( 'text( cb(el,i,arr), css )', async ()=>
     {
         const el = await fixture(html`<div>d <a title="A1">one</a> - <a title="A2">two</a> D</div>`);
-        const $X = $$( el ).text( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`, 'a');
+        const $X = $$( el ).txt( (el,i,arr)=>`${el.title}:${el.innerText}:${i}:${arr.length}`, 'a');
         expect( $X.length ).to.eq(1);
         expect( $X[0].tagName ).to.eq('DIV');
         expect( $X.innerText ).to.eq("d A1:one:0:2 - A2:two:1:2 D");

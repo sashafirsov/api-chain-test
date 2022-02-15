@@ -26,7 +26,7 @@ window.customElements.define('pokemon-link-element',
             $('a').on('click', async e=>
             {   e.preventDefault();
                 if(this.loaded)
-                    return $('dl').clear(), this.loaded=0;
+                    return $('dl').empty(), this.loaded=0;
                 this.loaded =1;
                 const d = await ( await fetch(url) ).json();
                 $('dl').html( render(d) );
@@ -133,7 +133,7 @@ const getPokeList = async () =>
     {
         const page = await getPokeList();
 
-        $listContainer.clear();
+        $listContainer.empty();
         // yield version
 
         if( offset ) // call chain with callbacks version
@@ -167,6 +167,6 @@ const getPokeList = async () =>
     };
 $template.remove();
 const firstPage = await renderList()
-$.slot('counter').text( firstPage.count );
+$.slot('counter').txt( firstPage.count );
 prevBtn.onclick = ()=> renderList( offset-=limit );
 nextBtn.onclick = ()=> renderList( offset+=limit );

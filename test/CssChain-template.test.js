@@ -123,9 +123,9 @@ describe( 'CssChain template() variations', () =>
         // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
         assert_assignedNodesF('s8', []);
 
-        expect( shadow.$('#host1').text() ).to.equal( '#c1\n#c2\n#c3' );
-        expect( shadow.$('#host1').$('#host2').text() ).to.equal( '#c5\n#c6\n#c7' );
-        expect(  light.$('#host1').text() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
+        expect( shadow.$('#host1').txt() ).to.equal( '#c1\n#c2\n#c3' );
+        expect( shadow.$('#host1').$('#host2').txt() ).to.equal( '#c5\n#c6\n#c7' );
+        expect(  light.$('#host1').txt() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
     });
     it('test("template")', async ()=>
     {
