@@ -442,16 +442,16 @@ describe( 'CssChain own methods', () =>
         expect( $X ).to.eq($Y);
         expect( $X.innerHTML ).to.eq("a1a2<hr><br>");
     } );
-    it( 'clear()', async ()=>
+    it( 'erase()', async ()=>
     {
         const el = await fixture(html`<div>d<a>a1</a><a>a2</a>D</div>`);
         const $X = $$('a',el );
-        const $Y = $X.empty();
+        const $Y = $X.erase();
         expect( $X ).to.eq($Y);
         expect( $X.innerHTML ).to.eq("");
 
         const $Z= $$(el);
-        $Z.empty();
+        $Z.erase();
         expect( $Z.innerHTML ).to.eq("");
         expect( $Z.outerHTML ).to.eq("<div></div>");
     } );
