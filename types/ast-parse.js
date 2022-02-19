@@ -80,13 +80,21 @@ extract( "node_modules/typescript/lib/lib.dom.d.ts" );
 
 const member2comment = {};
 const member2types = {};
-const SKIP={start:'HTMLOListElement:start number'}
+const SKIP ={   start:'HTMLOListElement:start number'
+            ,   childNodes:"NodeListOf<ChildNode>"
+            ,   firstChild:"ChildNode|null"
+            ,   firstElementChild:"Element|null"
+            ,   children:"HTMLCollection"
+            ,   "remove(index: number)":"Removes an element from the collection"
+            ,   "remove()":"Removes an element from the collection"
+            };
 function scanMembers( dep )
 {
     dep.interfaceNode.members.map( node =>
     {
         const fullSignature = node.getText(sourceFile);
-        const name = 'parameters' in node // method
+        const isMethod = 'parameters' in node;
+        const name = isMethod
                     ? fullSignature.substring(0,fullSignature.lastIndexOf('):')+1)
                     : getNodeName(node);
         if( !name || name in SKIP )
@@ -95,11 +103,15 @@ function scanMembers( dep )
         // types
         const m2t = assureInit( member2types, name, {} );
         const tt = node?.type?.types || (node?.type? [node?.type]:[]);
-        tt.map( n=>
-        {   const t = n.getText().trim();
-            assureInit( m2t, t, 0 );
-            m2t[ t ]++;
-        });
+        if(isMethod)
+            assureInit( m2t, 'CssChainLocal', 1 );
+        else
+            tt.map( n=>
+            {   const t = n.getText().trim();
+
+                assureInit( m2t, t, 0 );
+                m2t[ t ]++;
+            });
 
         // comments
         const symbol = checker.getSymbolAtLocation(node.name);
@@ -132,15 +144,28 @@ const methods =  Object.keys(member2types).map( m=>
 {
     const comments = Object.keys( member2comment[ m ] ).filter(c=>c);
     const commentsStr = comments.length ? '/* '+ comments.map( c => ` ${ c } ` ).join( '\n\n' ) + '*/\n' : '';
-    return  commentsStr + m +':'
+    return  commentsStr +'\n\t'+ m +':'
     + Object.keys(member2types[m] ).join('|') + ';\n'
 }).join('\n');
 
+/*
+    0. generated CssChain.d.ts edited manually and cloned into CssChain-manual.d.ts
+    1. create CssChain.d.ts
+    2. copy CssChain-manual.d.ts into CssChain.d.ts
+    3. append HTMLElementMixin.d.ts
+ */
+
 var stream = fs.createWriteStream("src/HTMLElementMixin.d.ts");
 stream.once('open', function(fd) {
-    stream.write("interface HTMLElementMixin {\n");
+    stream.write(
+`import type { CssChainLocal} from './CssChain';
+
+export interface HTMLElementMixin {
+`);
     stream.write(methods);
-    stream.write("\n}\n");
+    stream.write(`
+}
+`);
     stream.end();
 });
 
