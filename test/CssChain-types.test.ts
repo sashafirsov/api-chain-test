@@ -1,6 +1,6 @@
 import {fixture, expect} from '@open-wc/testing';
 import {html} from 'lit';
-import {CssChain as $$, CssChainLocal} from '../src/CssChain.js';
+import {CssChain as $$, CssChainT} from '../src/CssChain.js';
 
 interface A {
     ma: string;
@@ -52,9 +52,10 @@ class DemoElement extends HTMLElement {
         this.b = _b;
     }
 }
+window.customElements.define( 'demo-element', DemoElement);
 
 describe('CssChain', () => {
-    const isBlankNodeSet = ($X:CssChainLocal) => {
+    const isBlankNodeSet = ($X:CssChainT) => {
         expect(Array.isArray($X)).to.equal(true);
         expect($X).to.be.an('array');
         expect($X.length).to.equal(0);
@@ -250,14 +251,13 @@ describe('CssChain', () => {
     it('init from element tag in run time', async () => {
         class DemoElement3 extends DemoElement {
             m3: number;
-
             constructor() {
                 super();
                 this.m3 = 3;
             }
         }
 
-        customElements.define('demo-element-3', DemoElement);
+        customElements.define('demo-element-3', DemoElement3);
 
         const el = await fixture(html`
             <div>
@@ -303,14 +303,11 @@ describe('CssChain', () => {
         $X.remove('click', markClick);
 
         $X.click();
-
         expect($X[0].name).to.equal('false');
         expect($X[1].name).to.equal('false');
 
         expect($X[0].title).to.equal('changed');
         expect($X[1].title).to.equal('changed');
-
     });
-
 
 });

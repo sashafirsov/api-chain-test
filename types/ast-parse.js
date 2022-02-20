@@ -104,7 +104,7 @@ function scanMembers( dep )
         const m2t = assureInit( member2types, name, {} );
         const tt = node?.type?.types || (node?.type? [node?.type]:[]);
         if(isMethod)
-            assureInit( m2t, 'CssChainLocal', 1 );
+            assureInit( m2t, 'CssChainT', 1 );
         else
             tt.map( n=>
             {   const t = n.getText().trim();
@@ -143,7 +143,7 @@ traverseChildren ( 'HTMLElement', 'Element' );
 const methods =  Object.keys(member2types).map( m=>
 {
     const comments = Object.keys( member2comment[ m ] ).filter(c=>c);
-    const commentsStr = comments.length ? '/* '+ comments.map( c => ` ${ c } ` ).join( '\n\n' ) + '*/\n' : '';
+    const commentsStr = comments.length ? '/** '+ comments.map( c => ` ${ c } <br/>` ).join( '\n\n' ) + '*/\n' : '';
     return  commentsStr +'\n\t'+ m +':'
     + Object.keys(member2types[m] ).join('|') + ';\n'
 }).join('\n');
@@ -158,7 +158,7 @@ const methods =  Object.keys(member2types).map( m=>
 var stream = fs.createWriteStream("src/HTMLElementMixin.d.ts");
 stream.once('open', function(fd) {
     stream.write(
-`import type { CssChainLocal} from './CssChain';
+`import type { CssChainT} from './CssChain';
 
 export interface HTMLElementMixin {
 `);
