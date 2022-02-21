@@ -1,3 +1,6 @@
+test/CssChain-types.test.j*
+tsconfig.tsbuildinfo
+
 ## editors
 /.idea
 /.vscode

@@ -55,12 +55,12 @@ describe( 'CssChain template() variations', () =>
             assert_equals( n[k].assignedSlot, s && n[s] ); // same in prev test
             expect(shadow.$('#'+k).assignedSlot || shadow.$('#host1').$('#'+k).assignedSlot || null)
                 .to.equal( s
-                           && (  shadow.$('#host1').slot().find( e=>e.id===s)
-                                 || shadow.$('#host1').$('#host2').slot().find( e=>e.id===s)
+                           && (  shadow.$('#host1').slots().find( e=>e.id===s)
+                                 || shadow.$('#host1').$('#host2').slots().find( e=>e.id===s)
                                  || null
                            )
             );
-            expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slot().find( e=>e.id===s));
+            expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slots().find( e=>e.id===s));
             // node.assignedSlot in light DOM equals the parent slot
         };
         const assert_assignedNodes = (k,arr)=>
@@ -123,9 +123,9 @@ describe( 'CssChain template() variations', () =>
         // assert_array_equals(n.s8.assignedNodes({ flatten: true }), []); // text node #s8
         assert_assignedNodesF('s8', []);
 
-        expect( shadow.$('#host1').text() ).to.equal( '#c1\n#c2\n#c3' );
-        expect( shadow.$('#host1').$('#host2').text() ).to.equal( '#c5\n#c6\n#c7' );
-        expect(  light.$('#host1').text() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
+        expect( shadow.$('#host1').txt() ).to.equal( '#c1\n#c2\n#c3' );
+        expect( shadow.$('#host1').$('#host2').txt() ).to.equal( '#c5\n#c6\n#c7' );
+        expect(  light.$('#host1').txt() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
     });
     it('test("template")', async ()=>
     {

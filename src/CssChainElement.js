@@ -27,7 +27,7 @@ CssChainElement extends HTMLElement
     $( ...arr ){ return $( this.shadowRoot ).$(...arr); }
 
     __increment()
-    {   const slotContent = this.$().slot().text();
+    {   const slotContent = this.$().slots().txt();
         this.$('b').innerHTML += `<span>${ slotContent }</span>`;
         this.counter = this.$('input').value = this.$('span').length;
     }

@@ -2,5 +2,5 @@ import e from"./CssChain.js";export class CssChainElement extends HTMLElement{co
 <slot></slot> &bull;
 <b></b><br/>
 <input /><button>\u{1F6D2}</button>
-`}$(...t){return e(this.shadowRoot).$(...t)}__increment(){const t=this.$().slot().text();this.$("b").innerHTML+=`<span>${t}</span>`,this.counter=this.$("input").value=this.$("span").length}}
+`}$(...t){return e(this.shadowRoot).$(...t)}__increment(){const t=this.$().slots().txt();this.$("b").innerHTML+=`<span>${t}</span>`,this.counter=this.$("input").value=this.$("span").length}}
 //# sourceMappingURL=CssChainElement.js.map

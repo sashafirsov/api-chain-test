@@ -55,13 +55,13 @@ describe( 'CssChain internal helpers', () =>
         $arr.innerText='A';
         expect( collectionText($arr).replace(/\s+/g,'')).to.eq('AA');
 
-        expect( collectionText(el.$().slot('')).trim()).to.eq('A');
-        expect( collectionText(el.$().slot('outer')) ).to.eq('A');
+        expect( collectionText(el.$().slots('')).trim()).to.eq('A');
+        expect( collectionText(el.$().slots('outer')) ).to.eq('A');
         // native access to slots content
         expect( collectionText([...el.querySelectorAll('[slot]')])).to.eq('AA');
 
-        el.$().slot('').innerText = 'B';
-        expect( collectionText(el.$().slot(',outer')).replace(/\s+/g,'') ).to.eq('BA');
+        el.$().slots('').innerText = 'B';
+        expect( collectionText(el.$().slots(',outer')).replace(/\s+/g,'') ).to.eq('BA');
     });
     it( 'getNodeText(node) with slots',  async ()=>
     {
@@ -73,8 +73,8 @@ describe( 'CssChain internal helpers', () =>
             </slots-in-shadow>`);
         expect( getNodeText( el.shadowRoot ) ).to.include('prefixBsuffix');
         expect( getNodeText( $$('a',el)[0] )).to.eq('prefixBsuffix');
-        expect( getNodeText( el.$().slot('') ).replace(/\s+/g,'')).to.eq('prefixBsuffixdefaultslotreplacement');
-        expect( getNodeText( el.$().slot('outer') )).to.eq('outer replacement');
+        expect( getNodeText( el.$().slots('') ).replace(/\s+/g,'')).to.eq('prefixBsuffixdefaultslotreplacement');
+        expect( getNodeText( el.$().slots('outer') )).to.eq('outer replacement');
         expect( el.$('style').textContent).to.include('padding');
         expect( getNodeText( el.$('style')[0])).to.eq('');
         expect( el.$('script').textContent).to.include('ignore it');
@@ -123,7 +123,7 @@ describe( 'CssChain internal helpers', () =>
                 <div slot="outer">outer replacement</div>
             </slots-in-shadow>`);
         expect( getNodeText( el )).to.eq('outer replacement');
-        setNodeText( el.$().slot('outer')[0], 'A' );
+        setNodeText( el.$().slots('outer')[0], 'A' );
         expect( getNodeText( el )).to.eq('A');
     });
     it( 'setNodeHtml(node, text)',  async ()=>
@@ -163,8 +163,8 @@ describe( 'CssChain internal helpers', () =>
                 <div slot="outer">outer replacement</div>
             </slots-in-shadow>`);
         expect( getNodeText( el )).to.eq('outer replacement');
-        setNodeHtml( el.$().slot('outer')[0], '<u>A</u>' );
-        expect(el.$().slot('outer').innerHTML).to.eq('<u slot="outer">A</u>');
+        setNodeHtml( el.$().slots('outer')[0], '<u>A</u>' );
+        expect(el.$().slots('outer').innerHTML).to.eq('<u slot="outer">A</u>');
     });
     it( 'html2NodeArr(html) ',  async ()=>
     {

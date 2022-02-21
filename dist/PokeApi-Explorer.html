@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>PokéAPI Explorer -  CssChain use sample</title>
+    <meta charset="utf-8">
+
+    <script type="module" src="https://unpkg.com/html-demo-element@1/html-demo-element.js"></script>
+    <style>
+        @import "https://fonts.googleapis.com/css?family=Lato:400,700";
+        body { display: flex; flex-wrap: wrap; gap: 1rem; font-family: Lato,sans-serif; }
+        body>*{ flex: auto; }
+        body>h1,header{ width: 100%; display: flex; flex-wrap: wrap; gap: 1rem; }
+        pokemon-info-element { display: flex; flex-wrap: wrap; gap: 1rem; }
+        fieldset>slot{ display: flex; }
+        fieldset img{ height: 3rem; }
+        [slot="demo"], fieldset label>div{ display: flex; align-items: center; justify-content: space-between; }
+        label{ cursor: pointer; display: flex; }
+        label:hover{ box-shadow: inset 0 0 2px 4px rgba(0, 0, 125, .2); }
+        label>*{ flex:auto; gap: 1rem;  padding: .5rem; }
+        input[type="radio"] { width: 1px; max-width: 1px; visibility: hidden; margin: 0; }
+        [type="radio"]:checked+*{ background-color: #0074D9; color:white; }
+        [slot="demo"] { align-items: flex-start; }
+
+        .vflex>dl{ padding: 0; gap: 0; flex-direction: column; }
+        .vflex{ display: flex; flex-direction: column; flex: 1; align-items: stretch; }
+        .hiflex{ display: inline-flex; gap: 1rem; flex-wrap: wrap; align-content: flex-start; }
+
+        fieldset
+        {   display: inline-flex; gap: .5rem; align-items: flex-start; flex-wrap: wrap;
+            border-bottom: none; border-left: none;
+            padding-bottom: 0; border-radius: 1rem;
+        }
+        main{ flex:10; }
+        html-demo-element{ flex:4; width: 100%; min-width:100%; }
+        details {
+            border: 1px blue dashed;
+            border-radius: 0.51rem;
+        }
+        hr{ width: 100%; }
+        pokemon-link-element {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+        dl{ padding: 1rem; margin: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+        dl:empty {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<h1> PokéAPI Explorer -  CssChain use sample </h1>
+
+    <header>
+        <a href="demo.html"> Demo home</a> |
+        <a href="https://pokeapi.co/"> The RESTful Pokémon API </a> |
+        <a href="https://github.com/sashafirsov/pokeapi-sprites"> Sprites </a> |
+        <a href="https://github.com/sashafirsov/css-chain-test/blob/main/src/PokeApi-Explorer.html">
+            Source
+            <img src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/mark-github.svg" alt="git" />
+        </a>
+        <section>
+            JSON data from API filled into web component sample. <br/>
+            Template uses slots as placeholder for JSON data. <br/>
+        </section>
+    </header>
+
+    <fieldset class="vflex">
+        <legend>
+            <b><slot name="counter">loading...</slot></b> pokemons
+        </legend>
+        <button id="prevBtn" disabled>prev</button>
+        <button id="nextBtn" disabled>next</button>
+
+        <slot name="slot-select" hidden>
+            <label >
+                <input type="radio" name="selected-pokemon"/>
+                <div>
+                    <code><slot name="index">0</slot></code>
+                    <slot name="name"><i></i></slot>
+                    <slot name="image"><img src="" /></slot>
+                </div>
+            </label>
+        </slot>
+        <dl>...</dl>
+
+    </fieldset>
+    <main>
+        <pokemon-info-element>loading</pokemon-info-element>
+    </main>
+    <script type="module" src="PokeApi-Explorer.js"></script>
+
+<html-demo-element legend="JS Code for page" src="PokeApi-Explorer.js">
+</html-demo-element>
+</body>
+</html>
