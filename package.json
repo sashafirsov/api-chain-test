@@ -31,7 +31,7 @@
         "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
     },
     "dependencies": {
-        "css-chain": "^1.0.13",
+        "css-chain": "^1.1.0",
         "lit": "^2.2.0"
     },
     "devDependencies": {

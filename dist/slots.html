@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <title>Slots in HTML template - Unit test samples in visual presentation</title>
+    <meta charset="utf-8">
+    <script src="slots-in-shadow.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/html-demo-element@1/html-demo-element.js"></script>
+    <style>
+        body { display: flex; flex-wrap: wrap; gap: 1rem; }
+        body>*{flex: auto;}
+    </style>
+</head>
+<body>
+    <section>
+        <header>
+            <h1>Visual presentation of Slot in shadow DOM from unit test </h1>
+            <a href="demo.html"> Demo home</a>
+            | <a href="PokeApi-Explorer.html"> List from data </a>
+        </header>
+
+    Only first level slots in template are substituted from web component content HTML.<br/>
+    The embedded slots like "inner-X" in sample template are ignored by shadowDOM.
+
+</section>
+<html-demo-element src="slots-in-shadow.js" legend="slots-in-shadow.js is a base component"></html-demo-element>
+
+<html-demo-element legend="Only default slot values">
+    <slots-in-shadow></slots-in-shadow>
+</html-demo-element>
+<html-demo-element legend="fallback HTML is same as slot without name">
+    <slots-in-shadow>
+        <p>fallback</p>
+    </slots-in-shadow>
+</html-demo-element>
+
+<html-demo-element legend="slot without name ">
+    <slots-in-shadow>
+        <p>inner without slot</p>
+        <div slot>
+            without name
+        </div>
+    </slots-in-shadow>
+</html-demo-element>
+<html-demo-element legend="outer slot">
+    <slots-in-shadow>
+        <div slot="outer">
+            outer replacement
+        </div>
+    </slots-in-shadow>
+</html-demo-element>
+
+<html-demo-element legend="override inner slot by name ">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+    <slots-in-shadow>
+        <div slot>
+            <b>default slot is overridden</b>
+            but inner slots are ignored 👅
+            <div slot="inner-2"> inner-2 🙄
+                <div slot="inner-2-2">inner-2-2 🤔</div>
+                <div slot="inner-2-1">inner-2-1 😳</div>
+            </div>
+            <div slot="inner-1"> inner-1 😭</div>
+            inverse order proves that slots in template are ignored.
+        </div>
+        <div slot="inner-1"> inner-1 😭</div>
+    </slots-in-shadow>
+    </template>
+</html-demo-element>
+<html-demo-element legend="slot.innerText = val">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+        <slots-in-shadow id="slots2innerText">
+            <div slot="">default slot replacement</div>
+            <div slot="outer">outer replacement</div>
+        </slots-in-shadow>
+        <button onclick="slots2innerText.$().slots().innerText='A'">
+            $().slots().innerText='A' 💪</button>
+        <button onclick="
+            slots2innerText.$().slots().txt( (s,i)=>`B${i}`)">
+            $().slots().txt( (s,i)=›`B${i}`) 🎨</button>
+        <button onclick="
+            [...slots2innerText.querySelectorAll('[slot]') ]
+                .map((s,i)=> s.innerText = `C${i}`) ">
+            vanilla [...slot].innerText='C' </button>
+    </template>
+</html-demo-element>
+<html-demo-element legend="slot.innerHTML = val">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+        <slots-in-shadow id="slots2innerHTML">
+            <div slot="">default slot replacement</div>
+            <div slot="outer">outer replacement</div>
+        </slots-in-shadow>
+        <button onclick="slots2innerHTML.$().slots().innerHTML='<i>A</i>'">
+            $().slots().innerHTML='<i>A</i>' 💪</button>
+        <button onclick="
+            slots2innerHTML.$().slots().html( (s,i)=>`<b>B${i}</b>`)">
+            $().slots().html( (s,i)=›`<b>B${i}</b>`) 🎨</button>
+        <button onclick="
+            [...slots2innerHTML.querySelectorAll('[slot]') ]
+                .map((s,i)=> s.innerHTML = `<u>C${i}</u>`) ">
+            vanilla [...slot].innerHTML='<u>C${i}</u>' </button>
+    </template>
+</html-demo-element>
+<html-demo-element legend="Clone slot" description="practical for programmatic template content manipulation">
+    <div slot="text"> replaced with colored code </div>
+    <template slot="source">
+        <slots-in-shadow id="slots2clone">
+            <div slot=""></div>
+            <div slot="outer"><b>1</b> clone</div>
+            <div slot="outer"><b>2</b> clone</div>
+        </slots-in-shadow>
+        <button onclick="cloneOuter()">cloneOuter() </button>
+        <script>
+            let cloneCount = 2;
+            function cloneOuter()
+            {
+                debugger;
+                let $o = slots2clone.$().slots( 'outer' )
+                ,   c = $o.clone();
+                c.$( 'b' ).innerText = ++cloneCount;
+                $o.parent().append(c);
+            }
+        </script>
+    </template>
+</html-demo-element>
+
+</body>
+</html>

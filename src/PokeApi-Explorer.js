@@ -139,20 +139,20 @@ const getPokeList = async () =>
         if( offset ) // call chain with callbacks version
             $listContainer.append(
                 $template.clone( page.results, (cloned, p,i)=>
-                 $$(cloned)
-                        .prop('hidden', false )
-                        .prop('checked', !i, 'input')
-                        .prop('src', getImgByPokemon( p ), 'img')
-                        .on('click', ()=>onSelected(p) )
-                        .slots( 'index', offset + i )
-                        .slots( 'name', p.name ) ) );
+                $$(cloned)
+                    .prop('hidden', false )
+                    .prop('checked', !i, 'input')
+                    .prop('src', getImgByPokemon( p ), 'img')
+                    .on('click', ()=>onSelected(p) )
+                    .slots( 'index', ''+(offset + i) )
+                    .slots( 'name', p.name ) ) );
         else // same without call chain, just as show case of HTMLElement API in CssChain
             page.results.forEach( (p,i)=>
             {
                 const $c = $template.clone();
                 $c.hidden = false;
                 $c.$('input').checked = !i;
-                $c.slots( 'index' ).innerText = offset + i;
+                $c.slots( 'index' ).innerText = ''+(offset + i);
                 $c.slots( 'name' ).innerText = p.name;
                 $c.on('click', ()=>onSelected(p) )
                 $c.$('img').src = getImgByPokemon( p );
