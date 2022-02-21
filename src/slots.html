@@ -74,11 +74,11 @@
             <div slot="">default slot replacement</div>
             <div slot="outer">outer replacement</div>
         </slots-in-shadow>
-        <button onclick="slots2innerText.$().slot().innerText='A'">
-            $().slot().innerText='A' 💪</button>
+        <button onclick="slots2innerText.$().slots().innerText='A'">
+            $().slots().innerText='A' 💪</button>
         <button onclick="
-            slots2innerText.$().slot().txt( (s,i)=>`B${i}`)">
-            $().slot().txt( (s,i)=›`B${i}`) 🎨</button>
+            slots2innerText.$().slots().txt( (s,i)=>`B${i}`)">
+            $().slots().txt( (s,i)=›`B${i}`) 🎨</button>
         <button onclick="
             [...slots2innerText.querySelectorAll('[slot]') ]
                 .map((s,i)=> s.innerText = `C${i}`) ">
@@ -92,11 +92,11 @@
             <div slot="">default slot replacement</div>
             <div slot="outer">outer replacement</div>
         </slots-in-shadow>
-        <button onclick="slots2innerHTML.$().slot().innerHTML='<i>A</i>'">
-            $().slot().innerHTML='<i>A</i>' 💪</button>
+        <button onclick="slots2innerHTML.$().slots().innerHTML='<i>A</i>'">
+            $().slots().innerHTML='<i>A</i>' 💪</button>
         <button onclick="
-            slots2innerHTML.$().slot().html( (s,i)=>`<b>B${i}</b>`)">
-            $().slot().html( (s,i)=›`<b>B${i}</b>`) 🎨</button>
+            slots2innerHTML.$().slots().html( (s,i)=>`<b>B${i}</b>`)">
+            $().slots().html( (s,i)=›`<b>B${i}</b>`) 🎨</button>
         <button onclick="
             [...slots2innerHTML.querySelectorAll('[slot]') ]
                 .map((s,i)=> s.innerHTML = `<u>C${i}</u>`) ">
@@ -117,7 +117,7 @@
             function cloneOuter()
             {
                 debugger;
-                let $o = slots2clone.$().slot( 'outer' )
+                let $o = slots2clone.$().slots( 'outer' )
                 ,   c = $o.clone();
                 c.$( 'b' ).innerText = ++cloneCount;
                 $o.parent().append(c);

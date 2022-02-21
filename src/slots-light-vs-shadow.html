@@ -383,8 +383,8 @@
             }, 'Slots: Slots not in a shadow tree, elements only.');
             it('createTestTree$: Slots not in a shadow tree', ()=>
             {
-                const slotLight  = $(test_slot_not_in_shadow).parent().$('.light' ).slot();
-                const slotShadow = $(test_slot_not_in_shadow).parent().$('.shadow').slot();
+                const slotLight  = $(test_slot_not_in_shadow).parent().$('.light' ).slots();
+                const slotShadow = $(test_slot_not_in_shadow).parent().$('.shadow').slots();
                 expect(slotLight .assignedNodes   ().length).to.equal(0);
                 expect(slotShadow.assignedNodes   ().length).to.equal(0);
                 expect(slotLight .assignedElements().length).to.equal(0);
@@ -445,19 +445,19 @@
             {
                 const shadow = $(test_slot_name_matching).parent().$('.shadow');
                 const light  = $(test_slot_name_matching).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slots('slot1')[0]);
 
                 // assignedSlot in light DOM is not working, testing content instead
-                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
-                expect( light.$('#host').slot('slot1').txt() ).to.equal( '#c1' );
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slots('slot1')[0]);
+                expect( light.$('#host').slots('slot1').txt() ).to.equal( '#c1' );
                 expect( light.$('#s1').txt() ).to.equal( '#c1' );
 
-                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('slot2')[0]);
-                expect( light.$('#host').slot('slot2').txt() ).to.equal( '#c2' );
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slots('slot2')[0]);
+                expect( light.$('#host').slots('slot2').txt() ).to.equal( '#c2' );
                 expect( light.$('#s2').txt() ).to.equal( '#c2' );
 
                 expect(shadow.$('#c3').assignedSlot).to.equal(null);
-                expect( light.$('#host').slot('xxx').txt() ).to.equal( '' );
+                expect( light.$('#host').slots('xxx').txt() ).to.equal( '' );
                 expect( light.$('#s3').txt() ).to.equal( '' );
             });
             test(() => {
@@ -474,12 +474,12 @@
             {
                 const shadow = $(test_no_direct_host_child).parent().$('.shadow');
                 const light  = $(test_no_direct_host_child).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slots('slot1')[0]);
 
                 // assignedSlot in light DOM is not working, testing content instead
-                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
-                expect( shadow.$('#host').slot('slot1').txt() ).to.equal( '#c1#c2#s2' );
-                expect(  light.$('#host').slot('slot1').txt() ).to.equal( '#c1#c2#s2' );
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slots('slot1')[0]);
+                expect( shadow.$('#host').slots('slot1').txt() ).to.equal( '#c1#c2#s2' );
+                expect(  light.$('#host').slots('slot1').txt() ).to.equal( '#c1#c2#s2' );
             });
             test(() => {
                 let n = createTestTree(test_default_slot);
@@ -493,14 +493,14 @@
             {
                 const shadow = $(test_default_slot).parent().$('.shadow');
                 const light  = $(test_default_slot).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('')[0]);
-                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('')[0]);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slots('')[0]);
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slots('')[0]);
                 expect(shadow.$('#c3').assignedSlot).to.equal(null);
 
                 // assignedSlot in light DOM is not working, testing content instead
-                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
-                expect( shadow.$('#host').slot().txt().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
-                expect(  light.$('#host').slot().txt().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slots('slot1')[0]);
+                expect( shadow.$('#host').slots().txt().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
+                expect(  light.$('#host').slots().txt().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
             });
             test(() => {
                 let n = createTestTree(test_slot_in_slot);
@@ -513,11 +513,11 @@
             {
                 const shadow = $(test_slot_in_slot).parent().$('.shadow');
                 const light  = $(test_slot_in_slot).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slot('slot2')[0]);
-                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slot('slot1')[0]);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host').slots('slot2')[0]);
+                expect(shadow.$('#c2').assignedSlot).to.equal(shadow.$('#host').slots('slot1')[0]);
 
                 // assignedSlot in light DOM is not working, testing content instead
-                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slots('slot1')[0]);
                 expect( shadow.$('#host').txt() ).to.equal( '#c2' );
                 expect(  light.$('#host').txt() ).to.equal( '#c2' );
             });
@@ -538,11 +538,11 @@
             {
                 const shadow = $(test_slot_is_assigned_to_slot).parent().$('.shadow');
                 const light  = $(test_slot_is_assigned_to_slot).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slot('slot1')[0]);
-                expect(shadow.$('#s1').assignedSlot).to.equal(shadow.$('#host1').slot('slot2')[0]);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slots('slot1')[0]);
+                expect(shadow.$('#s1').assignedSlot).to.equal(shadow.$('#host1').slots('slot2')[0]);
 
                 // assignedSlot in light DOM is not working, testing content instead
-                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slot('slot1')[0]);
+                // expect(light .$('#c1').assignedSlot).to.equal(light .$('#host').slots('slot1')[0]);
                 expect( shadow.$('#host1').txt() ).to.equal( '#c1' );
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
             });
@@ -564,15 +564,15 @@
             {
                 const shadow = $(test_open_closed).parent().$('.shadow');
                 const light  = $(test_open_closed).parent().$('.light' );
-                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slot('slot1')[0]);
-                expect(shadow.$('#host1').slot('slot1').assignedSlot).to.equal(null);
+                expect(shadow.$('#c1').assignedSlot).to.equal(shadow.$('#host1').slots('slot1')[0]);
+                expect(shadow.$('#host1').slots('slot1').assignedSlot).to.equal(null);
                 expect(shadow.$('#s1').length).to.equal(0);// slot tag is replaced and not available anymore
 
 
-                expect(shadow.$('#host1').slot('slot1').assignedNodes()).to.eql(shadow.$('#c1'));
+                expect(shadow.$('#host1').slots('slot1').assignedNodes()).to.eql(shadow.$('#c1'));
                 // host2 shadowRoot is closed and children including slots not available.
-                // expect(shadow.$('#host1').$('#host2').slot('slot2').assignedNodes()).to.eql(shadow.$('#host1').slot('slot1'));
-                expect(shadow.$('#host1').slot('slot1').assignedNodes({ flatten: true })).to.eql(shadow.$('#c1'));
+                // expect(shadow.$('#host1').$('#host2').slots('slot2').assignedNodes()).to.eql(shadow.$('#host1').slots('slot1'));
+                expect(shadow.$('#host1').slots('slot1').assignedNodes({ flatten: true })).to.eql(shadow.$('#c1'));
 
                 expect( shadow.$('#host1').txt() ).to.equal( '#c1' );
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
@@ -673,12 +673,12 @@
                     assert_equals( n[k].assignedSlot, s && n[s] ); // same in prev test
                     expect(shadow.$('#'+k).assignedSlot || shadow.$('#host1').$('#'+k).assignedSlot || null)
                         .to.equal( s
-                                   && (  shadow.$('#host1').slot().find( e=>e.id===s)
-                                        || shadow.$('#host1').$('#host2').slot().find( e=>e.id===s)
+                                   && (  shadow.$('#host1').slots().find( e=>e.id===s)
+                                        || shadow.$('#host1').$('#host2').slots().find( e=>e.id===s)
                                         || null
                                       )
                                 );
-                    expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slot().find( e=>e.id===s));
+                    expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slots().find( e=>e.id===s));
                     // node.assignedSlot in light DOM equals the parent slot
                 };
                 const assert_assignedNodes = (k,arr)=>
@@ -770,11 +770,11 @@
                 const light  = $(test_complex).parent().$('.light' );
 
                 shadow.$('#host1').append('<div slot="slot1" id="d1">#d1</div>');
-                expect(shadow.$('#host1').slot('slot1').assignedNodes().map( e=>e.id )).to.eql( ['c1', 'd1']);
-                expect(shadow.$('#d1').assignedSlot).to.eql( shadow.$('#host1').slot('slot1')[0]);
+                expect(shadow.$('#host1').slots('slot1').assignedNodes().map( e=>e.id )).to.eql( ['c1', 'd1']);
+                expect(shadow.$('#d1').assignedSlot).to.eql( shadow.$('#host1').slots('slot1')[0]);
 
                 assert_array_equals(n.s5.assignedNodes({ flatten: true }), [n.c1, d1, n.c5]);
-                expect( shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).map( e=>e.id )).to.eql(['c1','d1','c5']);
+                expect( shadow.$('#host1').$('#host2').slots('slot5').assignedNodes({ flatten: true }).map( e=>e.id )).to.eql(['c1','d1','c5']);
 
                 // there is no mutation to test in light dom as content is replaced by template
                 // and no ability to get original children for applying template again
@@ -803,7 +803,7 @@
 
                 shadow.$('#c1').attr('slot','slot-none');
                 assert_array_equals(n.s1.assignedNodes(), []);
-                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                expect(shadow.$('#host1').slots('slot1').assignedNodes() ).to.eql([]);
                 assert_equals(n.c1.assignedSlot, null);
                 expect(shadow.$('#c1').assignedSlot ).to.eql(null);
 
@@ -838,13 +838,13 @@
                 shadow.$('#c1').attr('slot','slot2');
 
                 assert_array_equals(n.s1.assignedNodes(), []);
-                expect(shadow.$('#host1').slot('slot1').assignedNodes() ).to.eql([]);
+                expect(shadow.$('#host1').slots('slot1').assignedNodes() ).to.eql([]);
                 assert_array_equals(n.s2.assignedNodes(), [n.c1, n.c2]);
-                expect(shadow.$('#host1').slot('slot2').assignedNodes() ).to.eql([n.c1, n.c2]);
-                assert_equals(shadow.$('#c1').assignedSlot, shadow.$('#host1').slot('slot2')[0]);
+                expect(shadow.$('#host1').slots('slot2').assignedNodes() ).to.eql([n.c1, n.c2]);
+                assert_equals(shadow.$('#c1').assignedSlot, shadow.$('#host1').slots('slot2')[0]);
 
-                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot5').assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
-                assert_array_equals(shadow.$('#host1').$('#host2').slot('slot6').assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
+                assert_array_equals(shadow.$('#host1').$('#host2').slots('slot5').assignedNodes({ flatten: true }).filter( e=> e.nodeType !== 3 ), [n.c5]);
+                assert_array_equals(shadow.$('#host1').$('#host2').slots('slot6').assignedNodes({ flatten: true }), [n.c1, n.c2, n.c6]);
 
                 // no mutation test on light dom
             });

@@ -55,12 +55,12 @@ describe( 'CssChain template() variations', () =>
             assert_equals( n[k].assignedSlot, s && n[s] ); // same in prev test
             expect(shadow.$('#'+k).assignedSlot || shadow.$('#host1').$('#'+k).assignedSlot || null)
                 .to.equal( s
-                           && (  shadow.$('#host1').slot().find( e=>e.id===s)
-                                 || shadow.$('#host1').$('#host2').slot().find( e=>e.id===s)
+                           && (  shadow.$('#host1').slots().find( e=>e.id===s)
+                                 || shadow.$('#host1').$('#host2').slots().find( e=>e.id===s)
                                  || null
                            )
             );
-            expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slot().find( e=>e.id===s));
+            expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slots().find( e=>e.id===s));
             // node.assignedSlot in light DOM equals the parent slot
         };
         const assert_assignedNodes = (k,arr)=>

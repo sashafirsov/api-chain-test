@@ -127,7 +127,7 @@ const getPokeList = async () =>
 ,   onSelected = async (p) => $$('pokemon-info-element').attr( 'src', p.url )
 ,   getPokemonId = p=> ( arr=>(arr.pop(), arr.pop()) )( p.url.split('/') )
 ,   getImgByPokemon = p =>`https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/${getPokemonId(p)}.svg`
-,   $template = $.slot('slot-select')
+,   $template = $.slots('slot-select')
 ,   $listContainer = $template.parent().$('dl')
 ,   renderList = async()=>
     {
@@ -144,16 +144,16 @@ const getPokeList = async () =>
                         .prop('checked', !i, 'input')
                         .prop('src', getImgByPokemon( p ), 'img')
                         .on('click', ()=>onSelected(p) )
-                        .slot( 'index', offset + i )
-                        .slot( 'name', p.name ) ) );
+                        .slots( 'index', offset + i )
+                        .slots( 'name', p.name ) ) );
         else // same without call chain, just as show case of HTMLElement API in CssChain
             page.results.forEach( (p,i)=>
             {
                 const $c = $template.clone();
                 $c.hidden = false;
                 $c.$('input').checked = !i;
-                $c.slot( 'index' ).innerText = offset + i;
-                $c.slot( 'name' ).innerText = p.name;
+                $c.slots( 'index' ).innerText = offset + i;
+                $c.slots( 'name' ).innerText = p.name;
                 $c.on('click', ()=>onSelected(p) )
                 $c.$('img').src = getImgByPokemon( p );
                 $listContainer.append($c);
@@ -167,6 +167,6 @@ const getPokeList = async () =>
     };
 $template.remove();
 const firstPage = await renderList()
-$.slot('counter').txt( firstPage.count );
+$.slots('counter').txt( firstPage.count );
 prevBtn.onclick = ()=> renderList( offset-=limit );
 nextBtn.onclick = ()=> renderList( offset+=limit );
