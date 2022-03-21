@@ -160,7 +160,7 @@ describe( 'CssChain template() variations', () =>
         $light.$('code').hidden = false;
         expect( $light.innerText).to.equal('TOP\nMIDDLE\nBOTTOM');
     });
-    it('test()', async ()=>
+    it('template()', async ()=>
     {
         const el = await fixture(html`
             <div>
@@ -174,4 +174,42 @@ describe( 'CssChain template() variations', () =>
         const $light = $(el).template();
         expect( $light.innerText.replace( /\s+/g , '')).to.equal('TOPMIDDLEBOTTOM');
     });
+
+    it('template(template)', async ()=>
+    {
+        const el = await fixture(html`
+            <main>
+                <template>
+                    <slot name="header"><h1>-TOP-</h1></slot>
+                    text
+                    <slot name=""><section>-MIDDLE-</section></slot>
+                    <i>
+                        <slot name="footer"><b>-BOTTOM-</b></slot>
+                    </i>
+                </template>
+                <h1 slot="header">TOP</h1>
+                <section slot="">MIDDLE</section>
+                <b slot="footer">BOTTOM</b>
+            </main>
+
+        `);
+        const $light = $(el).template('template');
+        expect( $light.innerText.replace( /\s+/g , '')).to.equal('TOPtextMIDDLEBOTTOM');
+    });
+
+    it('template() no SLOT', async ()=>
+    {
+        const el = await fixture(html`
+            <div>
+                <h1 slot="header">TOP</h1>
+                text
+                <section slot="">MIDDLE</section>
+                <i>
+                    <b slot="footer">BOTTOM</b>
+                </i>
+            </div>`);
+        const $light = $(el).template();
+        expect( $light.innerText.replace( /\s+/g , '')).to.equal('TOPtextMIDDLEBOTTOM');
+    });
+
 } );

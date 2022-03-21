@@ -209,15 +209,14 @@ describe('CssChain', () => {
         expect($X[1].b).to.equal('1');
     });
     it('custom element registered in run time', async () => {
-        customElements.define('demo-element-1', class extends DemoElement {
-        });
-
+        customElements.define('demo-element-1', class extends DemoElement {});
+        $$<DemoElement>([], [], ['demo-element-1'])
         const el = await fixture(html`
             <div>
                 <demo-element-1/>
                 <demo-element-1/>
             </div>`);
-        const $X = $$<DemoElement>('demo-element-1', el, ['demo-element-1']);
+        const $X = $$<DemoElement>('demo-element-1', el );
 
         expect($X.b).to.equal('initial');
         $X.setB('2');
