@@ -1,4 +1,4 @@
-import FetchElement from 'https://unpkg.com/slotted-element@1.0.3/fetch-element.js';
+import FetchElement from 'https://unpkg.com/slotted-element@1.1.0/fetch-element.js';
 // import { CssChain as $$ } from "https://unpkg.com/css-chain@1/CssChain.js";
 import { CssChain as $$ } from "./CssChain.js";
 
