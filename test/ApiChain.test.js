@@ -11,6 +11,7 @@ class A
 class B extends A
 {   constructor(v){ super('B_'+v); this.bProp=v;}
     bProp;
+    getBProp(){ return 'getter bProp='+this.bProp;}
     bFuncVal;
     bFunc(x,y){ return this.bFuncVal = this.bProp+x+y;}
 }
@@ -106,6 +107,21 @@ describe( 'ApiChain', () =>
         expect( $X.aFuncVal    ).to.equal( 'B_bProp1XY' );
         expect( $X[0].aFuncVal ).to.equal( 'B_bProp1XY' );
         expect( $X[1].aFuncVal ).to.equal( 'B_bProp2XY' );
+    } );
+    it( '$[].getXxx returns undefined ',  () =>
+    {   const arr = createB_arr();
+        const $X = $$(arr);
+
+        expect( arr.length >0 ).to.equal(true );
+        expect( $X.length >0 ).to.equal(true );
+        expect( $X.getBProp() ).to.equal("getter bProp=bProp1" );
+        expect( arr[0].bProp ).to.equal("bProp1" );
+        expect( $X.bProp ).to.equal("bProp1" );
+
+        $X.length = 0;
+        expect( $X.length  ).to.equal(0 );
+        expect( $X.getBProp() ).to.equal(undefined );
+        expect( $X.bProp ).to.equal(undefined );
     } );
 
 } );

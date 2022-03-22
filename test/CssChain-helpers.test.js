@@ -2,7 +2,7 @@ import { fixture, expect } from '@open-wc/testing';
 import { html } from 'lit';
 import '../src/slots-in-shadow.js';
 
-import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText, setNodeHtml, html2NodeArr }
+import { CssChain as $$, map, csv, collectionText, getNodeText, setNodeText, setNodeHtml, html2NodeArr, isNode }
     from '../src/CssChain.js';
 
 describe( 'CssChain internal helpers', () =>
@@ -79,6 +79,10 @@ describe( 'CssChain internal helpers', () =>
         expect( getNodeText( el.$('style')[0])).to.eq('');
         expect( el.$('script').textContent).to.include('ignore it');
         expect( getNodeText( el.$('script')[0])).to.eq('');
+
+        expect( getNodeText( {nodeType:'zzz'})).to.eq('');
+        // expect( isNode({nodeType:1})).to.eq(true);
+        // expect( isNode({})).to.eq(false);
     });
     it( 'getNodeText(node) with text + CDATA',  async ()=>
     {
