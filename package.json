@@ -7,7 +7,7 @@
         "email": "suns@simulationworks.com",
         "url": "https://blog.firsov.net/"
     },
-    "version": "1.1.0",
+    "version": "1.1.2",
     "browser": "index.js",
     "module": "index.js",
     "type": "module",
@@ -31,16 +31,16 @@
         "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
     },
     "dependencies": {
-        "css-chain": "^1.1.0",
-        "lit": "^2.2.0"
+        "css-chain": "^1.1.2",
+        "lit": "^2.2.1"
     },
     "devDependencies": {
-        "@open-wc/testing": "^3.0.4",
-        "@web/dev-server": "^0.1.29",
-        "@web/test-runner": "^0.13.27",
+        "@open-wc/testing": "^3.1.2",
+        "@web/dev-server": "^0.0.6",
+        "@web/test-runner": "^0.10.2",
         "concurrently": "^7.0.0",
-        "esbuild": "^0.14.23",
-        "typescript": "^4.5.5"
+        "esbuild": "^0.14.27",
+        "typescript": "^4.6.2"
     },
     "customElements": "custom-elements.json"
 }
