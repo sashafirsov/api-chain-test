@@ -308,5 +308,22 @@ describe('CssChain', () => {
         expect($X[0].title).to.equal('changed');
         expect($X[1].title).to.equal('changed');
     });
+    it('$(el)', async () => {
+
+        const el = await fixture<HTMLElement>(
+            html`<div><button>action</button></div>`
+        );
+        expect($$(el).length).to.equal(1);
+        expect($$(el).$('button').txt()).to.equal('action');
+    });
+    it('$(css,el)', async () => {
+
+        const el = await fixture<HTMLElement>(
+            html`<div><button>action1</button><button>action2</button></div>`
+        );
+        expect($$(el).length).to.equal(1);
+        expect($$('button',el).length).to.equal(2);
+        expect($$('button',el).txt()).to.equal('action1action2');
+    });
 
 });
