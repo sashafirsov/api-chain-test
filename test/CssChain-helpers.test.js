@@ -67,13 +67,14 @@ describe( 'CssChain internal helpers', () =>
     {
         const el = await fixture(
             html`<slots-in-shadow>
-                <a>prefix<b>B</b><!CDATA[[ suffix ]]>suffix</a>
-                <div slot="">default slot replacement</div>
+                <div slot="">default slot replacement
+                    <a>prefix<b>B</b><!CDATA[[ suffix ]]>suffix</a>
+                </div>
                 <div slot="outer">outer replacement<script type="bogus">ignore it</script></div>
             </slots-in-shadow>`);
         expect( getNodeText( el.shadowRoot ) ).to.include('prefixBsuffix');
-        expect( getNodeText( $$('a',el)[0] )).to.eq('prefixBsuffix');
-        expect( getNodeText( el.$().slots('') ).replace(/\s+/g,'')).to.eq('prefixBsuffixdefaultslotreplacement');
+        expect( getNodeText( $$(el).slots('') )).to.contain('prefixBsuffix');
+        expect( getNodeText( el.$().slots('') ).replace(/\s+/g,'')).to.eq('defaultslotreplacementprefixBsuffix');
         expect( getNodeText( el.$().slots('outer') )).to.eq('outer replacement');
         expect( el.$('style').textContent).to.include('padding');
         expect( getNodeText( el.$('style')[0])).to.eq('');

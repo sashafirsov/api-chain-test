@@ -248,6 +248,16 @@ describe( 'CssChain slot methods', () =>
         expect( el.$().slots('').innerText).to.contain('default slot');
         expect( el.$().slots(',outer').length).to.eq(2);
     });
+    it( '$(css,el with shadowRoot)',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <div slot="">default <s>slot</s> replacement</div>
+            </slots-in-shadow>`);
+        // template content, no slots
+        expect( $$('i',el).txt()).to.eq('out of slot');
+        expect( $$('p',el).txt()).to.contain('prefix');
+    });
 
 
 } );
