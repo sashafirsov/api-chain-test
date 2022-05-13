@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.27% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>114/172</span>
+                <span class='fraction'>168/168</span>
             </div>
         
             
@@ -363,9 +363,9 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -470,8 +470,8 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -490,8 +490,8 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -578,7 +578,7 @@ export const csv = (arr, ...args ) =&gt; map( arr, ...args ).join(',');
 export const collectionText = arr=&gt; map(arr, e=&gt;getNodeText(e)).join('');
 const createEl = tag=&gt; document.createElement(tag);
 function nodeProp( tag, prop, val ){ const el = createEl(tag); el[prop]=val; return el; }
-export function isNode(n){ return !!n<span class="branch-0 cbranch-no" title="branch not covered" >?.nodeType;</span> }
+export function isNode(n){ return !!n?.nodeType; }
 &nbsp;
 const nop = ()=&gt;''
 ,   isArr = a =&gt; Array.isArray(a) || (a &amp;&amp; 'function' === typeof a.forEach)
@@ -587,31 +587,31 @@ const nop = ()=&gt;''
 ,   isNum  = a =&gt; isT(a, 'number')
 ,   isFn   = a =&gt; isT(a, 'function')
 ,   inWC   = n =&gt; n.getRootNode().host
-,   hasAssigned = n=&gt; inWC(n) <span class="branch-0 cbranch-no" title="branch not covered" >&amp;&amp; n.assignedNodes</span>
+,   hasAssigned = n=&gt; inWC(n) &amp;&amp; n.assignedNodes
 ,   each = (arr, cb )=&gt; (arr.forEach(cb),arr)
 ,   clear = n =&gt; hasAssigned(n)
-<span class="branch-0 cbranch-no" title="branch not covered" >               ? n.assignedNodes().forEach( a =&gt; a.remove() )</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >               : n.innerHTML=''</span>
+               ? n.assignedNodes().forEach( a =&gt; a.remove() )
+               : n.innerHTML=''
 ;
 &nbsp;
 const node2text =   {   1:  n=&gt;n.assignedNodes
-<span class="branch-0 cbranch-no" title="branch not covered" >                             ? collectionText(n.assignedNodes()) <span class="branch-0 cbranch-no" title="branch not covered" >|| collectionText(n.childNodes)</span></span>
-<span class="branch-0 cbranch-no" title="branch not covered" >                             : [ 'SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT'</span>
+                             ? collectionText(n.assignedNodes()) || collectionText(n.childNodes)
+                             : [ 'SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT'
                                , 'PICTURE','IFRAME','METER','NOSCRIPT'
                                , 'SELECT','OPTGROUP','PROGRESS','TEMPLATE','VIDEO'
-                               ].includes(n.nodeName)<span class="branch-0 cbranch-no" title="branch not covered" >? '' </span>: n.innerText //collectionText(n.children)
+                               ].includes(n.nodeName)? '' : n.innerText //collectionText(n.children)
                     ,   3: n=&gt;n.nodeValue
                     ,   11:n=&gt;collectionText(n.childNodes)
                     };
-export const getNodeText = n =&gt; (node2text[n.nodeType] <span class="branch-0 cbranch-no" title="branch not covered" >|| nop)</span>(n);
+export const getNodeText = n =&gt; (node2text[n.nodeType] || nop)(n);
 export const setNodeText = ( n, val ) =&gt;
     hasAssigned(n)
-<span class="branch-0 cbranch-no" title="branch not covered" >    ? n.assignedElements().forEach( e =&gt; e.innerText = val )</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    : n.innerText = val;</span>
+    ? n.assignedElements().forEach( e =&gt; e.innerText = val )
+    : n.innerText = val;
 export const assignParent = (arr,n)=&gt;arr.map( e=&gt;n.appendChild(e))
 export const collectionHtml = arr =&gt; map( arr, n=&gt;n.assignedElements
-<span class="branch-0 cbranch-no" title="branch not covered" >         ? map( n.assignedElements(), e=&gt;e.outerHTML ).join('')</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >         : n.innerHTML</span>
+         ? map( n.assignedElements(), e=&gt;e.outerHTML ).join('')
+         : n.innerHTML
     ).join('');
 &nbsp;
 export const html2NodeArr = html =&gt;
@@ -620,7 +620,7 @@ export const html2NodeArr = html =&gt;
     const wrapIfText = e=&gt;{
         if( e.nodeType !== 3 )
             return e;
-<span class="branch-0 cbranch-no" title="branch not covered" >        const n = createEl('span');</span>
+        const n = createEl('span');
         n.append(e);
         return n;
     };
@@ -630,18 +630,18 @@ export const html2NodeArr = html =&gt;
 export const addNodeHtml = ( n, val ) =&gt;
 {
     const set = ( to, v )=&gt; ( v instanceof Node
-<span class="branch-0 cbranch-no" title="branch not covered" >                            ? v.remove() || to.append(v)</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >                            : html2NodeArr(v).forEach( e=&gt;to.append(e) )</span>
+                            ? v.remove() || to.append(v)
+                            : html2NodeArr(v).forEach( e=&gt;to.append(e) )
                             )
     ,  append = v =&gt; hasAssigned(n)
-<span class="branch-0 cbranch-no" title="branch not covered" >                   ? n.assign( ...n.assignedNodes()</span>
+                   ? n.assign( ...n.assignedNodes()
                              , ...assignParent( each( html2NodeArr(v), e=&gt;e.slot=n.name )
                                                 , n.getRootNode().host ) )
-<span class="branch-0 cbranch-no" title="branch not covered" >                   : set(n,v);</span>
+                   : set(n,v);
 &nbsp;
     val instanceof NodeList || isArr(val)
-<span class="branch-0 cbranch-no" title="branch not covered" >        ? [ ...val ].forEach( append )</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >        : append(val);</span>
+        ? [ ...val ].forEach( append )
+        : append(val);
 }
 export const setNodeHtml = ( n, val ) =&gt; { clear(n); addNodeHtml(n,val) };
 &nbsp;
@@ -655,44 +655,44 @@ CssChainT extends Array
     push(...args){ Array.prototype.push.apply(this,args); return this; }
     querySelector(css){ return new CssChainT().push( this.querySelectorAll(css)[0] )  }
     querySelectorAll(css){ return this.reduce( ($,el)=&gt; $.push(...(el.shadowRoot||el).querySelectorAll(css) ), new CssChainT()) }
-    $(...args){ return args.length ? this.querySelectorAll(...args) <span class="branch-0 cbranch-no" title="branch not covered" >: this;</span> }
+    $(...args){ return args.length ? this.querySelectorAll(...args) : this; }
     parent(css)
     {   const s = new Set()
-        , add = n=&gt; s.has(n) <span class="branch-0 cbranch-no" title="branch not covered" >? 0 </span>: (s.add(n), n)
+        , add = n=&gt; s.has(n) ? 0 : (s.add(n), n)
         , parentLoop = n=&gt;  {   while( n=n.parentElement )
                                     if( n.matches(css) )
                                         return add(n);
                             };
-        return CssChain(this.map( css <span class="branch-0 cbranch-no" title="branch not covered" >? parentLoop </span>: n=&gt;add(n.parentElement) ).filter(n=&gt;n));
+        return CssChain(this.map( css ? parentLoop : n=&gt;add(n.parentElement) ).filter(n=&gt;n));
     }
     on(...args){ return this.addEventListener(...args) }
     append(val){ return this.forEach( n=&gt; addNodeHtml(n,val)) }
     remove(...args)
     {   if( !args.length )
             {   this.forEach(el=&gt;el.remove()); return new CssChainT() }
-<span class="branch-0 cbranch-no" title="branch not covered" >        return isFn(args[1]) ? this.removeEventListener(...args) <span class="branch-0 cbranch-no" title="branch not covered" ></span>: this.map(el=&gt;el.matches(args[0])).filter(el=&gt;el) </span>;
+        return isFn(args[1]) ? this.removeEventListener(...args) : this.map(el=&gt;el.matches(args[0])).filter(el=&gt;el) ;
     }
     erase(){ return this.forEach(n=&gt;clear(n)) }
     slots(...arr)
     {
         const selector = arr.length
-<span class="branch-0 cbranch-no" title="branch not covered" >                         ? csv( arr[0].split(',')</span>
+                         ? csv( arr[0].split(',')
                                 , n=&gt; ['""',"''"].includes(n) || !n
                                       ? `slot:not([name])`
                                       : `slot[name="${n}"]`
                                 )
-<span class="branch-0 cbranch-no" title="branch not covered" >                        : 'slot';</span>
-        const ss = this.filter( el=&gt;el.matches <span class="branch-0 cbranch-no" title="branch not covered" >&amp;&amp; el.matches(selector) </span>);
+                        : 'slot';
+        const ss = this.filter( el=&gt;el.matches &amp;&amp; el.matches(selector) );
         const ret = this.filter( n =&gt; !ss.includes(n) &amp;&amp; n.querySelector )
                     .map( n=&gt;n.shadowRoot || n ).$( arr.length
-<span class="branch-0 cbranch-no" title="branch not covered" >                        ? csv( arr[0].split(',')</span>
+                        ? csv( arr[0].split(',')
                             , n=&gt; ['""',"''"].includes(n) || !n
                                   ? `slot:not([name])`
                                   : `slot[name="${n}"]`
                             )
-<span class="branch-0 cbranch-no" title="branch not covered" >                        : 'slot')</span>;
+                        : 'slot');
         if( arr.length === 2 )
-<span class="branch-0 cbranch-no" title="branch not covered" >        {   ret.html( arr[ 1 ] );</span>
+        {   ret.html( arr[ 1 ] );
             return this
         }
         return CssChain([...ss,...ret]);
@@ -724,12 +724,12 @@ CssChainT extends Array
     get innerText(){ return this.txt() }
     set innerText( val ){ return this.txt( val ) }
     txt( val, css=undefined )
-    {   const arr = css<span class="branch-0 cbranch-no" title="branch not covered" >? this.$(css):</span> this;
+    {   const arr = css? this.$(css): this;
         if( val === undefined )
-<span class="branch-0 cbranch-no" title="branch not covered" >            return collectionText( arr );</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >        arr.forEach( isFn(val)</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >                    ? (n,i)=&gt;setNodeText(n,val(n,i,arr))</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >                    : n=&gt;setNodeText(n,val) </span>);
+            return collectionText( arr );
+        arr.forEach( isFn(val)
+                    ? (n,i)=&gt;setNodeText(n,val(n,i,arr))
+                    : n=&gt;setNodeText(n,val) );
         return this
     }
     get outerHTML(){ return this.map( e=&gt;e.outerHTML ).join('') }
@@ -744,43 +744,43 @@ CssChainT extends Array
     get innerHTML(){ return this.html() }
     set innerHTML( val ){ return this.html(val) }
     html( val, css=undefined )
-    {   const arr = css<span class="branch-0 cbranch-no" title="branch not covered" >? this.$(css):</span> this;
+    {   const arr = css? this.$(css): this;
         if( val === undefined )
             return collectionHtml( arr );
-<span class="branch-0 cbranch-no" title="branch not covered" >        arr.forEach( isFn(val)</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >               ? (n,i)=&gt;setNodeHtml(n,val(n,i,arr))</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >               : n=&gt;setNodeHtml(n,val) </span>);
+        arr.forEach( isFn(val)
+               ? (n,i)=&gt;setNodeHtml(n,val(n,i,arr))
+               : n=&gt;setNodeHtml(n,val) );
         return this
     }
-    assignedElements(opts){ return CssChain([].concat( ...this.map( el=&gt;el.assignedElements ? el.assignedElements(opts)<span class="branch-0 cbranch-no" title="branch not covered" >:[] </span>) ) ) }
-    assignedNodes(f){ return CssChain([].concat( ...this.map( el=&gt;el.assignedNodes ? el.assignedNodes(f)<span class="branch-0 cbranch-no" title="branch not covered" >:[] </span>) ) ) }
+    assignedElements(opts){ return CssChain([].concat( ...this.map( el=&gt;el.assignedElements ? el.assignedElements(opts):[] ) ) ) }
+    assignedNodes(f){ return CssChain([].concat( ...this.map( el=&gt;el.assignedNodes ? el.assignedNodes(f):[] ) ) ) }
     cloneNode(...args){ return this.map( el=&gt;el.cloneNode &amp;&amp; el.cloneNode(...args) ) }
     clone( /* number|array */count=1, cb=undefined )
     {
         let arr = count;
         if( isNum(count) )
-<span class="branch-0 cbranch-no" title="branch not covered" >            arr = Array.from({length: count}, (v, i) =&gt; i);</span>
+            arr = Array.from({length: count}, (v, i) =&gt; i);
 &nbsp;
         if( isArr(arr) )
         {   const ret = [];
             this.forEach( n =&gt; arr.forEach( (d,i) =&gt;
             {   const m = n.ownerDocument.importNode(n,true)
-                ,     x = cb <span class="branch-0 cbranch-no" title="branch not covered" >&amp;&amp; cb( m, d, i, arr );</span>
+                ,     x = cb &amp;&amp; cb( m, d, i, arr );
                 isStr(x)
-<span class="branch-0 cbranch-no" title="branch not covered" >                ? ret.push( ...html2NodeArr(x) )</span>
+                ? ret.push( ...html2NodeArr(x) )
                 : isArr(x)
-<span class="branch-0 cbranch-no" title="branch not covered" >                    ? ret.push(...x)</span>
-                    : ret.push( isNode(x) <span class="branch-0 cbranch-no" title="branch not covered" >? x </span>: m )
+                    ? ret.push(...x)
+                    : ret.push( isNode(x) ? x : m )
             }));
             return CssChain( ret );
         }
-<span class="branch-0 cbranch-no" title="branch not covered" >        const doc = count;</span>
-        return this.map( el=&gt; doc? doc.importNode( el,true )<span class="branch-0 cbranch-no" title="branch not covered" >: el.cloneNode ? el.cloneNode(true):Object.assign({},el) </span>)
+        const doc = count;
+        return this.map( el=&gt; doc? doc.importNode( el,true ): el.cloneNode ? el.cloneNode(true):Object.assign({},el) )
     }
     get firstElementChild(){ return CssChain(this.map( n=&gt;n.firstElementChild).filter(n=&gt;n)) }
     get firstChild(){ return CssChain(this.map( n=&gt;n.firstChild).filter(n=&gt;n)) }
-    get childNodes(){ return CssChain([].concat( ...map( this, el=&gt;[...(el.childNodes <span class="branch-0 cbranch-no" title="branch not covered" >|| [] </span>)] ) ) ) }
-    get children(){ return CssChain([].concat( ...map( this, el=&gt;[...(el.children <span class="branch-0 cbranch-no" title="branch not covered" >|| [] </span>)] ) ) ) }
+    get childNodes(){ return CssChain([].concat( ...map( this, el=&gt;[...(el.childNodes || [] )] ) ) ) }
+    get children(){ return CssChain([].concat( ...map( this, el=&gt;[...(el.children || [] )] ) ) ) }
 }
 &nbsp;
 const appliedTypes = new Set()
@@ -788,7 +788,7 @@ const appliedTypes = new Set()
 &nbsp;
     export function
 applyPrototype( nodeOrTag, ApiChain )
-{   const node = isStr(nodeOrTag) <span class="branch-0 cbranch-no" title="branch not covered" >? createEl(nodeOrTag) </span>: nodeOrTag;
+{   const node = isStr(nodeOrTag) ? createEl(nodeOrTag) : nodeOrTag;
     if( appliedTypes.has(node.tagName) )
         return;
     appliedTypes.add( node.tagName );
@@ -801,7 +801,7 @@ applyPrototype( nodeOrTag, ApiChain )
     {   appliedTypes.add(proto);
         for( let k of Object.getOwnPropertyNames(proto) )
             if( !( k in ApiChain.prototype ) )
-<span class="branch-0 cbranch-no" title="branch not covered" >                setProp( node, k, ApiChain );</span>
+                setProp( node, k, ApiChain );
     }
 }
 Object.getOwnPropertyNames(window)
@@ -813,13 +813,13 @@ Object.getOwnPropertyNames(window)
 CssChain( css, el=document, protoArr=[] )
 {
     const arr = 'string'===typeof css
-<span class="branch-0 cbranch-no" title="branch not covered" >                ? (el.shadowRoot || el).querySelectorAll( css )</span>
-                : isArr(css) <span class="branch-0 cbranch-no" title="branch not covered" >? css </span>: [css<span class="branch-0 cbranch-no" title="branch not covered" >? css.shadowRoot || css <span class="branch-0 cbranch-no" title="branch not covered" ></span>: document]</span>;
+                ? (el.shadowRoot || el).querySelectorAll( css )
+                : isArr(css) ? css : [css? css.shadowRoot || css : document];
 &nbsp;
     if( isArr( protoArr ) )
     {   if( !protoArr.length )
             protoArr = [...arr].slice(0,256);
-    }<span class="branch-0 cbranch-no" title="branch not covered" >else</span>
+    }else
         protoArr = [ protoArr ];
 &nbsp;
     protoArr.forEach( el =&gt; applyPrototype(el,CssChainT) );
@@ -835,7 +835,7 @@ export default CssChain;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 12 2022 21:18:33 GMT-0700 (Pacific Daylight Time)
+                at Thu May 12 2022 21:31:35 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="prettify.js"></script>

@@ -6,7 +6,7 @@ Collection API inherits the element API and Array.
 [![NPM version][npm-image]][npm-url] [![coverage][coverage-image]][coverage-url]
 
 ## Live demo
-https://unpkg.com/css-chain-test@1.1.4/dist/demo.html
+https://unpkg.com/css-chain-test@1.1.5/dist/demo.html
 
 # [CssChain](https://github.com/sashafirsov/css-chain/blob/main/CssChain.js)
 ## html elements methods
@@ -132,7 +132,7 @@ If you customize the configuration a lot, you can consider moving them to indivi
 
 [npm-image]:      https://img.shields.io/npm/v/css-chain.svg
 [npm-url]:        https://npmjs.org/package/css-chain-test
-[coverage-image]: https://unpkg.com/css-chain-test@1.1.4/coverage/coverage.svg
-[coverage-url]:   https://unpkg.com/css-chain-test@1.1.4/coverage/lcov-report/index.html
-[PokeApi-explorer-image]: https://unpkg.com/css-chain-test@1.1.4/src/PokeApi-Explorer.png
-[PokeApi-explorer-url]: https://unpkg.com/css-chain-test@1.1.4/dist/PokeApi-Explorer.html
+[coverage-image]: https://unpkg.com/css-chain-test@1.1.5/coverage/coverage.svg
+[coverage-url]:   https://unpkg.com/css-chain-test@1.1.5/coverage/lcov-report/index.html
+[PokeApi-explorer-image]: https://unpkg.com/css-chain-test@1.1.5/src/PokeApi-Explorer.png
+[PokeApi-explorer-url]: https://unpkg.com/css-chain-test@1.1.5/dist/PokeApi-Explorer.html
