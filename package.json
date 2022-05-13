@@ -25,13 +25,14 @@
     },
     "scripts": {
         "analyze": "cem analyze --litelement",
-        "build": "bash build.sh",
+        "build": "bash bin/build.sh",
+        "postinstall": "bash bin/postinstall.sh",
         "start": "npm run test:watch",
-        "test": "bash test.sh",
+        "test": "bash bin/test.sh",
         "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
     },
     "dependencies": {
-        "css-chain": "^1.1.4",
+        "css-chain": "^1.1.5",
         "lit": "^2.2.1"
     },
     "devDependencies": {

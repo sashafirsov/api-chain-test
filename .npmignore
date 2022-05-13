@@ -1,0 +1,35 @@
+bin/
+
+test/CssChain-types.test.j*
+tsconfig.*
+
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/node_modules/
+/npm-debug.log
+
+## testing
+# coverage is release deliverable and deployed to CDN
+# /coverage/
+
+## temp folders
+/.tmp/
+
+# build
+/_site/
+/out-tsc/
+
+storybook-static
+custom-elements.json
+
+.editorconfig
+ToDo.md
+web-dev-server.config.mjs
+web-test-runner.config.mjs
+__web-dev-server__web-socket.js

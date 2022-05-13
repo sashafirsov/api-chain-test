@@ -1,5 +1,5 @@
 node types/generate-mixin.js
-bash ./test.sh
+bash ./bin/test.sh
 
 PACKAGE_VERSION=$(node -pe "require('css-chain/package.json').version")
 echo $PACKAGE_VERSION
