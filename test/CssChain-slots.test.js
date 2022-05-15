@@ -258,6 +258,17 @@ describe( 'CssChain slot methods', () =>
         expect( $$('i',el).txt()).to.eq('out of slot');
         expect( $$('p',el).txt()).to.contain('prefix');
     });
+    it( 'default slot',  async ()=>
+    {
+        const el = await fixture(
+            html`<slots-in-shadow>
+                <button slot>
+                    override default
+                </button>
+            </slots-in-shadow>`
+        );
+        expect( $$(el).slots("").txt().trim() ).to.equal('override default');
+    });
 
 
 } );
