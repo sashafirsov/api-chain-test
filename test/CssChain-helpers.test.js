@@ -179,5 +179,33 @@ describe( 'CssChain internal helpers', () =>
         expect( arr[1].outerHTML).to.eq('<i>World</i>');
         expect( arr[2].outerHTML).to.eq('<b>!</b>');
     });
+    it( 'html2NodeArr(node) ',  async ()=>
+    {
+        const d = document.createElement('div');
+        d.innerHTML = `<a>A</a>B<i>C</i>`
+        const arr = html2NodeArr(d)
+        expect( arr.length).to.eq(1);
+        expect( arr[0].textContent).to.eq('ABC');
+    });
+    it( 'html2NodeArr(node) ',  async ()=>
+    {
+        const d = document.createElement('div');
+        d.innerHTML = `<a>A</a>B<i>C</i>`
+        const arr = html2NodeArr(d.childNodes)
+        expect( arr.length).to.eq(3);
+        expect( arr[0].outerHTML).to.eq('<a>A</a>');
+        expect( arr[1].textContent).to.eq('B');
+        expect( arr[2].outerHTML).to.eq('<i>C</i>');
+    });
+    it( 'html2NodeArr(A) ',  async ()=>
+    {
+        const d = document.createElement('div');
+        d.innerHTML = '<a slot="link-url" href="../doc.png"></a>';
+        const arr = html2NodeArr(d.childNodes[0])
+        expect( arr.length).to.eq(1);
+        expect( arr[0].tagName).to.eq('A');
+        expect( arr[0].textContent).to.eq('');
+        expect( arr[0].getAttribute('slot')).to.eq('link-url');
+    });
 
 } );
