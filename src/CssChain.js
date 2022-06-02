@@ -8,28 +8,28 @@ function nodeProp( tag, prop, val ){ const el = createEl(tag); el[prop]=val; ret
 export function isNode(n){ return !!n?.nodeType; }
 
 const nop = ()=>''
-,   isArr = a => Array.isArray(a) || (a && 'function' === typeof a.forEach)
-,   isT = (a,t) => typeof a === t
-,   isStr  = a => isT(a, 'string')
-,   isNum  = a => isT(a, 'number')
-,   isFn   = a => isT(a, 'function')
-,   inWC   = n => n.getRootNode().host
-,   hasAssigned = n=> inWC(n) && n.assignedNodes
-,   each = (arr, cb )=> (arr.forEach(cb),arr)
-,   clear = n => hasAssigned(n)
-               ? n.assignedNodes().forEach( a => a.remove() )
-               : n.innerHTML=''
+    ,   isArr = a => Array.isArray(a) || (a && 'function' === typeof a.forEach)
+    ,   isT = (a,t) => typeof a === t
+    ,   isStr  = a => isT(a, 'string')
+    ,   isNum  = a => isT(a, 'number')
+    ,   isFn   = a => isT(a, 'function')
+    ,   inWC   = n => n.getRootNode().host
+    ,   hasAssigned = n=> inWC(n) && n.assignedNodes
+    ,   each = (arr, cb )=> (arr.forEach(cb),arr)
+    ,   clear = n => hasAssigned(n)
+                     ? n.assignedNodes().forEach( a => a.remove() )
+                     : n.innerHTML=''
 ;
 
 const node2text =   {   1:  n=>n.assignedNodes
-                             ? collectionText(n.assignedNodes()) || collectionText(n.childNodes)
-                             : [ 'SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT'
-                               , 'PICTURE','IFRAME','METER','NOSCRIPT'
-                               , 'SELECT','OPTGROUP','PROGRESS','TEMPLATE','VIDEO'
-                               ].includes(n.nodeName)? '' : n.innerText //collectionText(n.children)
-                    ,   3: n=>n.nodeValue
-                    ,   11:n=>collectionText(n.childNodes)
-                    };
+                               ? collectionText(n.assignedNodes()) || collectionText(n.childNodes)
+                               : [ 'SCRIPT','AUDIO','STYLE','CANVAS','DATALIST','EMBED','OBJECT'
+                                     , 'PICTURE','IFRAME','METER','NOSCRIPT'
+                                     , 'SELECT','OPTGROUP','PROGRESS','TEMPLATE','VIDEO'
+                                 ].includes(n.nodeName)? '' : n.innerText //collectionText(n.children)
+    ,   3: n=>n.nodeValue
+    ,   11:n=>collectionText(n.childNodes)
+};
 export const getNodeText = n => (node2text[n.nodeType] || nop)(n);
 export const setNodeText = ( n, val ) =>
     hasAssigned(n)
@@ -37,9 +37,9 @@ export const setNodeText = ( n, val ) =>
     : n.innerText = val;
 export const assignParent = (arr,n)=>arr.map( e=>n.appendChild(e))
 export const collectionHtml = arr => map( arr, n=>n.assignedElements
-         ? map( n.assignedElements(), e=>e.outerHTML ).join('')
-         : n.innerHTML
-    ).join('');
+                                                  ? map( n.assignedElements(), e=>e.outerHTML ).join('')
+                                                  : n.innerHTML
+).join('');
 
 export const html2NodeArr = html =>
 {   let n = createEl('div');
@@ -62,14 +62,14 @@ export const html2NodeArr = html =>
 export const addNodeHtml = ( n, val ) =>
 {
     const set = ( to, v )=> ( v instanceof Node
-                            ? v.remove() || to.append(v)
-                            : html2NodeArr(v).forEach( e=>to.append(e) )
-                            )
-    ,  append = v => hasAssigned(n)
-                   ? n.assign( ...n.assignedNodes()
-                             , ...assignParent( each( html2NodeArr(v), e=>e.slot=n.name )
-                                                , n.getRootNode().host ) )
-                   : set(n,v);
+                              ? v.remove() || to.append(v)
+                              : html2NodeArr(v).forEach( e=>to.append(e) )
+    )
+        ,  append = v => hasAssigned(n)
+                         ? n.assign( ...n.assignedNodes()
+            , ...assignParent( each( html2NodeArr(v), e=>e.slot=n.name )
+                , n.getRootNode().host ) )
+                         : set(n,v);
 
     val instanceof NodeList || isArr(val)
         ? [ ...val ].forEach( append )
@@ -130,27 +130,47 @@ CssChainT extends Array
         return CssChain([...ss,...ret]);
     }
     template(n)
+    {   if( n === undefined )
     {
-        if( n === undefined )
-        {
-            const $s = this.$('[slot]')
-                .forEach( n => this.$(n.slot ? `slot[name="${n.slot}"]`:'slot:not([name])').length
-                               || n.parentNode.insertBefore( nodeProp('slot','name',n.slot), n ));
-            $s.remove();
-            n = createEl('template');
-            this.childNodes.forEach( c=>n.content.append(c) );
-            this.append($s);
-        }else if( isStr(n) )
-        {   n = this.$( n );
-            n.remove();
-        }
-        const c = CssChain( n.content ? n.content.childNodes : n ).clone(this);
+        const $s = this.$('[slot]')
+            .forEach( n => this.$(n.slot ? `slot[name="${n.slot}"]`:'slot:not([name])').length
+                           || n.parentNode.insertBefore( nodeProp('slot','name',n.slot), n ));
+        $s.remove();
+        n = createEl('template');
+        this.childNodes.forEach( c=>n.content.append(c) );
+        this.append($s);
+    }else if( isStr(n) )
+    {   n = this.$( n );
+        n.remove();
+    }
+        n = n.cloneNode(true);
+        const content = n.content ? n.content.childNodes : n;
+        const c = CssChain( content );
         c.slots().forEach( s =>
         {   const v = this.children.filter( n=>n.slot===s.name );
-            v.length && setNodeHtml(s,v)
+            const p = s.parentNode;
+            each(v, e=>e.cssChainSlot = s);
+            if(s.id ==='s3'){
+                debugger;
+            }
+            const injectInSlot = (e,s)=>
+            {
+                if( e.tagName === 'SLOT' )
+                {   const q = e.parentNode;
+                    const r = p.insertBefore( e, s);
+                    each( q.querySelectorAll(`[slot="${e.name}"]`), n=> p.insertBefore( n, r) );
+                }else
+                    p.insertBefore( e, s);
+            }
+            v.length ? each( v, e=>injectInSlot( e, s) )
+                     : s.name==="" &&
+                        each ( [...(n.content ? n.content.childNodes : n.childNodes)]
+                             .filter(e=>!e.hasArttribute ||e.hasArttribute('slot'))
+                         , e=>p.insertBefore( e, s) );
+            if( v.length ) s.hidden=true;
         });
-        this.children.remove();
-        this.append(c);
+        this.children.filter(e=>!e.cssChainSlot).remove();
+        this.append( CssChain( html2NodeArr('<light-dom></light-dom>') ).append(content) );
         return this;
     }
     get innerText(){ return this.txt() }
@@ -160,18 +180,18 @@ CssChainT extends Array
         if( val === undefined )
             return collectionText( arr );
         arr.forEach( isFn(val)
-                    ? (n,i)=>setNodeText(n,val(n,i,arr))
-                    : n=>setNodeText(n,val) );
+                     ? (n,i)=>setNodeText(n,val(n,i,arr))
+                     : n=>setNodeText(n,val) );
         return this
     }
     get outerHTML(){ return this.map( e=>e.outerHTML ).join('') }
     set outerHTML( val )
     {   return this.forEach( (n,i,arr)=>
-        {   const p = n.parentNode;
-            html2NodeArr(isFn(val) ? val(n,i,arr): val )
-                .forEach( e=> p.insertBefore( (arr[i]=e), n));
-            n.remove();
-        })
+    {   const p = n.parentNode;
+        html2NodeArr(isFn(val) ? val(n,i,arr): val )
+            .forEach( e=> p.insertBefore( (arr[i]=e), n));
+        n.remove();
+    })
     }
     get innerHTML(){ return this.html() }
     set innerHTML( val ){ return this.html(val) }
@@ -180,8 +200,8 @@ CssChainT extends Array
         if( val === undefined )
             return collectionHtml( arr );
         arr.forEach( isFn(val)
-               ? (n,i)=>setNodeHtml(n,val(n,i,arr))
-               : n=>setNodeHtml(n,val) );
+                     ? (n,i)=>setNodeHtml(n,val(n,i,arr))
+                     : n=>setNodeHtml(n,val) );
         return this
     }
     assignedElements(opts){ return CssChain([].concat( ...this.map( el=>el.assignedElements ? el.assignedElements(opts):[] ) ) ) }
@@ -201,8 +221,8 @@ CssChainT extends Array
                 isStr(x)
                 ? ret.push( ...html2NodeArr(x) )
                 : isArr(x)
-                    ? ret.push(...x)
-                    : ret.push( isNode(x) ? x : m )
+                  ? ret.push(...x)
+                  : ret.push( isNode(x) ? x : m )
             }));
             return CssChain( ret );
         }
@@ -216,9 +236,9 @@ CssChainT extends Array
 }
 
 const appliedTypes = new Set()
-,     OBJ_prototype = Object.getPrototypeOf( {} );
+    ,     OBJ_prototype = Object.getPrototypeOf( {} );
 
-    export function
+export function
 applyPrototype( nodeOrTag, ApiChain )
 {   const node = isStr(nodeOrTag) ? createEl(nodeOrTag) : nodeOrTag;
     if( appliedTypes.has(node.tagName) )
@@ -241,7 +261,7 @@ Object.getOwnPropertyNames(window)
     .map( key=>key.substring(4,key.length-7).toLowerCase() )
     .forEach( tag=>applyPrototype( createEl(tag), CssChainT ) );
 
-    export function
+export function
 CssChain( css, el=document, protoArr=[] )
 {
     const arr = 'string'===typeof css
@@ -250,7 +270,7 @@ CssChain( css, el=document, protoArr=[] )
 
     if( isArr( protoArr ) )
     {   if( !protoArr.length )
-            protoArr = [...arr].slice(0,256);
+        protoArr = [...arr].slice(0,256);
     }else
         protoArr = [ protoArr ];
 
