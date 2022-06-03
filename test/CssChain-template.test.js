@@ -60,8 +60,19 @@ describe( 'CssChain template() variations', () =>
                                  || null
                            )
             );
-            expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slots().find( e=>e.id===s));
-            // node.assignedSlot in light DOM equals the parent slot
+
+            expect(light.$('#'+k)[0]?.CssChainAssignedSlot || null)
+                .to.equal( s && light.$('#'+k)[0].CssChainAssignedSlot );
+
+            // has a sibling slot w/ name
+            // slots
+            const slotName = light.$('#'+k).slot;
+            const seekedSlot = s && light.$('#host1').slots().find( e=>e.id===s);
+
+            if( slotName === undefined )
+                expect( null ).to.equal( seekedSlot );
+            else
+                expect( light.$('#'+k).parent().slots(slotName) ).to.contain( seekedSlot );
         };
         const assert_assignedNodes = (k,arr)=>
         {   assert_array_equals( n[k].assignedNodes(), arr.map( e=>n[e] ) );
@@ -71,8 +82,7 @@ describe( 'CssChain template() variations', () =>
                 ).map( e=>e.id )
             ).to.eql( arr );
 
-            expect( light.$('#'+k).children.map( e=>e.id ) ).to.eql( arr );
-            // node.assignedNodes in light DOM equals the child nodes
+            expect( light.$('#'+k).assignedNodes().map( e=>e.id ) ).to.eql( arr );
         };
         const assert_assignedNodesF = (k,arr)=>
         {   const F = { flatten: true };
@@ -83,8 +93,8 @@ describe( 'CssChain template() variations', () =>
                 ).map( e=>e.id )
             ).to.eql( arr );
 
-            expect( light.$('#'+k).children.map( e=>e.tagName==='SLOT'?e.firstChild:e ).map( e=>e.id ) ).to.eql( arr );
-            // node.assignedNodes in light DOM equals the child nodes
+            // node.assignedNodes in light DOM do not need shadow root penetration
+            expect( light.$('#'+k).assignedNodes(F).map( e=>e.id ) ).to.eql( arr );
         };
 
         // same sequence as in prev test but testing using CssChain of shadow and light dom

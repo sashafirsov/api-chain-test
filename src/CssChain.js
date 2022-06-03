@@ -76,6 +76,15 @@ export const addNodeHtml = ( n, val ) =>
         : append(val);
 }
 export const setNodeHtml = ( n, val ) => { clear(n); addNodeHtml(n,val) };
+function assignedNodesLight(f)
+{   if(f?.flatten)
+    {   const r = [];
+        const flatten = n=> n.CssChainAssignedNodes ? each(n.CssChainAssignedNodes,flatten): r.push(n);
+        each(this.CssChainAssignedNodes, flatten );
+        return r;
+    }
+    return this.CssChainAssignedNodes;
+}
 
     class
 CssChainT extends Array
@@ -131,42 +140,47 @@ CssChainT extends Array
     }
     template(n)
     {   if( n === undefined )
-    {
-        const $s = this.$('[slot]')
-            .forEach( n => this.$(n.slot ? `slot[name="${n.slot}"]`:'slot:not([name])').length
-                           || n.parentNode.insertBefore( nodeProp('slot','name',n.slot), n ));
-        $s.remove();
-        n = createEl('template');
-        this.childNodes.forEach( c=>n.content.append(c) );
-        this.append($s);
-    }else if( isStr(n) )
-    {   n = this.$( n );
-        n.remove();
-    }
+        {
+            const $s = this.$('[slot]')
+                .forEach( n => this.$(n.slot ? `slot[name="${n.slot}"]`:'slot:not([name])').length
+                               || n.parentNode.insertBefore( nodeProp('slot','name',n.slot), n ));
+            $s.remove();
+            n = createEl('template');
+            this.childNodes.forEach( c=>n.content.append(c) );
+            this.append($s);
+        }else if( isStr(n) )
+        {   n = this.$( n );
+            n.remove();
+        }
         n = n.cloneNode(true);
         const content = n.content ? n.content.childNodes : n;
         const c = CssChain( content );
         c.slots().forEach( s =>
         {   const v = this.children.filter( n=>n.slot===s.name );
             const p = s.parentNode;
+            s.CssChainAssignedNodes = [];
+            s.assignedNodes = s.assignedElements = assignedNodesLight;
+            const insert = (n,r)=>
+            {   const k = p.insertBefore( n, r);
+                n.CssChainAssignedSlot || s.CssChainAssignedNodes.push(n);
+                n.CssChainAssignedSlot = s;
+                return k;
+            };
             each(v, e=>e.cssChainSlot = s);
-            if(s.id ==='s3'){
-                debugger;
-            }
             const injectInSlot = (e,s)=>
             {
                 if( e.tagName === 'SLOT' )
                 {   const q = e.parentNode;
-                    const r = p.insertBefore( e, s);
+                    const r = insert(e,s);
                     each( q.querySelectorAll(`[slot="${e.name}"]`), n=> p.insertBefore( n, r) );
                 }else
-                    p.insertBefore( e, s);
+                    insert(e,s);
             }
             v.length ? each( v, e=>injectInSlot( e, s) )
                      : s.name==="" &&
                         each ( [...(n.content ? n.content.childNodes : n.childNodes)]
                              .filter(e=>!e.hasArttribute ||e.hasArttribute('slot'))
-                         , e=>p.insertBefore( e, s) );
+                         , e=>insert(e,s) );
             if( v.length ) s.hidden=true;
         });
         this.children.filter(e=>!e.cssChainSlot).remove();
