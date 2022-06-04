@@ -12,7 +12,7 @@ import { CssChain as $ } from "./CssChain.js";
 export function createTestTree( node )
 {
 
-    let ids = {light:{}};
+    let ids = {light:{},native:{}};
 
     function attachShadowFromTemplate( template )
     {
@@ -68,15 +68,16 @@ export function createTestTree( node )
             .map( t =>
             {   const p = t.parentNode;
                 p.removeChild(t);
-                $(p).template(t);
-                walkLightDom( p );
+                const $rendered = $(p).template(t);
+                $rendered.children.map( walkLightDom );
             });
     }
 
     const cloneAppend = (n,classname) =>
     {   let x = node.cloneNode( true );
-        x.id='';
+        x.id=classname;
         x.classList.add(classname);
+
         if( classname==='light')
             ids.light[node.id]=x;
         else
@@ -85,8 +86,8 @@ export function createTestTree( node )
         return x
     };
 
-    walkShadowDom( cloneAppend( node,'shadow' ) );
     walkLightDom( cloneAppend( node ,'light'  ) );
+    walkShadowDom( cloneAppend( node,'shadow' ) );
 
     return ids;
 }

@@ -1,10 +1,14 @@
 // import { playwrightLauncher } from '@web/test-runner-playwright';
+import { chromeLauncher } from '@web/test-runner';
 
 const filteredLogs = ['Running in dev mode', 'lit-html is in dev mode'];
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: ['test/*.test.js','out-tsc/**/*.test.js'],
+  files:[   'test/*.test.js'
+        ,'out-tsc/**/*.test.js'
+        // ,   'src/slots-light-vs-shadow.html'
+        ],
 
   preserveSymlinks:true,
 
@@ -38,6 +42,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   //   playwrightLauncher({ product: 'firefox' }),
   //   playwrightLauncher({ product: 'webkit' }),
   // ],
+  browsers: [chromeLauncher({ launchOptions: { args: ['--no-sandbox', '--start-maximized'] } })],
 
   // See documentation for all available options
+
 });

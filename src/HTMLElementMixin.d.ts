@@ -1325,6 +1325,7 @@ The event listener is appended to target's event listener list and is not append
 
 	removeEventListener<K extends keyof HTMLBodyElementEventMap>(type: K, listener: (this: HTMLBodyElement, ev: HTMLBodyElementEventMap[K]) => any, options?: boolean | EventListenerOptions):CssChainT;
 
+/**  Enables or disables the style sheet. <br/>*/
 
 	disabled:boolean;
 
@@ -1577,6 +1578,22 @@ The event listener is appended to target's event listener list and is not append
 /**  Removes the event listener in target's event listener list with the same type, callback, and options. <br/>*/
 
 	removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLDetailsElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions):CssChainT;
+
+
+	returnValue:string;
+
+/**  Closes the dialog element.
+
+The argument, if provided, provides a return value. <br/>*/
+
+	close(returnValue?: string):CssChainT;
+
+/**  Displays the dialog element. <br/>*/
+
+	show():CssChainT;
+
+
+	showModal():CssChainT;
 
 /**  Appends an event listener for events whose type attribute value is type. The callback argument sets the callback that will be invoked when the event is dispatched.
 
@@ -2628,10 +2645,16 @@ The event listener is appended to target's event listener list and is not append
 	videoWidth:number;
 
 
+	cancelVideoFrameCallback(handle: number):CssChainT;
+
+
 	getVideoPlaybackQuality():CssChainT;
 
 
 	requestPictureInPicture():CssChainT;
+
+
+	requestVideoFrameCallback(callback: VideoFrameRequestCallback):CssChainT;
 
 /**  Appends an event listener for events whose type attribute value is type. The callback argument sets the callback that will be invoked when the event is dispatched.
 

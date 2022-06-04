@@ -15,9 +15,11 @@
         #host {
             border: 1px dashed green;
             margin: 0.5rem;
+            padding: 0.5rem;
         }
-        .shadow,.light{ border: 2px dashed blue; margin: .5rem;}
+        .shadow,.light{ border: 2px dashed blue; margin: .5rem; min-width: 1rem; min-height: 1rem; }
         .light { border-color:green;}
+        div[slot="demo"] { display: flex; }
     </style>
 </head>
 <body>
@@ -317,13 +319,19 @@
 </html-demo-element>
 
 
-<html-demo-element src="slots-light-vs-shadow.js" legend="slots-light-vs-shadow.js"></html-demo-element>
+<html-demo-element src="../src/slots-light-vs-shadow.js" legend="slots-light-vs-shadow.js"></html-demo-element>
 
 <script src="./slots-light-vs-shadow.js" type="module"></script>
 <script type="module">
+    import { createTestTree, removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
+    import $ from './CssChain.js';
+    window.test_keys={};
+    $('[id^="test"]').map(n=>{ window.test_keys[n.id]=createTestTree(n)});
+</script>
+<script type="module">
     import { expect } from "@open-wc/testing";
     import { runTests } from "@web/test-runner-mocha";
-    import { createTestTree, removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
+    import { removeWhiteSpaceOnlyTextNodes } from './slots-light-vs-shadow.js';
     import $ from './CssChain.js';
 
     const test = ( cb, title )=>{ it(title, cb); }
@@ -334,14 +342,14 @@
         describe("test_basic", () => {
 
             test(() => {
-                let n = createTestTree(test_basic);
+                let n = window.test_keys.test_basic;
                 removeWhiteSpaceOnlyTextNodes(n.test_basic);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
                 assert_array_equals(n.s1.assignedNodes(), [n.c1]);
             }, 'Slots: Basic.');
             test(() => {
-                let n = createTestTree(test_basic);
+                let n = window.test_keys.test_basic;
 
                 assert_array_equals(n.s1.assignedElements(), [n.c1]);
             }, 'Slots: Basic, elements only.');
@@ -354,14 +362,14 @@
                 expect(lightText).to.equal('before slot slot1 override after slot');
             });
             test(() => {
-                let n = createTestTree(test_basic_closed);
+                let n = window.test_keys.test_basic_closed;
                 removeWhiteSpaceOnlyTextNodes(n.test_basic_closed);
 
                 assert_equals(n.c1.assignedSlot, null);
                 assert_array_equals(n.s1.assignedNodes(), [n.c1]);
             }, 'Slots: Slots in closed.');
             test(() => {
-                let n = createTestTree(test_basic_closed);
+                let n = window.test_keys.test_basic_closed;
                 assert_array_equals(n.s1.assignedElements(), [n.c1]);
             }, 'Slots: Slots in closed, elements only.');
             it('createTestTree$: Slots in closed', async () => {
@@ -371,13 +379,13 @@
                 expect(lightText).to.equal('before slot slot1 override after slot');
             });
             test(() => {
-                let n = createTestTree(test_slot_not_in_shadow);
+                let n = window.test_keys.test_slot_not_in_shadow;
                 removeWhiteSpaceOnlyTextNodes(n.test_slot_not_in_shadow);
 
                 assert_array_equals(n.s1.assignedNodes(), []);
             }, 'Slots: Slots not in a shadow tree.');
             test(() => {
-                let n = createTestTree(test_slot_not_in_shadow);
+                let n = window.test_keys.test_slot_not_in_shadow;
 
                 assert_array_equals(n.s1.assignedElements(), []);
             }, 'Slots: Slots not in a shadow tree, elements only.');
@@ -391,7 +399,7 @@
                 expect(slotShadow.assignedElements().length).to.equal(0);
             });
             test(() => {
-                let n = createTestTree(test_slot_not_in_shadow_2);
+                let n = window.test_keys.test_slot_not_in_shadow_2;
                 removeWhiteSpaceOnlyTextNodes(n.test_slot_not_in_shadow_2);
 
                 assert_equals(n.c1.assignedSlot, null);
@@ -434,7 +442,7 @@
                 expect(light .$('#s3').assignedNodes({ flatten: true }).length).to.equal(0);
             });
             test(() => {
-                let n = createTestTree(test_slot_name_matching);
+                let n = window.test_keys.test_slot_name_matching;
                 removeWhiteSpaceOnlyTextNodes(n.test_slot_name_matching);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
@@ -461,7 +469,7 @@
                 expect( light.$('#s3').txt() ).to.equal( '' );
             });
             test(() => {
-                let n = createTestTree(test_no_direct_host_child);
+                let n = window.test_keys.test_no_direct_host_child;
                 removeWhiteSpaceOnlyTextNodes(n.test_no_direct_host_child);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
@@ -482,7 +490,7 @@
                 expect(  light.$('#host').slots('slot1').txt() ).to.equal( '#c1#c2#s2' );
             });
             test(() => {
-                let n = createTestTree(test_default_slot);
+                let n = window.test_keys.test_default_slot;
                 removeWhiteSpaceOnlyTextNodes(n.test_default_slot);
 
                 assert_equals(n.c1.assignedSlot, n.s2);
@@ -503,7 +511,7 @@
                 expect(  light.$('#host').slots().txt().replace( /\s+/g , '') ).to.equal( '#s1#c1#c2#s3' );
             });
             test(() => {
-                let n = createTestTree(test_slot_in_slot);
+                let n = window.test_keys.test_slot_in_slot;
                 removeWhiteSpaceOnlyTextNodes(n.test_slot_in_slot);
 
                 assert_equals(n.c1.assignedSlot, n.s2);
@@ -522,7 +530,7 @@
                 expect(  light.$('#host').txt() ).to.equal( '#c2' );
             });
             test(() => {
-                let n = createTestTree(test_slot_is_assigned_to_slot);
+                let n = window.test_keys.test_slot_is_assigned_to_slot;
                 removeWhiteSpaceOnlyTextNodes(n.test_slot_is_assigned_to_slot);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
@@ -547,7 +555,7 @@
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
             });
             test(() => {
-                let n = createTestTree(test_open_closed);
+                let n = window.test_keys.test_open_closed;
                 removeWhiteSpaceOnlyTextNodes(n.test_open_closed);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
@@ -578,7 +586,7 @@
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
             });
             test(() => {
-                let n = createTestTree(test_closed_closed);
+                let n = window.test_keys.test_closed_closed;
                 removeWhiteSpaceOnlyTextNodes(n.test_closed_closed);
 
                 assert_equals(n.c1.assignedSlot, null,
@@ -600,7 +608,7 @@
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
             });
             test(() => {
-                let n = createTestTree(test_closed_open);
+                let n = window.test_keys.test_closed_open;
                 removeWhiteSpaceOnlyTextNodes(n.test_closed_open);
 
                 assert_equals(n.c1.assignedSlot, null,
@@ -621,7 +629,7 @@
                 expect(  light.$('#host1').txt() ).to.equal( '#c1' );
             });
             test(() => {
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 assert_equals(n.c1.assignedSlot, n.s1);
@@ -661,10 +669,10 @@
             }, 'Slots: Complex case: Basi line.');
             it('13.1 createTestTree$: Complex case: Basi line.', ()=>
             {
-                $(test_complex).parent().$('.shadow').remove();
-                $(test_complex).parent().$('.light').remove();
+                // $(test_complex).parent().$('.shadow').remove();
+                // $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 const shadow = $(test_complex).parent().$('.shadow');
@@ -678,8 +686,8 @@
                                         || null
                                       )
                                 );
-                    expect(light.$('#'+k).parentElement || null).to.equal(s &&  light.$('#host1').slots().find( e=>e.id===s));
-                    // node.assignedSlot in light DOM equals the parent slot
+                    expect(light.$('#'+k)[0].CssChainAssignedSlot || null).to.equal( s &&  light.$('#'+s)[0] );
+                    // node.assignedSlot in light DOM equals CssChainAssignedSlot
                 };
                 const assert_assignedNodes = (k,arr)=>
                 {   assert_array_equals( n[k].assignedNodes(), arr.map( e=>n[e] ) );
@@ -746,7 +754,7 @@
                 expect(  light.$('#host1').txt() ).to.equal( '#c1\n#c5\n#c2\n#c6\n#c3\n#c7\n#s8' );
             });
             test(() => {
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 let d1 = document.createElement('div');
@@ -763,7 +771,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 const shadow = $(test_complex).parent().$('.shadow');
@@ -780,7 +788,7 @@
                 // and no ability to get original children for applying template again
             });
             test(() => {
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.c1.setAttribute('slot', 'slot-none');
@@ -795,7 +803,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 const shadow = $(test_complex).parent().$('.shadow');
@@ -812,7 +820,7 @@
                 // no mutation test on light dom
             });
             test(() => {
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.c1.setAttribute('slot', 'slot2');
@@ -829,7 +837,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 const shadow = $(test_complex).parent().$('.shadow');
@@ -852,7 +860,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.c4.setAttribute('slot', 'slot1');
@@ -866,7 +874,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.c1.remove();
@@ -881,7 +889,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 let slot = document.createElement('slot');
@@ -895,7 +903,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 let slot = document.createElement('slot');
@@ -913,7 +921,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.s1.remove();
@@ -929,7 +937,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.s1.setAttribute('name', 'slot2');
@@ -946,7 +954,7 @@
                 $(test_complex).parent().$('.shadow').remove();
                 $(test_complex).parent().$('.light').remove();
 
-                let n = createTestTree(test_complex);
+                let n = window.test_keys.test_complex;
                 removeWhiteSpaceOnlyTextNodes(n.test_complex);
 
                 n.s1.setAttribute('slot', 'slot6');
