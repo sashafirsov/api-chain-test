@@ -12,9 +12,7 @@
     "module": "index.js",
     "type": "module",
     "types": "src/CssChain.d.ts",
-    "exports": {
-        ".": "index.js"
-    },
+    "exports": "./index.js",
     "files": [
         "*",
         "**/*"
@@ -33,15 +31,15 @@
     },
     "dependencies": {
         "css-chain": "1.1.7",
-        "lit": "^2.2.5"
+        "lit": "2.8.0"
     },
     "devDependencies": {
-        "@open-wc/testing": "^3.1.5",
-        "@web/dev-server": "^0.1.31",
-        "@web/test-runner": "^0.13.29",
-        "concurrently": "^7.2.1",
-        "esbuild": "^0.14.42",
-        "typescript": "^4.7.3"
+        "@open-wc/testing": "3.2.0",
+        "@web/dev-server": "0.3.0",
+        "@web/test-runner": "0.17.0",
+        "concurrently": "8.2.0",
+        "esbuild": "0.18.17",
+        "typescript": "5.1.6"
     },
     "customElements": "custom-elements.json"
 }
