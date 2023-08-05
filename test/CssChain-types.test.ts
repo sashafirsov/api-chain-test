@@ -56,7 +56,7 @@ class DemoElement extends HTMLElement {
 window.customElements.define( 'demo-element', DemoElement);
 
 describe('CssChain', () => {
-    const isBlankNodeSet = ($X:CssChainT) => {
+    const isBlankNodeSet = ($X: CssChainT) => {
         expect(Array.isArray($X)).to.equal(true);
         expect($X).to.be.an('array');
         expect($X.length).to.equal(0);
@@ -125,7 +125,7 @@ describe('CssChain', () => {
     it('checked in checkbox with click and click handlers', async () => {
         const el = await fixture(html`
             <div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
-        const $X = $$<DemoElement>('input', el);
+        const $X = $$<HTMLInputElement>('input', el);
 
         expect($X[0].checked).to.equal(false);
         expect($X.checked).to.equal(false);
@@ -143,25 +143,24 @@ describe('CssChain', () => {
         expect($X.checked).to.equal(false);
         expect($X[1].checked).to.equal(false);
 
-        $X.addEventListener('click', function (this:DemoElement) {
-            this.calledFromClick = true;
+        $X.addEventListener('click', function (this:HTMLInputElement) {
+            this.value = 'clicked';
         })
-            .addEventListener('change', function () {
-                // @ts-ignore
-                this.calledFromChange = 'checked=' + this.checked;
-            })
-            .click();
+        .addEventListener('change', function () {
+            this.title = 'checked=' + this.checked;
+        })
+        .click();
 
-        expect($X[0].calledFromClick).to.equal(true);
-        expect($X[1].calledFromClick).to.equal(true);
+        expect($X[0].value).to.equal('clicked');
+        expect($X[1].value).to.equal('clicked');
 
-        expect($X[0].calledFromChange).to.equal('checked=true');
-        expect($X[1].calledFromChange).to.equal('checked=true');
+        expect($X[0].title).to.equal('checked=true');
+        expect($X[1].title).to.equal('checked=true');
     });
     it('$.on(evName, cb )', async () => {
         const el = await fixture(html`
             <div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
-        const $X = $$<DemoElement>('input', el);
+        const $X = $$('input', el);
 
         expect($X[0].checked).to.equal(false);
         expect($X.checked).to.equal(false);
@@ -179,21 +178,18 @@ describe('CssChain', () => {
         expect($X.checked).to.equal(false);
         expect($X[1].checked).to.equal(false);
 
-        $X.on('click', function () {
-            // @ts-ignore
-            this.calledFromClick = true;
-        })
-            .on('change', function () {
-                // @ts-ignore
-                this.calledFromChange = 'checked=' + this.checked;
-            })
+        expect($X[0].value).to.equal('1');
+        expect($X[1].value).to.equal('2');
+
+        $X  .on('click', ev=>ev.target.title = "clicked")
+            .on('change', ev=>ev.target.value = 'checked=' + ev.target.checked)
             .click();
 
-        expect($X[0].calledFromClick).to.equal(true);
-        expect($X[1].calledFromClick).to.equal(true);
+        expect($X[0].title).to.equal('clicked');
+        expect($X[1].title).to.equal('clicked');
 
-        expect($X[0].calledFromChange).to.equal('checked=true');
-        expect($X[1].calledFromChange).to.equal('checked=true');
+        expect($X[0].value).to.equal('checked=true');
+        expect($X[1].value).to.equal('checked=true');
     });
     it('custom element from import', async () => {
         const el = await fixture(html`
@@ -282,13 +278,12 @@ describe('CssChain', () => {
             <div><input type="checkbox" value="1"/><input type="checkbox" value="2"/></div>`);
         const $X = $$('input', el);
 
-        function markClick() {
-            // @ts-ignore
+        function markClick(this:HTMLInputElement) {
             this.name = 'clicked';
         }
 
         $X.on('click', markClick)
-            .click();
+        .click(); // ON
 
         expect($X[0].name).to.equal('clicked');
         expect($X[1].name).to.equal('clicked');
@@ -297,17 +292,16 @@ describe('CssChain', () => {
         $X.name = "false";
 
         $X.on('click', function () {
-            // @ts-ignore
-            this.title = 'changed'
+            this.title = 'changed='+this.checked
         });
         $X.remove('click', markClick);
 
-        $X.click();
+        $X.click(); // OFF
         expect($X[0].name).to.equal('false');
         expect($X[1].name).to.equal('false');
 
-        expect($X[0].title).to.equal('changed');
-        expect($X[1].title).to.equal('changed');
+        expect($X[0].title).to.equal('changed=false');
+        expect($X[1].title).to.equal('changed=false');
     });
     it('$(el)', async () => {
 
