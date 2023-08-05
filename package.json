@@ -23,7 +23,7 @@
     },
     "scripts": {
         "analyze": "cem analyze --litelement",
-        "build": "bash bin/build.sh",
+        "build": "bash types/types-generate.sh && bash bin/build.sh",
         "postinstall": "bash bin/postinstall.sh",
         "start": "wds",
         "test": "bash bin/test.sh",
@@ -36,8 +36,8 @@
     "devDependencies": {
         "@open-wc/testing": "3.2.0",
         "@web/dev-server": "0.3.0",
-        "@web/test-runner": "0.17.0",
-        "concurrently": "8.2.0",
+        "@web/test-runner": "^0.13.29",
+        "concurrently": "7.2.1",
         "esbuild": "0.18.17",
         "typescript": "5.1.6"
     },

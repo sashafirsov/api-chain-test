@@ -22,8 +22,10 @@ export interface CssChainCollection<T> extends  Array<AnyElement&T>, AnyElement
     attr(name:string): CssChainCollection<T>;
     /** (alias for `setAttribute`) sets elements attribute, returns CssChain */
     attr(name:string, value:string): CssChainCollection<T>;
+    /** (alias for `setAttribute`) sets elements attribute with value from callback, returns CssChain */
+    attr(name:string, valueCallback:( (el:T, i:number, arr:CssChainCollection<T>)=>string) ): CssChainCollection<T>;
     /** (alias for `setAttribute`) sets `css`-defined sub-tree elements attribute, returns CssChain */
-    attr(name:string, value:string, css:string): CssChainCollection<T>;
+    attr(name:string, valueOrCallback:string | ( (el:T, i:number, arr:CssChainCollection<T>)=>string), css:string): CssChainCollection<T>;
     /** returns 1st element property value or `undefined` for empty collection */
     prop(name:string): any;
     /** sets elements attribute, returns CssChain */

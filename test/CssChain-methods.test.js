@@ -34,6 +34,29 @@ describe( 'CssChain own methods', () =>
         expect( $X.attr('id') ).to.equal('QA');
     } );
 
+    it( 'attr(name,cb)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$('a',el)
+        expect( $X.attr('name',(el,i)=>el.id+'-'+i).length ).to.equal(2);
+        expect( $X.getAttribute('name') ).to.equal('a1-0');
+        expect( $X[0].getAttribute('name') ).to.equal('a1-0');
+        expect( $X[1].getAttribute('name') ).to.equal('a2-1');
+        expect( $X.attr('name') ).to.equal('a1-0');
+    } );
+
+    it( 'attr(name,cb,css)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><b>B1</b></a><a id="a2"><b>B2</b></a></div>`);
+        const $X = $$('a',el)
+        const css ='b'
+        expect( $X.attr('title',(el,i)=>el.innerHTML+'-'+i, css).length ).to.equal(2);
+        expect( $X.$(css).getAttribute('title') ).to.equal('<b>B1</b>-0');
+        expect( $X.$(css)[0].getAttribute('title') ).to.equal('<b>B1</b>-0');
+        expect( $X.$(css)[1].getAttribute('title') ).to.equal('<b>B2</b>-1');
+        expect( $X.$(css).attr('title') ).to.equal('<b>B1</b>-0');
+    } );
+
     it( 'prop(name), prop(name,val)',  async ()=>
     {
         const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
