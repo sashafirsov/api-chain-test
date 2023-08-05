@@ -54,8 +54,14 @@ export interface CssChainCollection<T> extends  Array<AnyElement&T>, AnyElement
     erase(): CssChainCollection<T>;
     /** returns text of whole collection */
     txt(): string;
-    /** sets text for each element from `val` or callback */
-    txt(val: string | ((el:T,i:number,arr:CssChainCollection<T>)=>string), css: string|CssChainCollection<T>): CssChainCollection<T>;
+    /** sets text for each element from `val`  */
+    txt(val: string): CssChainCollection<T>;
+    /** sets text for each element from callback */
+    txt( valCb: (el:T,i:number,arr:CssChainCollection<T>)=>string): CssChainCollection<T>;
+    /** sets text for each element from `val`  */
+    txt(val: string, css: string|CssChainCollection<T>): CssChainCollection<T>;
+    /** sets text for each element from callback */
+    txt( valCb: (el:T,i:number,arr:CssChainCollection<T>)=>string, css: string|CssChainCollection<T>): CssChainCollection<T>;
     /** sets text for children elements defined by css, returns original collection */
     txt(val: any, css: string|CssChainCollection<T>): CssChainCollection<T>;
 

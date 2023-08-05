@@ -1,6 +1,7 @@
 import {fixture, expect} from '@open-wc/testing';
 import {html} from 'lit';
 import {CssChain as $$, CssChainT} from '../src/CssChain.js';
+import {HTMLElementMixin} from "../src/HTMLElementMixin";
 
 interface A {
     ma: string;
@@ -324,6 +325,52 @@ describe('CssChain', () => {
         expect($$(el).length).to.equal(1);
         expect($$('button',el).length).to.equal(2);
         expect($$('button',el).txt()).to.equal('action1action2');
+    });
+    it('$(css).txt(str)', async () => {
+
+        const el = await fixture<HTMLElement>(
+            html`<div><button>action1</button><button>action2</button></div>`
+        );
+        const $e = $$(el);
+        expect($e.length).to.equal(1);
+        const s:string = $e.txt()
+        expect(s).to.equal('action1action2');
+        expect($e.txt('erased').length).to.equal(1);
+        expect($e.txt()).to.equal('erased');
+        expect($e.$('button').length).to.equal(0);
+        expect($e.$('button').txt()).to.equal('');
+    });
+    it('$(css).txt(str|cb)', async () => {
+
+        const el = await fixture<HTMLElement>(
+            html`<div><button id="b1">action1</button>:<button id="b2">action2</button></div>`
+        );
+        const $e = $$(el);
+        expect($e.txt()).to.equal('action1:action2');
+
+        expect($e.txt(e=>e.id,'button').length).to.equal(1);
+        expect($e.txt()).to.equal('b1:b2');
+        expect($e.$('button').length).to.equal(2);
+        expect($e.$('button').txt()).to.equal('b1b2');
+
+
+        const cb1 = (e:HTMLElementMixin)=>`${e.id}`;
+        expect($e.txt(cb1,'button').length).to.equal(1);
+        expect($e.txt()).to.equal('b1:b2');
+        expect($e.$('button').length).to.equal(2);
+        expect($e.$('button').txt()).to.equal('b1b2');
+
+        const cb2 = (e:HTMLElementMixin,i:number)=>`${e.id}-${i}`;
+        expect($e.txt(cb2,'button').length).to.equal(1);
+        expect($e.txt()).to.equal('b1-0:b2-1');
+        expect($e.$('button').length).to.equal(2);
+        expect($e.$('button').txt()).to.equal('b1-0b2-1');
+
+        const cb3 = (e:HTMLElementMixin,i:number,arr: HTMLElementMixin[])=>`${e.id}-${i}-${arr.length}`;
+        expect($e.txt(cb3,'button').length).to.equal(1);
+        expect($e.txt()).to.equal('b1-0-2:b2-1-2');
+        expect($e.$('button').length).to.equal(2);
+        expect($e.$('button').txt()).to.equal('b1-0-2b2-1-2');
     });
 
 });
