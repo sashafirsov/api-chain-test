@@ -95,12 +95,22 @@ CssChainT extends Array
         let [k,v,s] = args
         ,        $s = this.$(s);
         if(isFn(v))
-            this.map(v).forEach((V,i)=>$s[i].setAttribute(k,V))
+            $s.map((n,i,arr)=>v(n,i,arr,this)).forEach((V,i)=>$s[i].setAttribute(k,V))
         else
             $s.setAttribute(...args);
         return this
     }
-    prop(...args){  return args.length>1 ? (this.$(args[2]).forEach( el=>el[args[0]]=args[1]),this ): this[0][args[0]] }
+    prop(...args)
+    {   if( args.length < 2 )
+            return this[0][args[0]];
+        let [k,v,s] = args
+        ,        $s = this.$(s);
+        if(isFn(v))
+            $s.map((n,i,arr)=>v(n,i,arr,this)).forEach((V,i)=>$s[i][k]=V)
+        else
+            $s.forEach( el=>el[k]=v);
+        return this
+    }
     forEach( ...args){ Array.prototype.forEach.apply(this,args); return this }
     map( ...args){ return map(this,...args) }
     push(...args){ Array.prototype.push.apply(this,args); return this; }

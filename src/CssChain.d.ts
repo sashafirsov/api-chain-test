@@ -25,13 +25,13 @@ export interface CssChainCollection<T> extends  Array<AnyElement&T>, AnyElement
     /** (alias for `setAttribute`) sets elements attribute with value from callback, returns CssChain */
     attr(name:string, valueCallback:( (el:T, i:number, arr:CssChainCollection<T>)=>string) ): CssChainCollection<T>;
     /** (alias for `setAttribute`) sets `css`-defined sub-tree elements attribute, returns CssChain */
-    attr(name:string, valueOrCallback:string | ( (el:T, i:number, arr:CssChainCollection<T>)=>string), css:string): CssChainCollection<T>;
+    attr(name:string, valueOrCallback:string | ( (el:T, i:number, arrCss:CssChainCollection<T>, arrThis:CssChainCollection<T>)=>string), css:string): CssChainCollection<T>;
     /** returns 1st element property value or `undefined` for empty collection */
     prop(name:string): any;
-    /** sets elements attribute, returns CssChain */
-    prop(name:string, value:any): CssChainCollection<T>;
-    /** sets `css`-defined sub-tree elements attribute, returns CssChain */
-    prop(name:string, value:any, css:string): CssChainCollection<T>;
+    /** sets elements property, returns CssChain */
+    prop(name:string, valueOrCallback:any | ( (el:T, i:number, arr:CssChainCollection<T>)=>string)): CssChainCollection<T>;
+    /** sets `css`-defined sub-tree elements property, returns CssChain */
+    prop(name:string, valueOrCallback:any | ( (el:T, i:number, arrCss:CssChainCollection<T>, arrThis:CssChainCollection<T>)=>string), css:string): CssChainCollection<T>;
     /** selects 1st elements by @param css string from each collection element, returns CssChain */
     querySelector(css: string): CssChainT;
     /** selects child elements by @param css string, returns CssChain */
