@@ -2,6 +2,6 @@
   "version": 3,
   "sources": ["../src/css-chain-element.js"],
   "sourcesContent": ["import { CssChainElement } from './CssChainElement.js';\n\nwindow.customElements.define( 'css-chain', CssChainElement);\n\nexport default CssChainElement;\n"],
-  "mappings": "AAAA,uDAEA,OAAO,eAAe,OAAQ,YAAa,CAAe,EAE1D,cAAe",
-  "names": []
+  "mappings": "aAAA,OAAS,mBAAAA,MAAuB,uBAEhC,OAAO,eAAe,OAAQ,YAAaA,CAAe,EAE1D,eAAeA",
+  "names": ["CssChainElement"]
 }

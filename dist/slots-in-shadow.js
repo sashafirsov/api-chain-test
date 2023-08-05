@@ -1,4 +1,4 @@
-import{CssChain as e}from"./CssChain.js";const s=`
+"use strict";import{CssChain as e}from"./CssChain.js";const s=`
     <i>out of slot</i>
     <style>
         div{padding: 0 1rem}

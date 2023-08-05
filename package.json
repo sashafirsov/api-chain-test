@@ -7,14 +7,12 @@
         "email": "suns@simulationworks.com",
         "url": "https://blog.firsov.net/"
     },
-    "version": "1.1.7",
+    "version": "1.1.8",
     "browser": "index.js",
     "module": "index.js",
     "type": "module",
     "types": "src/CssChain.d.ts",
-    "exports": {
-        ".": "index.js"
-    },
+    "exports": "./index.js",
     "files": [
         "*",
         "**/*"
@@ -25,23 +23,23 @@
     },
     "scripts": {
         "analyze": "cem analyze --litelement",
-        "build": "bash bin/build.sh",
+        "build": "bash types/types-generate.sh && bash bin/build.sh",
         "postinstall": "bash bin/postinstall.sh",
         "start": "wds",
         "test": "bash bin/test.sh",
         "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
     },
     "dependencies": {
-        "css-chain": "1.1.7",
-        "lit": "^2.2.5"
+        "css-chain": "1.1.8",
+        "lit": "2.8.0"
     },
     "devDependencies": {
-        "@open-wc/testing": "^3.1.5",
-        "@web/dev-server": "^0.1.31",
+        "@open-wc/testing": "3.2.0",
+        "@web/dev-server": "0.3.0",
         "@web/test-runner": "^0.13.29",
-        "concurrently": "^7.2.1",
-        "esbuild": "^0.14.42",
-        "typescript": "^4.7.3"
+        "concurrently": "7.2.1",
+        "esbuild": "0.18.17",
+        "typescript": "5.1.6"
     },
     "customElements": "custom-elements.json"
 }

@@ -34,6 +34,30 @@ describe( 'CssChain own methods', () =>
         expect( $X.attr('id') ).to.equal('QA');
     } );
 
+    it( 'attr(name,cb)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$('a',el)
+        expect( $X.attr('name',(el,i)=>el.id+'-'+i).length ).to.equal(2);
+        expect( $X.getAttribute('name') ).to.equal('a1-0');
+        expect( $X[0].getAttribute('name') ).to.equal('a1-0');
+        expect( $X[1].getAttribute('name') ).to.equal('a2-1');
+        expect( $X.attr('name') ).to.equal('a1-0');
+    } );
+
+    it( 'attr(name,cb,css)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"><b>B1</b></a><a id="a2"><b>B2</b></a></div>`);
+        const $X = $$('a',el);
+        const css ='b';
+        const cb = (n,i,arr,$)=>arr[i].innerText+'-'+$[i].id+'-'+i+'-'+n.innerText;
+        expect( $X.attr('title',cb, css).length ).to.equal(2);
+        expect( $X.$(css).getAttribute('title') ).to.equal('B1-a1-0-B1');
+        expect( $X.$(css)[0].getAttribute('title') ).to.equal('B1-a1-0-B1');
+        expect( $X.$(css)[1].getAttribute('title') ).to.equal('B2-a2-1-B2');
+        expect( $X.$(css).attr('title') ).to.equal('B1-a1-0-B1');
+    } );
+
     it( 'prop(name), prop(name,val)',  async ()=>
     {
         const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
@@ -49,6 +73,18 @@ describe( 'CssChain own methods', () =>
 
         expect( $X.attr('id') ).to.equal('AZ');
     } );
+    it( 'prop(name,valCallback)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$('a',el);
+        const cb = (n,i,arr,$) => `${ n.id }-${ i }-${arr[i].id}-${ $[i].tagName }`;
+        expect( $X.prop('id', cb ).length ).to.equal(2);
+        expect( $X.prop('id') ).to.equal('a1-0-a1-A');
+        expect( $X[0].id ).to.equal('a1-0-a1-A');
+        expect( $X[1].id ).to.equal('a2-1-a2-A');
+
+        expect( $X.attr('id') ).to.equal('a1-0-a1-A');
+    } );
     it( 'prop(name,val,css)',  async ()=>
     {
         const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
@@ -60,6 +96,19 @@ describe( 'CssChain own methods', () =>
         expect( $X.$('a')[1].id ).to.equal('AZ');
 
         expect( $X.$('a').attr('id') ).to.equal('AZ');
+    } );
+    it( 'prop(name,valCb,css)',  async ()=>
+    {
+        const el = await fixture(html`<div><a id="a1"></a><a id="a2"></a></div>`);
+        const $X = $$(el)
+        const cb = (n,i,arr,$) => `${ n.id }-${ i }-${arr[i].id}-${ $.tagName }`;
+
+        expect( $X.prop('id', cb, 'a').length ).to.equal(1);
+        expect( $X.$('a').prop('id') ).to.equal('a1-0-a1-DIV');
+        expect( $X.$('a')[0].id ).to.equal('a1-0-a1-DIV');
+        expect( $X.$('a')[1].id ).to.equal('a2-1-a2-DIV');
+
+        expect( $X.$('a').attr('id') ).to.equal('a1-0-a1-DIV');
     } );
     it( 'attr(name,val,css)',  async ()=>
     {
