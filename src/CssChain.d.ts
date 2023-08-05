@@ -61,7 +61,7 @@ export interface CssChainCollection<T> extends  Array<AnyElement&T>, AnyElement
     /** sets text for each element from `val`  */
     txt(val: string, css: string|CssChainCollection<T>): CssChainCollection<T>;
     /** sets text for each element from callback */
-    txt( valCb: (el:T,i:number,arr:CssChainCollection<T>)=>string, css: string|CssChainCollection<T>): CssChainCollection<T>;
+    txt( valCb: (el:T,i:number,arrCss:CssChainCollection<T>,arrThis:CssChainCollection<T>)=>string, css: string|CssChainCollection<T>): CssChainCollection<T>;
     /** sets text for children elements defined by css, returns original collection */
     txt(val: any, css: string|CssChainCollection<T>): CssChainCollection<T>;
 

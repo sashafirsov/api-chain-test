@@ -65,7 +65,7 @@ describe('CssChain', () => {
         expect($X.value).to.equal(undefined); // INPUT prop
     };
     it('$() matched document', async () => {
-        const el = await fixture(html`
+        await fixture(html`
             <main>Hi</main>`);
         const $X = $$();
         expect($X[0]).to.equal(document);
@@ -371,6 +371,12 @@ describe('CssChain', () => {
         expect($e.txt()).to.equal('b1-0-2:b2-1-2');
         expect($e.$('button').length).to.equal(2);
         expect($e.$('button').txt()).to.equal('b1-0-2b2-1-2');
+
+        const cb4 = (e:HTMLElementMixin,i:number,arrCss: HTMLElementMixin[],arrThis: HTMLElementMixin[])=>`${e.id}-${i}-${arrCss.length}-${arrThis.length}`;
+        expect($e.txt(cb4,'button').length).to.equal(1);
+        expect($e.txt()).to.equal('b1-0-2-1:b2-1-2-1');
+        expect($e.$('button').length).to.equal(2);
+        expect($e.$('button').txt()).to.equal('b1-0-2-1b2-1-2-1');
     });
 
 });

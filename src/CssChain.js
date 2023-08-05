@@ -206,11 +206,11 @@ CssChainT extends Array
     get innerText(){ return this.txt() }
     set innerText( val ){ return this.txt( val ) }
     txt( val, css=undefined )
-    {   const arr = css? this.$(css): this;
+    {   const $ = this.$(css);
         if( val === undefined )
-            return collectionText( arr );
-        arr.forEach( isFn(val)
-                    ? (n,i)=>setNodeText(n,val(n,i,arr))
+            return collectionText( $ );
+        $.forEach( isFn(val)
+                    ? (n,i)=>setNodeText(n,val(n,i,$,this))
                     : n=>setNodeText(n,val) );
         return this
     }
