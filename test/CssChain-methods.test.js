@@ -636,5 +636,17 @@ describe( 'CssChain own methods', () =>
         expect( $$('a',el).childNodes.length ).to.eq(2);
         expect( $$('a',el).childNodes.innerText ).to.eq('onetwo');
     } );
+    it('$(css).parent(css)', async () => {
+
+        const el = await fixture(
+            html`<div><fieldset><button id="b1">action1</button></fieldset><button id="b2">action2</button></div>`
+        );
+        const $e = $$('button',el);
+        expect($e.parent().length).to.equal(2);
+        expect($e.parent().tagName).to.equal('FIELDSET');
+        expect($e.parent()[0].tagName).to.equal('FIELDSET');
+        expect($e.parent()[1].tagName).to.equal('DIV');
+        expect($e.parent('div').tagName).to.equal('DIV');
+    });
 
 } );

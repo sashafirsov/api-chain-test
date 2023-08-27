@@ -372,5 +372,14 @@ describe('CssChain', () => {
         expect($e.$('button').length).to.equal(2);
         expect($e.$('button').txt()).to.equal('b1-0-2-1b2-1-2-1');
     });
+    it('$(css).parent(css)', async () => {
 
+        const el = await fixture<HTMLElement>(
+            html`<div><fieldset><button id="b1">action1</button>:<button id="b2">action2</button></fieldset></div>`
+        );
+        const $e = $$('button',el);
+        expect($e.parent().tagName).to.equal('FIELDSET');
+        expect($e.parent('').tagName).to.equal('FIELDSET');
+        expect($e.parent('div').tagName).to.equal('DIV');
+    });
 });
